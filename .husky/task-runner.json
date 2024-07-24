@@ -31,7 +31,35 @@
     //   ]
     // },
     {
-      "name": "echo staged files",
+      "name": "restore",
+      "pathMode": "absolute",
+      "command": "dotnet",
+      "group": "pre-commit",
+      "args": ["restore"]
+    },
+    {
+      "name": "build",
+      "pathMode": "absolute",
+      "command": "dotnet",
+      "group": "pre-commit",
+      "args": ["build", "--no-restore"]
+    },
+    {
+      "name": "teste",
+      "pathMode": "absolute",
+      "command": "dotnet",
+      "group": "pre-commit",
+      "args": ["test", "--no-restore"]
+    },
+    {
+      "name": "dotnet-format-staged-files",
+      "group": "pre-commit",
+      "command": "dotnet",
+      "args": ["format", "--include", "${staged}"],
+      "include": ["**/*.cs"]
+    },
+    {
+      "name": "staged files",
       "pathMode": "absolute",
       "command": "cmd",
       "group": "pre-commit",
