@@ -29,7 +29,7 @@ public static class DependencyInjection
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-                options.DocumentTitle = "API Gestão Projetos",
+                options.DocumentTitle = "API Gestão Projetos";
             });
         }
 
