@@ -23,6 +23,13 @@ public class Evento : Entity, IAggregateRoot
         };
     }
 
+    public ErrorOr<Success> Atualizar(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
+    {
+        var resultado = Detalhes.Atualizar(nome, dataHora, localizacao, capacidadeMaxima);
+
+        return resultado;
+    }
+
     private Evento() { }
 
     // private readonly HashSet<Ticket> _tickets = [];
