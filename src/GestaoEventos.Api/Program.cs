@@ -1,10 +1,15 @@
 using GestaoEventos.Api;
+using GestaoEventos.Application;
+using GestaoEventos.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 {
     // Add services to the container.
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-    builder.Services.AddPresentation();
+    builder.Services
+        .AddApplication()
+        .AddInfrastructure()
+        .AddPresentation();
 }
 
 var app = builder.Build();
