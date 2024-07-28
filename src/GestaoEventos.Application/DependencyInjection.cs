@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
 
+using GestaoEventos.Application.Common.Behaviors;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GestaoEventos.Application;
@@ -13,6 +15,7 @@ public static class DependencyInjection
         services.AddMediatR(options =>
         {
             options.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
+            options.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 
         services.AddValidatorsFromAssembly(assembly);

@@ -2,7 +2,10 @@
 
 using GestaoEventos.Api.Abstractions;
 using GestaoEventos.Application.Eventos.Commands.Adicionar;
+using GestaoEventos.Contracts.Eventos;
 using GestaoEventos.Contracts.Eventos.Adicionar;
+
+using Mapster;
 
 using MediatR;
 
@@ -18,10 +21,10 @@ public class AdicionarEventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Created($"{EndpointSchema.Eventos}/{v.Id}", v),
+                v => Results.Created($"{EndpointSchema.Eventos}/{v.Id}", v.Adapt<EventoDto>()),
                 e => Results.BadRequest(e));
         })
-        .Produces(StatusCodes.Status201Created)
+        .Produces<EventoDto>(StatusCodes.Status201Created)
         .Produces<Error>(StatusCodes.Status400BadRequest);
     }
 }
