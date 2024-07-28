@@ -1,4 +1,8 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using GestaoEventos.Api.Abstractions;
+using GestaoEventos.Api.Extensions;
+
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.OpenApi.Models;
 
 namespace GestaoEventos.Api;
 
@@ -6,6 +10,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
+        services.AddEndpoints(typeof(Program).Assembly);
+
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
         {
@@ -23,6 +29,8 @@ public static class DependencyInjection
 
     public static WebApplication UsePresentation(this WebApplication app)
     {
+        app.MapEndpoints();
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();

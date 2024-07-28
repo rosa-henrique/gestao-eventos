@@ -36,7 +36,7 @@ namespace GestaoEventos.Domain.Eventos
         {
             if (dataHora != DataHora && dataHora < DateTime.UtcNow)
             {
-                return Error.Conflict(description: ErrosEvento.DataRetroativa);
+                return Error.Failure(description: ErrosEvento.DataRetroativa);
             }
 
             if (capacidadeMaxima <= 0)

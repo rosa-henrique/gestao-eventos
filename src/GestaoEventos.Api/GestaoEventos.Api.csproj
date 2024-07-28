@@ -9,11 +9,16 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" />
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GestaoEventos.Application\GestaoEventos.Application.csproj" />
+    <ProjectReference Include="..\GestaoEventos.Contracts\GestaoEventos.Contracts.csproj" />
     <ProjectReference Include="..\GestaoEventos.Infrastructure\GestaoEventos.Infrastructure.csproj" />
   </ItemGroup>
   <Target Name="Husky" BeforeTargets="Restore;CollectPackageReferences" Condition="'$(HUSKY)' != 0">
