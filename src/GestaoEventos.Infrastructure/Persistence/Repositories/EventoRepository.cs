@@ -10,4 +10,14 @@ public class EventoRepository(AppDbContext context) : Repository<Evento>(context
     {
         return await _dbSet.FirstOrDefaultAsync(e => e.Detalhes.Nome.Equals(nome));
     }
+
+    public async Task<IEnumerable<Evento>> Buscar()
+    {
+        return await _dbSet.ToListAsync();
+    }
+
+    public async Task<Evento?> BuscarPorId(Guid id)
+    {
+        return await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
+    }
 }
