@@ -6,7 +6,7 @@ using MediatR;
 
 namespace GestaoEventos.Application.Eventos.Commands.Adicionar;
 
-public class AdicionarEventoCommandHandler(IEventoRepository repository, EventoDomainService domainService) : IRequestHandler<AdicionarEventoCommand, ErrorOr<Evento>>
+public class AdicionarEventoCommandHandler(IEventoRepository repository) : IRequestHandler<AdicionarEventoCommand, ErrorOr<Evento>>
 {
     public async Task<ErrorOr<Evento>> Handle(AdicionarEventoCommand request, CancellationToken cancellationToken)
     {
@@ -15,15 +15,17 @@ public class AdicionarEventoCommandHandler(IEventoRepository repository, EventoD
             return Error.Conflict(description: ErrosEvento.NomeEventoJaExiste);
         }
 
-        var resultadoEvento = Evento.Criar(request.Nome, request.DataHora, request.Localizacao, request.CapacidadeMaxima);
+        var evento = new Evento(request.Nome, request.DataHora, request.Localizacao, request.CapacidadeMaxima);
 
-        if (resultadoEvento.IsError)
+        var resultadoValidacao = EventoDomainService.ValidarEvento(evento);
+
+        if (resultadoValidacao.IsError)
         {
-            return resultadoEvento.Errors;
+            return resultadoValidacao.Errors;
         }
 
-        await domainService.CriarEvento(resultadoEvento.Value);
+        await repository.Adicionar(evento);
 
-        return resultadoEvento.Value;
+        return evento;
     }
 }

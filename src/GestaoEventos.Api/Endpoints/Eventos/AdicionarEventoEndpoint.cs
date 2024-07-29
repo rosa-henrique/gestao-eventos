@@ -22,7 +22,7 @@ public class AdicionarEventoEndpoint : IEndpoint
 
             return resultado.Match(
                 v => Results.Created($"{EndpointSchema.Eventos}/{v.Id}", v.Adapt<EventoDto>()),
-                e => Results.BadRequest(e));
+                ProblemRequest.Resolve);
         })
         .Produces<EventoDto>(StatusCodes.Status201Created)
         .Produces<Error>(StatusCodes.Status400BadRequest);

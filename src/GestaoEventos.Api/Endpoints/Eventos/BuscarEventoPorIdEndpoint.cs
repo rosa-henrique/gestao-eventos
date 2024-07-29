@@ -3,7 +3,6 @@
 using GestaoEventos.Api.Abstractions;
 using GestaoEventos.Application.Eventos.Queries.BuscarEventoPorId;
 using GestaoEventos.Contracts.Eventos;
-using GestaoEventos.Contracts.Eventos.Adicionar;
 
 using Mapster;
 
@@ -22,7 +21,7 @@ public class BuscarEventoPorIdEndpoint : IEndpoint
 
             return resultado.Match(
                 v => Results.Ok(v.Adapt<EventoDto>()),
-                e => Results.BadRequest(e));
+                ProblemRequest.Resolve);
         })
         .Produces<IEnumerable<EventoDto>>(StatusCodes.Status201Created);
     }

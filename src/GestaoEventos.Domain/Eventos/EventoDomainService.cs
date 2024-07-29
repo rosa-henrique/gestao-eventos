@@ -1,9 +1,23 @@
-﻿namespace GestaoEventos.Domain.Eventos;
+﻿using ErrorOr;
 
-public class EventoDomainService(IEventoRepository eventoRepository)
+namespace GestaoEventos.Domain.Eventos;
+
+public class EventoDomainService
 {
-    public async Task CriarEvento(Evento evento)
+    public const int CapaciadeMinima = 1;
+
+    public static ErrorOr<Success> ValidarEvento(Evento evento)
     {
-        await eventoRepository.Adicionar(evento);
+        if (evento.Detalhes.DataHora < DateTime.UtcNow)
+        {
+            return Error.Failure(description: ErrosEvento.DataRetroativa);
+        }
+
+        if (evento.Detalhes.CapacidadeMaxima < CapaciadeMinima)
+        {
+            return Error.Failure(description: ErrosEvento.CapacidadeInvalida);
+        }
+
+        return Result.Success;
     }
 }

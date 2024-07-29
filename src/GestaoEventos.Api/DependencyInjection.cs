@@ -22,6 +22,16 @@ public static class DependencyInjection
                 Title = "API Gestão Projetos",
                 Description = "Uma API Web ASP.NET Core para gerenciar eventos e relacionados",
             });
+
+            options.OrderActionsBy(apiDescription => apiDescription.HttpMethod switch
+            {
+                "GET" => "1",
+                "POST" => "2",
+                "PUT" => "3",
+                "PATCH" => "4",
+                "DELETE" => "5",
+                _ => "999",
+            });
         });
         services.AddProblemDetails();
 

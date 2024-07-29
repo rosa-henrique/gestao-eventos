@@ -11,45 +11,12 @@ namespace GestaoEventos.Domain.Eventos
         public string Localizacao { get; private set; } = null!;
         public int CapacidadeMaxima { get; private set; }
 
-        internal static ErrorOr<DetalhesEvento> Criar(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
+        internal DetalhesEvento(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
         {
-            if (dataHora < DateTime.UtcNow)
-            {
-                return Error.Conflict(description: ErrosEvento.DataRetroativa);
-            }
-
-            if (capacidadeMaxima <= 0)
-            {
-                return Error.Failure(description: ErrosEvento.CapacidadeInvalida);
-            }
-
-            return new DetalhesEvento
-            {
-                Nome = nome,
-                DataHora = dataHora,
-                Localizacao = localizacao,
-                CapacidadeMaxima = capacidadeMaxima,
-            };
-        }
-
-        internal ErrorOr<Success> Atualizar(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
-        {
-            if (dataHora != DataHora && dataHora < DateTime.UtcNow)
-            {
-                return Error.Failure(description: ErrosEvento.DataRetroativa);
-            }
-
-            if (capacidadeMaxima <= 0)
-            {
-                return Error.Failure(description: ErrosEvento.CapacidadeInvalida);
-            }
-
             Nome = nome;
             DataHora = dataHora;
             Localizacao = localizacao;
             CapacidadeMaxima = capacidadeMaxima;
-
-            return Result.Success;
         }
 
         private DetalhesEvento() { }
