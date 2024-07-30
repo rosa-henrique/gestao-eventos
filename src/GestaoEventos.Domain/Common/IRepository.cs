@@ -4,4 +4,5 @@ public interface IRepository<T>
     where T : Entity
 {
     Task Adicionar(T evento);
+    Task Alterar(T entidade);
 }

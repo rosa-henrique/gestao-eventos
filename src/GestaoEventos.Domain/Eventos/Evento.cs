@@ -1,4 +1,6 @@
-﻿using GestaoEventos.Domain.Common;
+﻿using ErrorOr;
+
+using GestaoEventos.Domain.Common;
 
 namespace GestaoEventos.Domain.Eventos;
 
@@ -6,9 +8,53 @@ public sealed class Evento : Entity, IAggregateRoot
 {
     public DetalhesEvento Detalhes { get; private set; } = null!;
 
-    public Evento(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
+    private Evento(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
     {
         Detalhes = new DetalhesEvento(nome, dataHora, localizacao, capacidadeMaxima);
+    }
+
+    public static ErrorOr<Evento> Criar(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
+    {
+        var resultadoValidacao = Validar(dataHora, capacidadeMaxima);
+        if (resultadoValidacao.IsError)
+        {
+            return resultadoValidacao.Errors;
+        }
+
+        return new Evento(nome, dataHora, localizacao, capacidadeMaxima);
+    }
+
+    public ErrorOr<Success> Atualizar(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
+    {
+        if (Detalhes.DataHora < DateTime.UtcNow)
+        {
+            return Error.Failure(description: ErrosEvento.NaoAlterarEventoPassado);
+        }
+
+        var resultadoValidacao = Validar(dataHora, capacidadeMaxima);
+        if (resultadoValidacao.IsError)
+        {
+            return resultadoValidacao.Errors;
+        }
+
+        Detalhes = new DetalhesEvento(nome, dataHora, localizacao, capacidadeMaxima);
+
+        return Result.Success;
+    }
+
+    private static ErrorOr<Success> Validar(DateTime dataHora, int capacidadeMaxima)
+    {
+        if (dataHora < DateTime.UtcNow)
+        {
+            return Error.Failure(description: ErrosEvento.DataRetroativa);
+        }
+
+        if (capacidadeMaxima < DetalhesEvento.CapacidadeMinima)
+        {
+            return Error.Failure(description: ErrosEvento.CapacidadeInvalida);
+        }
+
+        return Result.Success;
     }
 
     private Evento() { }

@@ -23,8 +23,6 @@ public static class DependencyInjection
 
         services.AddScoped<IEventoRepository, EventoRepository>();
 
-        services.AddScoped<EventoDomainService>();
-
         return services;
     }
 }

@@ -10,18 +10,18 @@ public class AdicionarEventoCommandHandler(IEventoRepository repository) : IRequ
 {
     public async Task<ErrorOr<Evento>> Handle(AdicionarEventoCommand request, CancellationToken cancellationToken)
     {
-        if ((await repository.ObterPorNomeId(request.Nome)) is not null)
+        var resultadoEvento = Evento.Criar(request.Nome, request.DataHora, request.Localizacao, request.CapacidadeMaxima);
+
+        if (resultadoEvento.IsError)
         {
-            return Error.Conflict(description: ErrosEvento.NomeEventoJaExiste);
+            return resultadoEvento.Errors;
         }
 
-        var evento = new Evento(request.Nome, request.DataHora, request.Localizacao, request.CapacidadeMaxima);
+        var evento = resultadoEvento.Value;
 
-        var resultadoValidacao = EventoDomainService.ValidarEvento(evento);
-
-        if (resultadoValidacao.IsError)
+        if ((await repository.ObterPorNomeId(evento.Detalhes.Nome)) is not null)
         {
-            return resultadoValidacao.Errors;
+            return Error.Conflict(description: ErrosEvento.NomeEventoJaExiste);
         }
 
         await repository.Adicionar(evento);

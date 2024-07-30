@@ -21,4 +21,10 @@ public abstract class Repository<T> : IRepository<T>
         _dbSet.Add(entidade);
         await _context.SaveChangesAsync();
     }
+
+    public async Task Alterar(T entidade)
+    {
+        _dbSet.Update(entidade);
+        await _context.SaveChangesAsync();
+    }
 }

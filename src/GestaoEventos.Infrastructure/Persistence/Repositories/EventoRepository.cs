@@ -18,6 +18,6 @@ public class EventoRepository(AppDbContext context) : Repository<Evento>(context
 
     public async Task<Evento?> BuscarPorId(Guid id)
     {
-        return await _dbSet.FirstOrDefaultAsync(e => e.Id == id);
+        return await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
     }
 }
