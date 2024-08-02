@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 
 using GestaoEventos.Domain.Eventos;
+using GestaoEventos.TestCommon.Eventos;
 
 namespace GestaoEventos.Domain.Tests.Eventos
 {
@@ -69,7 +70,7 @@ namespace GestaoEventos.Domain.Tests.Eventos
             var dataHora = DateTime.UtcNow.AddDays(7);
             var localizacao = "123";
             var capacidadeMaxima = DetalhesEvento.CapacidadeMinima + 5;
-            var evento = Evento.Criar("1", dataHora.AddDays(1), "Rua 1", capacidadeMaxima).Value;
+            var evento = EventoFactory.CriarEvento().Value;
 
             // Act
             var resultadoAtualizarEvento = evento.Atualizar(nome, dataHora, localizacao, capacidadeMaxima);
@@ -90,7 +91,7 @@ namespace GestaoEventos.Domain.Tests.Eventos
             var dataHora = DateTime.UtcNow.AddDays(7);
             var localizacao = "123";
             var capacidadeMaxima = DetalhesEvento.CapacidadeMinima - 5;
-            var evento = Evento.Criar("1", dataHora.AddDays(1), "Rua 1", DetalhesEvento.CapacidadeMinima + 5).Value;
+            var evento = EventoFactory.CriarEvento().Value;
 
             // Act
             var resultadoAtualizarEvento = evento.Atualizar(nome, dataHora, localizacao, capacidadeMaxima);
@@ -108,7 +109,7 @@ namespace GestaoEventos.Domain.Tests.Eventos
             var dataHora = DateTime.UtcNow.AddDays(-7);
             var localizacao = "123";
             var capacidadeMaxima = DetalhesEvento.CapacidadeMinima + 5;
-            var evento = Evento.Criar("1", DateTime.UtcNow.AddDays(7), "Rua 1", capacidadeMaxima).Value;
+            var evento = EventoFactory.CriarEvento().Value;
 
             // Act
             var resultadoAtualizarEvento = evento.Atualizar(nome, dataHora, localizacao, capacidadeMaxima);
@@ -130,10 +131,10 @@ namespace GestaoEventos.Domain.Tests.Eventos
             var constructor = eventoType.GetConstructor(
                 BindingFlags.NonPublic | BindingFlags.Instance,
                 null,
-                [typeof(string), typeof(DateTime), typeof(string), typeof(int)],
+                [typeof(string), typeof(DateTime), typeof(string), typeof(int), typeof(Guid?)],
                 null)!;
 
-            var eventoPassado = (Evento)constructor.Invoke(["Evento Passado", DateTime.UtcNow.AddDays(-8), "Localização", 100]);
+            var eventoPassado = (Evento)constructor.Invoke(["Evento Passado", DateTime.UtcNow.AddDays(-8), "Localização", 100, null]);
 
             var resultadoAtualizarEvento = eventoPassado.Atualizar(nome, dataHora, localizacao, capacidadeMaxima);
 

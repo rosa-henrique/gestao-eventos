@@ -1,26 +1,24 @@
 ﻿using ErrorOr;
 
 using GestaoEventos.Api.Abstractions;
-using GestaoEventos.Application.Eventos.Queries.BuscarEventos;
+using GestaoEventos.Application.Eventos.Commands.Remover;
 using GestaoEventos.Contracts.Eventos;
-
-using Mapster;
 
 using MediatR;
 
 namespace GestaoEventos.Api.Endpoints.Eventos;
 
-public class BuscarEventosEndpoint : IEndpoint
+public class RemoverEventoEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet(EndpointSchema.Eventos, (ISender mediator) =>
+        app.MapDelete($"{EndpointSchema.Eventos}/{{id}}", (ISender mediator, Guid id) =>
         {
-            var command = new BuscarEventosQuery();
+            var command = new RemoverEventoCommand(id);
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(v.Adapt<IEnumerable<EventoDto>>()),
+                v => Results.NoContent(),
                 ProblemRequest.Resolve);
         })
             .WithTags(EndpointSchema.Eventos)

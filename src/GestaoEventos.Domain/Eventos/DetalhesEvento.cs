@@ -19,6 +19,14 @@ public class DetalhesEvento : ValueObject
         CapacidadeMaxima = capacidadeMaxima;
     }
 
+    internal void Atualizar(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
+    {
+        Nome = nome;
+        DataHora = dataHora;
+        Localizacao = localizacao;
+        CapacidadeMaxima = capacidadeMaxima;
+    }
+
     private DetalhesEvento() { }
 
     public const int CapacidadeMinima = 1;

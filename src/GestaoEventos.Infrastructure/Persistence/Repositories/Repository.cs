@@ -27,4 +27,10 @@ public abstract class Repository<T> : IRepository<T>
         _dbSet.Update(entidade);
         await _context.SaveChangesAsync();
     }
+
+    public async Task Deletar(T entidade)
+    {
+        _dbSet.Remove(entidade);
+        await _context.SaveChangesAsync();
+    }
 }

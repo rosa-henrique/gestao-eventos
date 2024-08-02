@@ -8,7 +8,8 @@ public sealed class Evento : Entity, IAggregateRoot
 {
     public DetalhesEvento Detalhes { get; private set; } = null!;
 
-    private Evento(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
+    private Evento(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima, Guid? id = null)
+            : base(id ?? Guid.NewGuid())
     {
         Detalhes = new DetalhesEvento(nome, dataHora, localizacao, capacidadeMaxima);
     }
@@ -26,9 +27,10 @@ public sealed class Evento : Entity, IAggregateRoot
 
     public ErrorOr<Success> Atualizar(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
     {
-        if (Detalhes.DataHora < DateTime.UtcNow)
+        var validarAlterar = ValidarAlterarRemover;
+        if (validarAlterar.IsError)
         {
-            return Error.Failure(description: ErrosEvento.NaoAlterarEventoPassado);
+            return validarAlterar.Errors;
         }
 
         var resultadoValidacao = Validar(dataHora, capacidadeMaxima);
@@ -37,7 +39,7 @@ public sealed class Evento : Entity, IAggregateRoot
             return resultadoValidacao.Errors;
         }
 
-        Detalhes = new DetalhesEvento(nome, dataHora, localizacao, capacidadeMaxima);
+        Detalhes.Atualizar(nome, dataHora, localizacao, capacidadeMaxima);
 
         return Result.Success;
     }
@@ -55,6 +57,19 @@ public sealed class Evento : Entity, IAggregateRoot
         }
 
         return Result.Success;
+    }
+
+    public ErrorOr<Success> ValidarAlterarRemover
+    {
+        get
+        {
+            if (Detalhes.DataHora < DateTime.UtcNow)
+            {
+                return Error.Failure(description: ErrosEvento.NaoAlterarEventoPassado);
+            }
+
+            return Result.Success;
+        }
     }
 
     private Evento() { }

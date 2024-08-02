@@ -9,13 +9,15 @@ using Mapster;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Mvc;
+
 namespace GestaoEventos.Api.Endpoints.Eventos;
 
 public class AdicionarEventoEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost(EndpointSchema.Eventos, (ISender mediator, AdicionarEventoRequest request) =>
+        app.MapPost(EndpointSchema.Eventos, (ISender mediator, [FromBody] AdicionarEventoRequest request) =>
         {
             var command = new AdicionarEventoCommand(request.Nome, request.DataHora, request.Localizacao, request.CapacidadeMaxima);
             var resultado = mediator.Send(command);
@@ -24,7 +26,8 @@ public class AdicionarEventoEndpoint : IEndpoint
                 v => Results.Created($"{EndpointSchema.Eventos}/{v.Id}", v.Adapt<EventoDto>()),
                 ProblemRequest.Resolve);
         })
-        .Produces<EventoDto>(StatusCodes.Status201Created)
-        .Produces<Error>(StatusCodes.Status400BadRequest);
+            .WithTags(EndpointSchema.Eventos)
+            .Produces<EventoDto>(StatusCodes.Status201Created)
+            .Produces<Error>(StatusCodes.Status400BadRequest);
     }
 }

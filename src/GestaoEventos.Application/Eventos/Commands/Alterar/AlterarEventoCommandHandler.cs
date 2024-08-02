@@ -13,7 +13,7 @@ public class AlterarEventoCommandHandler(IEventoRepository repository) : IReques
         var evento = await repository.BuscarPorId(request.Id);
         if (evento is null)
         {
-            return Error.Conflict(description: ErrosEvento.NomeEventoJaExiste);
+            return Error.Conflict(description: ErrosEvento.EventoNaoEncontrado);
         }
 
         var resultadoEvento = evento.Atualizar(request.Nome, request.DataHora, request.Localizacao, request.CapacidadeMaxima);
@@ -22,7 +22,7 @@ public class AlterarEventoCommandHandler(IEventoRepository repository) : IReques
             return resultadoEvento.Errors;
         }
 
-        if ((await repository.ObterPorNomeId(evento.Detalhes.Nome)) is not null)
+        if ((await repository.ObterPorNomeId(evento.Detalhes.Nome, evento.Id)) is not null)
         {
             return Error.Conflict(description: ErrosEvento.NomeEventoJaExiste);
         }

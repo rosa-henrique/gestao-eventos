@@ -5,4 +5,5 @@ public interface IRepository<T>
 {
     Task Adicionar(T evento);
     Task Alterar(T entidade);
+    Task Deletar(T entidade);
 }

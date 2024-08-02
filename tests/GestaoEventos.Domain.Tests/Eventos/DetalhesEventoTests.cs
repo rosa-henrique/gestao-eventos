@@ -1,4 +1,5 @@
 ﻿using GestaoEventos.Domain.Eventos;
+using GestaoEventos.TestCommon.Eventos;
 
 namespace GestaoEventos.Domain.Tests.Eventos;
 
@@ -8,12 +9,9 @@ public class DetalhesEventoTests
     public void Comparar_ComSucesso()
     {
         // Arrange
-        var nome = "teste";
         var dataHora = DateTime.UtcNow.AddDays(7);
-        var localizacao = "123";
-        var capacidadeMaxima = 5;
-        var detalhe1 = Evento.Criar(nome, dataHora, localizacao, capacidadeMaxima).Value.Detalhes;
-        var detalhe2 = Evento.Criar(nome, dataHora, localizacao, capacidadeMaxima).Value.Detalhes;
+        var detalhe1 = EventoFactory.CriarEvento(dataHora: dataHora).Value.Detalhes;
+        var detalhe2 = EventoFactory.CriarEvento(dataHora: dataHora).Value.Detalhes;
 
         // Act
         var resultado = detalhe1 == detalhe2;
@@ -26,12 +24,9 @@ public class DetalhesEventoTests
     public void Comparar_ComFalha()
     {
         // Arrange
-        var nome = "teste";
         var dataHora = DateTime.UtcNow.AddDays(7);
-        var localizacao = "123";
-        var capacidadeMaxima = 5;
-        var detalhe1 = Evento.Criar(nome, dataHora, localizacao, capacidadeMaxima).Value.Detalhes;
-        var detalhe2 = Evento.Criar(nome, dataHora.AddSeconds(1), localizacao, capacidadeMaxima).Value.Detalhes;
+        var detalhe1 = EventoFactory.CriarEvento(dataHora: dataHora).Value.Detalhes;
+        var detalhe2 = EventoFactory.CriarEvento(dataHora: dataHora.AddSeconds(1)).Value.Detalhes;
 
         // Act
         var resultado = detalhe1 == detalhe2;
