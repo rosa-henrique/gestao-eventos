@@ -26,6 +26,7 @@ namespace GestaoEventos.Domain.Tests.Eventos
             Assert.Equal(dataHora, evento.Detalhes.DataHora);
             Assert.Equal(localizacao, evento.Detalhes.Localizacao);
             Assert.Equal(capacidadeMaxima, evento.Detalhes.CapacidadeMaxima);
+            Assert.Equal(StatusEvento.Pendente, evento.Detalhes.Status);
         }
 
         [Fact]
@@ -131,12 +132,46 @@ namespace GestaoEventos.Domain.Tests.Eventos
             var constructor = eventoType.GetConstructor(
                 BindingFlags.NonPublic | BindingFlags.Instance,
                 null,
-                [typeof(string), typeof(DateTime), typeof(string), typeof(int), typeof(Guid?)],
+                [typeof(string), typeof(DateTime), typeof(string), typeof(int), typeof(StatusEvento), typeof(Guid?)],
                 null)!;
 
-            var eventoPassado = (Evento)constructor.Invoke(["Evento Passado", DateTime.UtcNow.AddDays(-8), "Localização", 100, null]);
+            var eventoPassado = (Evento)constructor.Invoke(["Evento Passado", DateTime.UtcNow.AddDays(-8), "Localização", 100, StatusEvento.Pendente, null]);
 
             var resultadoAtualizarEvento = eventoPassado.Atualizar(nome, dataHora, localizacao, capacidadeMaxima);
+
+            // Assert
+            Assert.True(resultadoAtualizarEvento.IsError);
+            Assert.Equal(ErrosEvento.NaoAlterarEventoPassado, resultadoAtualizarEvento.Errors.First().Description);
+        }
+
+        [Fact]
+        public void CancelarEvento_ComSucesso()
+        {
+            // Arrange
+            var evento = EventoFactory.CriarEvento().Value;
+
+            // Act
+            var resultadoAtualizarEvento = evento.Cancelar();
+
+            // Assert
+            Assert.False(resultadoAtualizarEvento.IsError);
+            Assert.Equal(StatusEvento.Cancelado, evento.Detalhes.Status);
+        }
+
+        [Fact]
+        public void CancelarEvento_ComErro_EventoJaPassou()
+        {
+            // Arrange
+            var eventoType = typeof(Evento);
+            var constructor = eventoType.GetConstructor(
+                BindingFlags.NonPublic | BindingFlags.Instance,
+                null,
+                [typeof(string), typeof(DateTime), typeof(string), typeof(int), typeof(StatusEvento), typeof(Guid?)],
+                null)!;
+
+            var eventoPassado = (Evento)constructor.Invoke(["Evento Passado", DateTime.UtcNow.AddDays(-8), "Localização", 100, StatusEvento.Pendente, null]);
+
+            var resultadoAtualizarEvento = eventoPassado.Cancelar();
 
             // Assert
             Assert.True(resultadoAtualizarEvento.IsError);

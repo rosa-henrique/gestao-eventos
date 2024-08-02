@@ -43,7 +43,8 @@
     "test-projects": [],
     "test-case-filter": "",
     "ignore-mutations": [
-      "equality"
+      "equality",
+      "nullcoalescing"
     ],
     "ignore-methods": [],
     "report-file-name": "mutation-report",

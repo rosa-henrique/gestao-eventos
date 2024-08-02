@@ -16,7 +16,7 @@ public class RemoverEventoCommandHandler(IEventoRepository repository) : IReques
             return Error.Failure(description: ErrosEvento.EventoNaoEncontrado);
         }
 
-        var validaRemover = evento.ValidarAlterarRemover;
+        var validaRemover = evento.Cancelar();
         if (validaRemover.IsError)
         {
             return validaRemover.Errors;

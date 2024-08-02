@@ -32,6 +32,9 @@ namespace GestaoEventos.Infrastructure.Persistence.Configurations
                 detalhes.Property(d => d.CapacidadeMaxima)
                             .IsRequired()
                             .HasColumnName("capacidade_maxima");
+                detalhes.Property(d => d.Status)
+                            .IsRequired()
+                            .HasColumnName("status");
             });
         }
     }

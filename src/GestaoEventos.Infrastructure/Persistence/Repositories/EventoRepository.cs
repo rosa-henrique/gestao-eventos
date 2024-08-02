@@ -8,7 +8,11 @@ public class EventoRepository(AppDbContext context) : Repository<Evento>(context
 {
     public async Task<Evento?> ObterPorNomeId(string nome, Guid? id = null)
     {
-        return await _dbSet.FirstOrDefaultAsync(e => e.Detalhes.Nome.Equals(nome));
+        IList<StatusEvento> statusConsultar = [StatusEvento.Pendente, StatusEvento.Confirmado, StatusEvento.EmAndamento];
+        return await _dbSet.FirstOrDefaultAsync(e =>
+                                        e.Detalhes.Nome.Equals(nome) &&
+                                        statusConsultar.Contains(e.Detalhes.Status) &&
+                                        (!id.HasValue || e.Id.Equals(id)));
     }
 
     public async Task<IEnumerable<Evento>> Buscar()

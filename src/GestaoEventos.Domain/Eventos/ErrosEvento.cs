@@ -7,4 +7,5 @@ public class ErrosEvento
     public const string NomeEventoJaExiste = "Já existe um evento com este nome.";
     public const string EventoNaoEncontrado = "Evento não encontrado.";
     public const string NaoAlterarEventoPassado = "Eventos passados não podem ser alterados.";
+    public const string NomeIngressoJaExiste = "Nome do ingresso já existe dentro do contexto do evento.";
 }
