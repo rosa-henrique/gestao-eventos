@@ -2,13 +2,12 @@
 
 using GestaoEventos.Api.Abstractions;
 using GestaoEventos.Application.Eventos.Queries.BuscarEventos;
-using GestaoEventos.Contracts.Eventos;
 
 using Mapster;
 
 using MediatR;
 
-namespace GestaoEventos.Api.Endpoints.Eventos;
+namespace GestaoEventos.Api.Endpoints.Eventos.BuscarEventos;
 
 public class BuscarEventosEndpoint : IEndpoint
 {
@@ -20,10 +19,10 @@ public class BuscarEventosEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(v.Adapt<IEnumerable<EventoDto>>()),
+                v => Results.Ok(v.Adapt<IEnumerable<BuscarEventosResponse>>()),
                 ProblemRequest.Resolve);
         })
             .WithTags(EndpointSchema.Eventos)
-            .Produces<IEnumerable<EventoDto>>(StatusCodes.Status201Created);
+            .Produces<IEnumerable<BuscarEventosResponse>>(StatusCodes.Status201Created);
     }
 }

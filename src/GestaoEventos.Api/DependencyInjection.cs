@@ -11,7 +11,6 @@ public static class DependencyInjection
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
         services.AddEndpoints(typeof(Program).Assembly);
-        services.AddMapping(typeof(Program).Assembly);
 
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>

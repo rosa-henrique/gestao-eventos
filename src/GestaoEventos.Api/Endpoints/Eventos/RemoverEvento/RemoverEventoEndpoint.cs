@@ -2,11 +2,10 @@
 
 using GestaoEventos.Api.Abstractions;
 using GestaoEventos.Application.Eventos.Commands.Remover;
-using GestaoEventos.Contracts.Eventos;
 
 using MediatR;
 
-namespace GestaoEventos.Api.Endpoints.Eventos;
+namespace GestaoEventos.Api.Endpoints.Eventos.RemoverEvento;
 
 public class RemoverEventoEndpoint : IEndpoint
 {
@@ -22,6 +21,6 @@ public class RemoverEventoEndpoint : IEndpoint
                 ProblemRequest.Resolve);
         })
             .WithTags(EndpointSchema.Eventos)
-            .Produces<IEnumerable<EventoDto>>(StatusCodes.Status201Created);
+            .Produces(StatusCodes.Status204NoContent);
     }
 }
