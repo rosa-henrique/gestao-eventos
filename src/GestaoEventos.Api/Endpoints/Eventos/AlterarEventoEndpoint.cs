@@ -20,7 +20,7 @@ public class AlterarEventoEndpoint : IEndpoint
     {
         app.MapPut($"{EndpointSchema.Eventos}/{{id}}", (ISender mediator, Guid id, [FromBody] AdicionarEventoRequest request) =>
         {
-            var command = new AlterarEventoCommand(id, request.Nome, request.DataHora, request.Localizacao, request.CapacidadeMaxima);
+            var command = new AlterarEventoCommand(id, request.Nome, request.DataHora, request.Localizacao, request.CapacidadeMaxima, request.Status);
             var resultado = mediator.Send(command);
 
             return resultado.Match(

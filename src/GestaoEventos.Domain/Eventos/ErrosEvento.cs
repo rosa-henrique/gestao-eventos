@@ -8,4 +8,6 @@ public class ErrosEvento
     public const string EventoNaoEncontrado = "Evento não encontrado.";
     public const string NaoAlterarEventoPassado = "Eventos passados não podem ser alterados.";
     public const string NomeIngressoJaExiste = "Nome do ingresso já existe dentro do contexto do evento.";
+    public const string NaoPermiteAlteracao = "Não é possível alterar o status de um evento {0}.";
+    public const string NaoPermiteAlteracaoDiretamente = "Não é possível alterar um evento {0} diretamente para {1}.";
 }

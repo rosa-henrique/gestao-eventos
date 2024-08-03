@@ -1,6 +1,4 @@
-﻿using ErrorOr;
-
-using GestaoEventos.Domain.Common;
+﻿using GestaoEventos.Domain.Common;
 
 namespace GestaoEventos.Domain.Eventos;
 
@@ -10,7 +8,7 @@ public class DetalhesEvento : ValueObject
     public DateTime DataHora { get; private set; }
     public string Localizacao { get; private set; } = null!;
     public int CapacidadeMaxima { get; private set; }
-    public StatusEvento Status { get; private set; }
+    public StatusEvento Status { get; private set; } = null!;
 
     internal DetalhesEvento(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima, StatusEvento status)
     {
@@ -21,12 +19,13 @@ public class DetalhesEvento : ValueObject
         Status = status;
     }
 
-    internal void Atualizar(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
+    internal void Atualizar(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima, StatusEvento status)
     {
         Nome = nome;
         DataHora = dataHora;
         Localizacao = localizacao;
         CapacidadeMaxima = capacidadeMaxima;
+        Status = status;
     }
 
     internal void AtualizarStatus(StatusEvento status)
@@ -37,7 +36,6 @@ public class DetalhesEvento : ValueObject
     private DetalhesEvento() { }
 
     public const int CapacidadeMinima = 1;
-    public IReadOnlyCollection<StatusEvento> StatusNaoPermiteAlteracao = [StatusEvento.Cancelado, StatusEvento.Concluido];
 
     // Implementação de ValueObject
     protected override IEnumerable<object> GetAtomicValues()

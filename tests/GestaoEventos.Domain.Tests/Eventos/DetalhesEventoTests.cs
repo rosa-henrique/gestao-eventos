@@ -10,8 +10,8 @@ public class DetalhesEventoTests
     {
         // Arrange
         var dataHora = DateTime.UtcNow.AddDays(7);
-        var detalhe1 = EventoFactory.CriarEvento(dataHora: dataHora).Value.Detalhes;
-        var detalhe2 = EventoFactory.CriarEvento(dataHora: dataHora).Value.Detalhes;
+        var detalhe1 = EventoFactory.CriarEvento(dataHora: dataHora).Detalhes;
+        var detalhe2 = EventoFactory.CriarEvento(dataHora: dataHora).Detalhes;
 
         // Act
         var resultado = detalhe1 == detalhe2;
@@ -25,8 +25,8 @@ public class DetalhesEventoTests
     {
         // Arrange
         var dataHora = DateTime.UtcNow.AddDays(7);
-        var detalhe1 = EventoFactory.CriarEvento(dataHora: dataHora).Value.Detalhes;
-        var detalhe2 = EventoFactory.CriarEvento(dataHora: dataHora.AddSeconds(1)).Value.Detalhes;
+        var detalhe1 = EventoFactory.CriarEvento(dataHora: dataHora).Detalhes;
+        var detalhe2 = EventoFactory.CriarEvento(dataHora: dataHora.AddSeconds(1)).Detalhes;
 
         // Act
         var resultado = detalhe1 == detalhe2;

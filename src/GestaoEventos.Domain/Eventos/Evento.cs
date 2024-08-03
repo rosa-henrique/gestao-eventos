@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 using ErrorOr;
 
@@ -30,9 +31,9 @@ public sealed class Evento : Entity, IAggregateRoot
         return new Evento(nome, dataHora, localizacao, capacidadeMaxima, StatusEvento.Pendente);
     }
 
-    public ErrorOr<Success> Atualizar(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
+    public ErrorOr<Success> Atualizar(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima, StatusEvento status)
     {
-        var validarAlterar = ValidarAlterarCancelar;
+        var validarAlterar = ValidarAlterarCancelar(status);
         if (validarAlterar.IsError)
         {
             return validarAlterar.Errors;
@@ -44,20 +45,52 @@ public sealed class Evento : Entity, IAggregateRoot
             return resultadoValidacao.Errors;
         }
 
-        Detalhes.Atualizar(nome, dataHora, localizacao, capacidadeMaxima);
+        Detalhes.Atualizar(nome, dataHora, localizacao, capacidadeMaxima, status);
 
         return Result.Success;
     }
 
     public ErrorOr<Success> Cancelar()
     {
-        var validarAlterar = ValidarAlterarCancelar;
+        var validarAlterar = ValidarAlterarCancelar();
         if (validarAlterar.IsError)
         {
             return validarAlterar.Errors;
         }
 
         Detalhes.AtualizarStatus(StatusEvento.Cancelado);
+        return Result.Success;
+    }
+
+    public ErrorOr<Success> AtualizarStatus(StatusEvento status)
+    {
+        var validarAlterar = ValidarAlterarCancelar(status);
+        if (validarAlterar.IsError)
+        {
+            return validarAlterar.Errors;
+        }
+
+        Detalhes.AtualizarStatus(status);
+        return Result.Success;
+    }
+
+    internal ErrorOr<Success> ValidarAlterarCancelar(StatusEvento? novoStatus = null)
+    {
+        if (Detalhes.DataHora < DateTime.UtcNow)
+        {
+            return Error.Failure(description: ErrosEvento.NaoAlterarEventoPassado);
+        }
+
+        if (StatusEvento.StatusNaoPermitemAlteracao.Contains(Detalhes.Status))
+        {
+            return Error.Failure(description: string.Format(ErrosEvento.NaoPermiteAlteracao, Detalhes.Status));
+        }
+
+        if (novoStatus is not null && !StatusEvento.StatusPermitemAlterarDiretamente[Detalhes.Status].Contains(novoStatus))
+        {
+            return Error.Failure(description: string.Format(ErrosEvento.NaoPermiteAlteracaoDiretamente, Detalhes.Status.Name, novoStatus.Name));
+        }
+
         return Result.Success;
     }
 
@@ -74,19 +107,6 @@ public sealed class Evento : Entity, IAggregateRoot
         }
 
         return Result.Success;
-    }
-
-    internal ErrorOr<Success> ValidarAlterarCancelar
-    {
-        get
-        {
-            if (Detalhes.DataHora < DateTime.UtcNow)
-            {
-                return Error.Failure(description: ErrosEvento.NaoAlterarEventoPassado);
-            }
-
-            return Result.Success;
-        }
     }
 
     //public ErrorOr<Success> AdicionarIngresso(Ingresso ingresso)

@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-using GestaoEventos.Domain.Eventos;
+﻿using GestaoEventos.Domain.Eventos;
 using GestaoEventos.TestCommon.Eventos;
 
 namespace GestaoEventos.Domain.Tests.Eventos
@@ -71,10 +69,10 @@ namespace GestaoEventos.Domain.Tests.Eventos
             var dataHora = DateTime.UtcNow.AddDays(7);
             var localizacao = "123";
             var capacidadeMaxima = DetalhesEvento.CapacidadeMinima + 5;
-            var evento = EventoFactory.CriarEvento().Value;
+            var evento = EventoFactory.CriarEvento();
 
             // Act
-            var resultadoAtualizarEvento = evento.Atualizar(nome, dataHora, localizacao, capacidadeMaxima);
+            var resultadoAtualizarEvento = evento.Atualizar(nome, dataHora, localizacao, capacidadeMaxima, StatusEvento.Pendente);
 
             // Assert
             Assert.False(resultadoAtualizarEvento.IsError);
@@ -92,10 +90,10 @@ namespace GestaoEventos.Domain.Tests.Eventos
             var dataHora = DateTime.UtcNow.AddDays(7);
             var localizacao = "123";
             var capacidadeMaxima = DetalhesEvento.CapacidadeMinima - 5;
-            var evento = EventoFactory.CriarEvento().Value;
+            var evento = EventoFactory.CriarEvento();
 
             // Act
-            var resultadoAtualizarEvento = evento.Atualizar(nome, dataHora, localizacao, capacidadeMaxima);
+            var resultadoAtualizarEvento = evento.Atualizar(nome, dataHora, localizacao, capacidadeMaxima, StatusEvento.Pendente);
 
             // Assert
             Assert.True(resultadoAtualizarEvento.IsError);
@@ -110,10 +108,10 @@ namespace GestaoEventos.Domain.Tests.Eventos
             var dataHora = DateTime.UtcNow.AddDays(-7);
             var localizacao = "123";
             var capacidadeMaxima = DetalhesEvento.CapacidadeMinima + 5;
-            var evento = EventoFactory.CriarEvento().Value;
+            var evento = EventoFactory.CriarEvento();
 
             // Act
-            var resultadoAtualizarEvento = evento.Atualizar(nome, dataHora, localizacao, capacidadeMaxima);
+            var resultadoAtualizarEvento = evento.Atualizar(nome, dataHora, localizacao, capacidadeMaxima, StatusEvento.Pendente);
 
             // Assert
             Assert.True(resultadoAtualizarEvento.IsError);
@@ -124,20 +122,10 @@ namespace GestaoEventos.Domain.Tests.Eventos
         public void AtualizarEvento_ComErro_EventoJaPassou()
         {
             // Arrange
-            var nome = "teste";
-            var dataHora = DateTime.UtcNow.AddDays(-7);
-            var localizacao = "123";
-            var capacidadeMaxima = DetalhesEvento.CapacidadeMinima + 5;
-            var eventoType = typeof(Evento);
-            var constructor = eventoType.GetConstructor(
-                BindingFlags.NonPublic | BindingFlags.Instance,
-                null,
-                [typeof(string), typeof(DateTime), typeof(string), typeof(int), typeof(StatusEvento), typeof(Guid?)],
-                null)!;
+            var eventoPassado = EventoFactory.CriarEvento(dataHora: DateTime.Now.AddDays(-8));
 
-            var eventoPassado = (Evento)constructor.Invoke(["Evento Passado", DateTime.UtcNow.AddDays(-8), "Localização", 100, StatusEvento.Pendente, null]);
-
-            var resultadoAtualizarEvento = eventoPassado.Atualizar(nome, dataHora, localizacao, capacidadeMaxima);
+            // Act
+            var resultadoAtualizarEvento = eventoPassado.Atualizar("nome", DateTime.Now, "localizacao", 5, StatusEvento.Pendente);
 
             // Assert
             Assert.True(resultadoAtualizarEvento.IsError);
@@ -148,7 +136,7 @@ namespace GestaoEventos.Domain.Tests.Eventos
         public void CancelarEvento_ComSucesso()
         {
             // Arrange
-            var evento = EventoFactory.CriarEvento().Value;
+            var evento = EventoFactory.CriarEvento();
 
             // Act
             var resultadoAtualizarEvento = evento.Cancelar();
@@ -162,20 +150,61 @@ namespace GestaoEventos.Domain.Tests.Eventos
         public void CancelarEvento_ComErro_EventoJaPassou()
         {
             // Arrange
-            var eventoType = typeof(Evento);
-            var constructor = eventoType.GetConstructor(
-                BindingFlags.NonPublic | BindingFlags.Instance,
-                null,
-                [typeof(string), typeof(DateTime), typeof(string), typeof(int), typeof(StatusEvento), typeof(Guid?)],
-                null)!;
-
-            var eventoPassado = (Evento)constructor.Invoke(["Evento Passado", DateTime.UtcNow.AddDays(-8), "Localização", 100, StatusEvento.Pendente, null]);
+            var eventoPassado = EventoFactory.CriarEvento(dataHora: DateTime.Now.AddDays(-8));
 
             var resultadoAtualizarEvento = eventoPassado.Cancelar();
 
             // Assert
             Assert.True(resultadoAtualizarEvento.IsError);
             Assert.Equal(ErrosEvento.NaoAlterarEventoPassado, resultadoAtualizarEvento.Errors.First().Description);
+        }
+
+        [Fact]
+        public void AtualizarStatusEvento_ComSucesso()
+        {
+            // Arrange
+            var evento = EventoFactory.CriarEvento();
+            var novoStatus = StatusEvento.Confirmado;
+
+            // Act
+            var resultadoAtualizarEvento = evento.AtualizarStatus(novoStatus);
+
+            // Assert
+            Assert.False(resultadoAtualizarEvento.IsError);
+            Assert.Equal(novoStatus, evento.Detalhes.Status);
+        }
+
+        [Fact]
+        public void AtualizarStatusEvento_ComErro_EventoCanceladoConcluido()
+        {
+            // Arrange
+            var statusImpedido = StatusEvento.Cancelado;
+            var evento = EventoFactory.CriarEvento(status: statusImpedido);
+            var msgErro = string.Format(ErrosEvento.NaoPermiteAlteracao, statusImpedido);
+
+            // Act
+            var resultadoAtualizarEvento = evento.AtualizarStatus(StatusEvento.Confirmado);
+
+            // Assert
+            Assert.True(resultadoAtualizarEvento.IsError);
+            Assert.Equal(msgErro, resultadoAtualizarEvento.Errors.First().Description);
+        }
+
+        [Fact]
+        public void AtualizarStatusEvento_ComErro_StatusNaoPodemAlterarDiretamente()
+        {
+            // Arrange
+            var statusImpedido = StatusEvento.Pendente;
+            var novoStatusImpedido = StatusEvento.EmAndamento;
+            var evento = EventoFactory.CriarEvento(status: statusImpedido);
+            var msgErro = string.Format(ErrosEvento.NaoPermiteAlteracaoDiretamente, statusImpedido, novoStatusImpedido);
+
+            // Act
+            var resultadoAtualizarEvento = evento.AtualizarStatus(novoStatusImpedido);
+
+            // Assert
+            Assert.True(resultadoAtualizarEvento.IsError);
+            Assert.Equal(msgErro, resultadoAtualizarEvento.Errors.First().Description);
         }
     }
 }
