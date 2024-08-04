@@ -224,4 +224,56 @@ public class EventoTests
         resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
                                                 .And.Satisfy(a => a.Description == msgErro);
     }
+
+    [Fact]
+    public void AdicionarIngresso_ComSucesso()
+    {
+        // Arrange
+        var nomeIngresso = "ingresso";
+        var evento = EventoFactory.CriarEvento();
+        var ingresso = Ingresso.Criar(nomeIngresso, "descricao ingresso", 10, 10);
+
+        // Act
+        var resultadoAtualizarEvento = evento.AdicionarIngresso(ingresso);
+
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeFalse();
+        evento.Ingressos.Should().NotBeEmpty()
+                                .And.Satisfy(a => a.Tipo.Nome == nomeIngresso);
+    }
+
+    [Fact]
+    public void AdicionarIngresso_ComErro_NomeIngressoJaExiste()
+    {
+        // Arrange
+        var nomeIngresso = "ingresso";
+        var evento = EventoFactory.CriarEvento();
+        var ingresso = Ingresso.Criar(nomeIngresso, "descricao ingresso", 10, 10);
+        evento.AdicionarIngresso(ingresso);
+
+        // Act
+        var resultadoAtualizarEvento = evento.AdicionarIngresso(Ingresso.Criar(nomeIngresso, "descricao ingresso 2", 2, 2));
+
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeTrue();
+        resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
+                                .And.Satisfy(a => a.Description == ErrosEvento.NomeIngressoJaExiste);
+    }
+
+    [Fact]
+    public void AdicionarIngresso_ComErro_NaoPermiteAdicaoIngresso()
+    {
+        // Arrange
+        var msgErro = string.Format(ErrosEvento.NaoPermiteAdicaoIngresso, StatusEvento.Cancelado);
+        var evento = EventoFactory.CriarEvento(status: StatusEvento.Cancelado);
+        var ingresso = Ingresso.Criar("ingresso", "descricao ingresso", 10, 10);
+
+        // Act
+        var resultadoAtualizarEvento = evento.AdicionarIngresso(ingresso);
+
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeTrue();
+        resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
+                                .And.Satisfy(a => a.Description == msgErro);
+    }
 }
