@@ -1,7 +1,5 @@
-﻿using GestaoEventos.Api.Abstractions;
-using GestaoEventos.Api.Extensions;
+﻿using GestaoEventos.Api.Extensions;
 
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.OpenApi.Models;
 
 namespace GestaoEventos.Api;

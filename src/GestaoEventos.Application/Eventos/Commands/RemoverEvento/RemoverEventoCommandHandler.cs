@@ -13,7 +13,7 @@ public class RemoverEventoCommandHandler(IEventoRepository repository) : IReques
         var evento = await repository.BuscarPorId(request.Id);
         if (evento is null)
         {
-            return Error.Failure(description: ErrosEvento.EventoNaoEncontrado);
+            return Error.NotFound(description: ErrosEvento.EventoNaoEncontrado);
         }
 
         var validaRemover = evento.Cancelar();

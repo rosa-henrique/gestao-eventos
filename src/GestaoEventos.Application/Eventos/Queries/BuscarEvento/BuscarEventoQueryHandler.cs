@@ -6,9 +6,9 @@ using MediatR;
 
 namespace GestaoEventos.Application.Eventos.Queries.BuscarEvento;
 
-public class BuscarEventosQueryHandler(IEventoRepository repository) : IRequestHandler<BuscarEventosQuery, ErrorOr<Evento>>
+public class BuscarEventoQueryHandler(IEventoRepository repository) : IRequestHandler<BuscarEventoQuery, ErrorOr<Evento>>
 {
-    public async Task<ErrorOr<Evento>> Handle(BuscarEventosQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Evento>> Handle(BuscarEventoQuery request, CancellationToken cancellationToken)
     {
         var evento = await repository.BuscarPorId(request.Id);
 

@@ -1,4 +1,4 @@
-﻿namespace GestaoEventos.Api.Endpoints.Eventos.AdicionarEvento;
+﻿namespace GestaoEventos.Api.Endpoints.Eventos.Request;
 
 public record AdicionarEventoRequest(string Nome, DateTime DataHora, string Localizacao, int CapacidadeMaxima)
 {
