@@ -8,4 +8,7 @@
     <ProjectReference Include="..\..\src\GestaoEventos.Domain\GestaoEventos.Domain.csproj" />
   </ItemGroup>
 
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute" />
+    </ItemGroup>
 </Project>

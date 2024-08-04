@@ -1,7 +1,7 @@
 ﻿using ErrorOr;
 
 using GestaoEventos.Api.Abstractions;
-using GestaoEventos.Application.Eventos.Commands.Adicionar;
+using GestaoEventos.Application.Eventos.Commands.AdicionarEvento;
 
 using Mapster;
 

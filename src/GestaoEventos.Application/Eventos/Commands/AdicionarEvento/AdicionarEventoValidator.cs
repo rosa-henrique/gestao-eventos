@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace GestaoEventos.Application.Eventos.Commands.Adicionar;
+namespace GestaoEventos.Application.Eventos.Commands.AdicionarEvento;
 
 public class AdicionarEventoValidator : AbstractValidator<AdicionarEventoCommand>
 {

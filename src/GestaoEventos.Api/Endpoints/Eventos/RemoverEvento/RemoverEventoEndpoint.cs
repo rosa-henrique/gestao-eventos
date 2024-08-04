@@ -1,7 +1,7 @@
 ﻿using ErrorOr;
 
 using GestaoEventos.Api.Abstractions;
-using GestaoEventos.Application.Eventos.Commands.Remover;
+using GestaoEventos.Application.Eventos.Commands.RemoverEvento;
 
 using MediatR;
 

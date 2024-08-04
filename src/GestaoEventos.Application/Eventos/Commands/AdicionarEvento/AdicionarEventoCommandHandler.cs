@@ -4,7 +4,7 @@ using GestaoEventos.Domain.Eventos;
 
 using MediatR;
 
-namespace GestaoEventos.Application.Eventos.Commands.Adicionar;
+namespace GestaoEventos.Application.Eventos.Commands.AdicionarEvento;
 
 public class AdicionarEventoCommandHandler(IEventoRepository repository) : IRequestHandler<AdicionarEventoCommand, ErrorOr<Evento>>
 {
@@ -19,7 +19,7 @@ public class AdicionarEventoCommandHandler(IEventoRepository repository) : IRequ
 
         var evento = resultadoEvento.Value;
 
-        if ((await repository.ObterPorNomeId(evento.Detalhes.Nome)) is not null)
+        if (await repository.ObterPorNomeId(evento.Detalhes.Nome) is not null)
         {
             return Error.Conflict(description: ErrosEvento.NomeEventoJaExiste);
         }

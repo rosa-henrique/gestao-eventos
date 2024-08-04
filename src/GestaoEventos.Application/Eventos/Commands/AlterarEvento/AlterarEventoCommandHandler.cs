@@ -4,7 +4,7 @@ using GestaoEventos.Domain.Eventos;
 
 using MediatR;
 
-namespace GestaoEventos.Application.Eventos.Commands.Alterar;
+namespace GestaoEventos.Application.Eventos.Commands.AlterarEvento;
 
 public class AlterarEventoCommandHandler(IEventoRepository repository) : IRequestHandler<AlterarEventoCommand, ErrorOr<Evento>>
 {
@@ -22,7 +22,7 @@ public class AlterarEventoCommandHandler(IEventoRepository repository) : IReques
             return resultadoEvento.Errors;
         }
 
-        if ((await repository.ObterPorNomeId(evento.Detalhes.Nome, evento.Id)) is not null)
+        if (await repository.ObterPorNomeId(evento.Detalhes.Nome, evento.Id) is not null)
         {
             return Error.Conflict(description: ErrosEvento.NomeEventoJaExiste);
         }

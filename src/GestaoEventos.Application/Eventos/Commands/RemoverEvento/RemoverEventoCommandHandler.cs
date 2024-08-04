@@ -4,7 +4,7 @@ using GestaoEventos.Domain.Eventos;
 
 using MediatR;
 
-namespace GestaoEventos.Application.Eventos.Commands.Remover;
+namespace GestaoEventos.Application.Eventos.Commands.RemoverEvento;
 
 public class RemoverEventoCommandHandler(IEventoRepository repository) : IRequestHandler<RemoverEventoCommand, ErrorOr<Success>>
 {

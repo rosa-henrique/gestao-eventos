@@ -1,7 +1,7 @@
 ﻿using ErrorOr;
 
 using GestaoEventos.Api.Abstractions;
-using GestaoEventos.Application.Eventos.Commands.Alterar;
+using GestaoEventos.Application.Eventos.Commands.AlterarEvento;
 
 using Mapster;
 
