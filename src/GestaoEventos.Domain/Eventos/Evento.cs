@@ -12,8 +12,9 @@ public sealed class Evento : Entity, IAggregateRoot
 {
     public DetalhesEvento Detalhes { get; private set; } = null!;
 
-    // private readonly IList<Ingresso> _ingressos = [];
-    // public IReadOnlyCollection<Ingresso> Ingressos => [.. _ingressos];
+    private readonly IList<Ingresso> _ingressos = [];
+    public IReadOnlyCollection<Ingresso> Ingressos => [.. _ingressos];
+
     private Evento(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima, StatusEvento status, Guid? id = null)
             : base(id ?? Guid.NewGuid())
     {
@@ -74,6 +75,17 @@ public sealed class Evento : Entity, IAggregateRoot
         return Result.Success;
     }
 
+    public ErrorOr<Success> AdicionarIngresso(Ingresso ingresso)
+    {
+        if (_ingressos.Any(i => i.Tipo.Nome == ingresso.Tipo.Nome))
+        {
+            return Error.Conflict(description: ErrosEvento.NomeIngressoJaExiste);
+        }
+
+        _ingressos.Add(ingresso);
+        return Result.Success;
+    }
+
     internal ErrorOr<Success> ValidarAlterarCancelar(StatusEvento? novoStatus = null)
     {
         if (Detalhes.DataHora < DateTime.UtcNow)
@@ -109,16 +121,6 @@ public sealed class Evento : Entity, IAggregateRoot
         return Result.Success;
     }
 
-    //public ErrorOr<Success> AdicionarIngresso(Ingresso ingresso)
-    //{
-    //    if (_ingressos.Any(i => i.Tipo.Nome == ingresso.Tipo.Nome))
-    //    {
-    //        return Error.Conflict(description: ErrosEvento.NomeIngressoJaExiste);
-    //    }
-
-    //    _ingressos.Add(ingresso);
-    //    return Result.Success;
-    // }
     private Evento() { }
 
     // private readonly HashSet<Sessao> _sessoes = [];
