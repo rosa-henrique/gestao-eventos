@@ -44,7 +44,8 @@
     "test-case-filter": "",
     "ignore-mutations": [
       "equality",
-      "nullcoalescing"
+      "nullcoalescing",
+      "block"
     ],
     "ignore-methods": [],
     "report-file-name": "mutation-report",

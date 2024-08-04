@@ -19,4 +19,6 @@ public sealed class Ingresso : Entity
     {
         return new Ingresso(nome, descricao, preco, quantidade);
     }
+
+    private Ingresso() { }
 }

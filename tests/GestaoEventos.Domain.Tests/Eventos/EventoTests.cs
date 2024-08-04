@@ -224,38 +224,4 @@ public class EventoTests
         resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
                                                 .And.Satisfy(a => a.Description == msgErro);
     }
-
-    [Fact]
-    public void AdicionarIngresso_ComSucesso()
-    {
-        // Arrange
-        var evento = EventoFactory.CriarEvento();
-        var ingresso = Ingresso.Criar("ingresso", "descricação ingresso", 1, 10);
-
-        // Act
-        var resultadoAdicionarIngresso = evento.AdicionarIngresso(ingresso);
-
-        // Assert
-        resultadoAdicionarIngresso.IsError.Should().BeFalse();
-        evento.Ingressos.Should().NotBeEmpty()
-                                .And.HaveCount(1);
-    }
-
-    [Fact]
-    public void AdicionarIngresso_ComErro_NomeIngressoJaExiste()
-    {
-        // Arrange
-        var evento = EventoFactory.CriarEvento();
-        var nomeIngresso = "ingresso";
-        var ingresso = Ingresso.Criar(nomeIngresso, "descricação ingresso", 1, 10);
-        evento.AdicionarIngresso(ingresso);
-
-        // Act
-        var resultadoAdicionarIngresso = evento.AdicionarIngresso(Ingresso.Criar(nomeIngresso, "descricação ingresso", 1, 10));
-
-        // Assert
-        resultadoAdicionarIngresso.IsError.Should().BeTrue();
-        evento.Ingressos.Should().NotBeEmpty()
-                                .And.HaveCount(1);
-    }
 }

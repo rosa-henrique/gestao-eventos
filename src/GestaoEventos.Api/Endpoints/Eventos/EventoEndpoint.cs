@@ -6,7 +6,7 @@ using GestaoEventos.Api.Endpoints.Eventos.Response;
 using GestaoEventos.Application.Eventos.Commands.AdicionarEvento;
 using GestaoEventos.Application.Eventos.Commands.AlterarEvento;
 using GestaoEventos.Application.Eventos.Commands.AlterarStatusEvento;
-using GestaoEventos.Application.Eventos.Commands.RemoverEvento;
+using GestaoEventos.Application.Eventos.Commands.CancelarEvento;
 using GestaoEventos.Application.Eventos.Queries.BuscarEvento;
 using GestaoEventos.Application.Eventos.Queries.BuscarEventos;
 
@@ -76,7 +76,7 @@ public class EventoEndpoint : IEndpoint
 
         mapGroup.MapDelete("/{id}", (ISender mediator, Guid id) =>
         {
-            var command = new RemoverEventoCommand(id);
+            var command = new CancelarEventoCommand(id);
             var resultado = mediator.Send(command);
 
             return resultado.Match(

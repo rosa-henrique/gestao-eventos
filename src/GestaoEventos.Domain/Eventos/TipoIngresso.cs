@@ -13,6 +13,8 @@ public class TipoIngresso : ValueObject
     public string Nome { get; private set; } = null!;
     public string Descricao { get; private set; } = null!;
 
+    private TipoIngresso() { }
+
     // Implementação de ValueObject
     protected override IEnumerable<object> GetAtomicValues()
     {

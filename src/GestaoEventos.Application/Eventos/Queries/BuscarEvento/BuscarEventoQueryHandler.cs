@@ -10,7 +10,7 @@ public class BuscarEventoQueryHandler(IEventoRepository repository) : IRequestHa
 {
     public async Task<ErrorOr<Evento>> Handle(BuscarEventoQuery request, CancellationToken cancellationToken)
     {
-        var evento = await repository.BuscarPorId(request.Id);
+        var evento = await repository.BuscarPorId(request.Id, cancellationToken, false);
 
         return evento is not null ? evento : Error.NotFound(description: ErrosEvento.EventoNaoEncontrado);
     }

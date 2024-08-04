@@ -10,7 +10,7 @@ public class BuscarEventosQueryHandler(IEventoRepository repository) : IRequestH
 {
     public async Task<ErrorOr<IEnumerable<BuscarEventosResult>>> Handle(BuscarEventosQuery request, CancellationToken cancellationToken)
     {
-        var eventos = await repository.Buscar();
+        var eventos = await repository.Buscar(cancellationToken);
 
         return (dynamic)eventos.Select(BuscarEventosResult.DoDominio);
     }

@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace GestaoEventos.Infrastructure.Migrations
+namespace GestaoEventos.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -19,7 +19,8 @@ namespace GestaoEventos.Infrastructure.Migrations
                     nome = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
                     data_hora = table.Column<DateTime>(type: "TEXT", nullable: false),
                     localizacao = table.Column<string>(type: "TEXT", maxLength: 500, nullable: false),
-                    capacidade_maxima = table.Column<int>(type: "INTEGER", nullable: false)
+                    capacidade_maxima = table.Column<int>(type: "INTEGER", nullable: false),
+                    status = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

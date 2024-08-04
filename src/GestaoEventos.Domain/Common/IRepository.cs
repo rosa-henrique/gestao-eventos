@@ -3,7 +3,8 @@
 public interface IRepository<T>
     where T : Entity
 {
-    Task Adicionar(T evento);
-    Task Alterar(T entidade);
-    Task Deletar(T entidade);
+    void Adicionar(T entidade);
+    void Alterar(T entidade);
+    void Deletar(T entidade);
+    Task SaveChangesAsync(CancellationToken cancellationToken);
 }

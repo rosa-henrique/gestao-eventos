@@ -10,7 +10,7 @@ public class AlterarStatusEventoCommandHandler(IEventoRepository repository) : I
 {
     public async Task<ErrorOr<Evento>> Handle(AlterarStatusEventoCommand request, CancellationToken cancellationToken)
     {
-        var evento = await repository.BuscarPorId(request.Id);
+        var evento = await repository.BuscarPorId(request.Id, cancellationToken);
         if (evento is null)
         {
             return Error.NotFound(description: ErrosEvento.EventoNaoEncontrado);
@@ -22,7 +22,7 @@ public class AlterarStatusEventoCommandHandler(IEventoRepository repository) : I
             return resultadoAtualizarStatus.Errors;
         }
 
-        await repository.Alterar(evento);
+        await repository.SaveChangesAsync(cancellationToken);
 
         return evento;
     }
