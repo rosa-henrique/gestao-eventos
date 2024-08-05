@@ -276,4 +276,21 @@ public class EventoTests
         resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
                                 .And.Satisfy(a => a.Description == msgErro);
     }
+
+    [Fact]
+    public void AdicionarIngresso_ComErro_QuantidadeTotalIngressosExcedeCapacidadeMaxima()
+    {
+        // Arrange
+        var nomeIngresso = "ingresso";
+        var evento = EventoFactory.CriarEvento(capacidadeMaxima: 5);
+        var ingresso = Ingresso.Criar(nomeIngresso, "descricao ingresso", 10, 10);
+
+        // Act
+        var resultadoAtualizarEvento = evento.AdicionarIngresso(ingresso);
+
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeTrue();
+        resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
+                                .And.Satisfy(a => a.Description == ErrosEvento.QuantidadeTotalIngressosExcedeCapacidadeMaxima);
+    }
 }

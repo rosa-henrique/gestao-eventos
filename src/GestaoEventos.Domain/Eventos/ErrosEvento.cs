@@ -11,4 +11,5 @@ public class ErrosEvento
     public const string NaoPermiteAlteracao = "Não é possível alterar o status de um evento {0}.";
     public const string NaoPermiteAlteracaoDiretamente = "Não é possível alterar um evento {0} diretamente para {1}.";
     public const string NaoPermiteAdicaoIngresso = "Não é possível adicionar ingressos para um evento {0}.";
+    public const string QuantidadeTotalIngressosExcedeCapacidadeMaxima = "Quantidade total de ingressos excede a capacidade máxima do evento.";
 }

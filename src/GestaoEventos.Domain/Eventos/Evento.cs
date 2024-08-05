@@ -77,14 +77,19 @@ public sealed class Evento : Entity, IAggregateRoot
 
     public ErrorOr<Success> AdicionarIngresso(Ingresso ingresso)
     {
+        if (StatusEvento.StatusNaoPermitemAlteracao.Contains(Detalhes.Status))
+        {
+            return Error.Failure(description: string.Format(ErrosEvento.NaoPermiteAdicaoIngresso, Detalhes.Status));
+        }
+
         if (_ingressos.Any(i => i.Tipo.Nome == ingresso.Tipo.Nome))
         {
             return Error.Conflict(description: ErrosEvento.NomeIngressoJaExiste);
         }
 
-        if (StatusEvento.StatusNaoPermitemAlteracao.Contains(Detalhes.Status))
+        if ((_ingressos.Sum(i => i.Quantidade) + ingresso.Quantidade) > Detalhes.CapacidadeMaxima)
         {
-            return Error.Failure(description: string.Format(ErrosEvento.NaoPermiteAdicaoIngresso, Detalhes.Status));
+            return Error.Failure(description: ErrosEvento.QuantidadeTotalIngressosExcedeCapacidadeMaxima);
         }
 
         _ingressos.Add(ingresso);
