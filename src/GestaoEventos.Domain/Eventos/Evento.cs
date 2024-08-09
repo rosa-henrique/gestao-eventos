@@ -96,6 +96,28 @@ public sealed class Evento : Entity, IAggregateRoot
         return Result.Success;
     }
 
+    public ErrorOr<Success> AlterarIngresso(Ingresso ingresso)
+    {
+        if (StatusEvento.StatusNaoPermitemAlteracao.Contains(Detalhes.Status))
+        {
+            return Error.Failure(description: string.Format(ErrosEvento.NaoPermiteAdicaoIngresso, Detalhes.Status));
+        }
+
+        if (_ingressos.Any(i => i.Tipo.Nome == ingresso.Tipo.Nome && i.Id != ingresso.Id))
+        {
+            return Error.Conflict(description: ErrosEvento.NomeIngressoJaExiste);
+        }
+
+        if ((_ingressos.Where(i => i.Id != ingresso.Id).Sum(i => i.Quantidade) + ingresso.Quantidade) > Detalhes.CapacidadeMaxima)
+        {
+            return Error.Failure(description: ErrosEvento.QuantidadeTotalIngressosExcedeCapacidadeMaxima);
+        }
+
+        _ingressos.FirstOrDefault(i => i.Id == ingresso.Id)!.Alterar(ingresso);
+
+        return Result.Success;
+    }
+
     internal ErrorOr<Success> ValidarAlterarCancelar(StatusEvento? novoStatus = null)
     {
         if (Detalhes.DataHora < DateTime.UtcNow)

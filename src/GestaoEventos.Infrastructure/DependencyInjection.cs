@@ -3,23 +3,23 @@ using GestaoEventos.Infrastructure.Persistence;
 using GestaoEventos.Infrastructure.Persistence.Repositories;
 
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace GestaoEventos.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services)
+    public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddPersistence();
+        services.AddPersistence(configuration);
 
         return services;
     }
 
-    private static IServiceCollection AddPersistence(this IServiceCollection services)
+    private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<AppDbContext>(options => options.UseSqlite("Data Source = GestaoEventos.sqlite"));
+        services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("GestaoEventos")));
 
         services.AddScoped<IEventoRepository, EventoRepository>();
 

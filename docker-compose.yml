@@ -1,0 +1,18 @@
+version: "3.8"
+
+name: gestao-eventos
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres_gestao_eventos
+    environment:
+      POSTGRES_USER: usuario
+      POSTGRES_PASSWORD: MinhaS3nh@
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
