@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-using ErrorOr;
+﻿using ErrorOr;
 
 using FluentValidation;
 
@@ -8,7 +6,7 @@ using MediatR;
 
 namespace GestaoEventos.Application.Common.Behaviors;
 
-public class ValidationBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null)
+public class ValidationPipelineBehavior<TRequest, TResponse>(IValidator<TRequest>? validator = null)
     : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>
         where TResponse : IErrorOr
