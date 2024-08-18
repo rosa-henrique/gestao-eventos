@@ -6,6 +6,7 @@ using GestaoEventos.Api.Endpoints.Eventos.Response;
 using GestaoEventos.Application.Eventos.Commands.AdicionarEvento;
 using GestaoEventos.Application.Eventos.Commands.AdicionarIngresso;
 using GestaoEventos.Application.Eventos.Commands.AlterarEvento;
+using GestaoEventos.Application.Eventos.Commands.AlterarIngresso;
 using GestaoEventos.Application.Eventos.Commands.AlterarStatusEvento;
 using GestaoEventos.Application.Eventos.Commands.CancelarEvento;
 using GestaoEventos.Application.Eventos.Queries.BuscarEvento;
@@ -75,7 +76,17 @@ public class EventoEndpoint : IEndpoint
                 ProblemRequest.Resolve);
         });
 
-        mapGroup.MapPut("/{id:guid}/status/{status:int}", (ISender mediator, Guid id, int status) =>
+        mapGroup.MapPut("/{id:guid}/ingresso/{ingressoId:guid}", (ISender mediator, Guid id, Guid ingressoId, [FromBody] AdicionarIngressoRequest request) =>
+        {
+            var command = new AlterarIngressoCommand(ingressoId, request.Nome, request.Descricao, request.Preco, request.Quantidade, id);
+            var resultado = mediator.Send(command);
+
+            return resultado.Match(
+                v => Results.Ok(v.Adapt<EventoResponse>()),
+                ProblemRequest.Resolve);
+        });
+
+        mapGroup.MapPatch("/{id:guid}/status/{status:int}", (ISender mediator, Guid id, int status) =>
         {
             var command = new AlterarStatusEventoCommand(id, status);
             var resultado = mediator.Send(command);
