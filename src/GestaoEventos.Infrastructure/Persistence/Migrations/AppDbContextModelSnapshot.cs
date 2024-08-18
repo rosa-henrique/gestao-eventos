@@ -4,6 +4,7 @@ using GestaoEventos.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -15,13 +16,17 @@ namespace GestaoEventos.Infrastructure.Persistence.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "8.0.7");
+            modelBuilder
+                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("GestaoEventos.Domain.Eventos.Evento", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT")
+                        .HasColumnType("uuid")
                         .HasColumnName("id");
 
                     b.HasKey("Id");
@@ -34,30 +39,30 @@ namespace GestaoEventos.Infrastructure.Persistence.Migrations
                     b.OwnsOne("GestaoEventos.Domain.Eventos.DetalhesEvento", "Detalhes", b1 =>
                         {
                             b1.Property<Guid>("EventoId")
-                                .HasColumnType("TEXT");
+                                .HasColumnType("uuid");
 
                             b1.Property<int>("CapacidadeMaxima")
-                                .HasColumnType("INTEGER")
+                                .HasColumnType("integer")
                                 .HasColumnName("capacidade_maxima");
 
                             b1.Property<DateTime>("DataHora")
-                                .HasColumnType("TEXT")
+                                .HasColumnType("timestamp with time zone")
                                 .HasColumnName("data_hora");
 
                             b1.Property<string>("Localizacao")
                                 .IsRequired()
                                 .HasMaxLength(500)
-                                .HasColumnType("TEXT")
+                                .HasColumnType("character varying(500)")
                                 .HasColumnName("localizacao");
 
                             b1.Property<string>("Nome")
                                 .IsRequired()
                                 .HasMaxLength(200)
-                                .HasColumnType("TEXT")
+                                .HasColumnType("character varying(200)")
                                 .HasColumnName("nome");
 
                             b1.Property<int>("Status")
-                                .HasColumnType("INTEGER")
+                                .HasColumnType("integer")
                                 .HasColumnName("status");
 
                             b1.HasKey("EventoId");
@@ -72,19 +77,19 @@ namespace GestaoEventos.Infrastructure.Persistence.Migrations
                         {
                             b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd()
-                                .HasColumnType("TEXT")
+                                .HasColumnType("uuid")
                                 .HasColumnName("id");
 
                             b1.Property<Guid>("EventoId")
-                                .HasColumnType("TEXT");
+                                .HasColumnType("uuid");
 
                             b1.Property<decimal>("Preco")
                                 .HasPrecision(8, 2)
-                                .HasColumnType("TEXT")
+                                .HasColumnType("numeric(8,2)")
                                 .HasColumnName("preco");
 
                             b1.Property<int>("Quantidade")
-                                .HasColumnType("INTEGER")
+                                .HasColumnType("integer")
                                 .HasColumnName("quantidade");
 
                             b1.HasKey("Id");
@@ -99,18 +104,18 @@ namespace GestaoEventos.Infrastructure.Persistence.Migrations
                             b1.OwnsOne("GestaoEventos.Domain.Eventos.TipoIngresso", "Tipo", b2 =>
                                 {
                                     b2.Property<Guid>("IngressoId")
-                                        .HasColumnType("TEXT");
+                                        .HasColumnType("uuid");
 
                                     b2.Property<string>("Descricao")
                                         .IsRequired()
                                         .HasMaxLength(100)
-                                        .HasColumnType("TEXT")
+                                        .HasColumnType("character varying(100)")
                                         .HasColumnName("descricao");
 
                                     b2.Property<string>("Nome")
                                         .IsRequired()
                                         .HasMaxLength(200)
-                                        .HasColumnType("TEXT")
+                                        .HasColumnType("character varying(200)")
                                         .HasColumnName("nome");
 
                                     b2.HasKey("IngressoId");

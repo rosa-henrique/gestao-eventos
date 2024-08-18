@@ -25,14 +25,14 @@ internal sealed class RequestLoggingPipelineBehavior<TRequest, TResponse>(ILogge
         if (!result.IsError)
         {
             logger.LogInformation(
-                "Request concluído {RequestName}", requestName);
+                "Request {RequestName} concluído", requestName);
         }
         else
         {
             using (LogContext.PushProperty("Error", result.Errors, true))
             {
                 logger.LogError(
-                    "Requect conclíudo {RequestName} com erro", requestName);
+                    "Request {RequestName} concluído com erro", requestName);
             }
         }
 
