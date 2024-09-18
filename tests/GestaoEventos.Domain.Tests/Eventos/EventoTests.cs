@@ -293,4 +293,43 @@ public class EventoTests
         resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
                                 .And.Satisfy(a => a.Description == ErrosEvento.QuantidadeTotalIngressosExcedeCapacidadeMaxima);
     }
+
+    [Fact]
+    public void AtualizarIngresso_ComErro_NomeJaExiste()
+    {
+        // Arrange
+        var nomeIngresso = "ingresso";
+        var evento = EventoFactory.CriarEvento();
+        var ingresso = Ingresso.Criar(nomeIngresso, "descricao ingresso", 10, 10);
+        evento.AdicionarIngresso(ingresso);
+
+        var ingressoErro = Ingresso.Criar(nomeIngresso, "descricao ingresso", 10, 10);
+
+        // Act
+        var resultadoAtualizarEvento = evento.AtualizarIngresso(ingressoErro);
+
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeTrue();
+        resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
+                                .And.Satisfy(a => a.Description == ErrosEvento.NomeIngressoJaExiste);
+    }
+
+    [Fact]
+    public void AtualizarIngresso_ComErro_QuantidadeTotalIngressosExcedeCapacidadeMaxima()
+    {
+        // Arrange
+        var evento = EventoFactory.CriarEvento(capacidadeMaxima: 11);
+        var ingresso = Ingresso.Criar("ingresso", "descricao ingresso", 10, 10);
+        evento.AdicionarIngresso(ingresso);
+
+        var ingresso2 = Ingresso.Criar("ingresso 2", "descricao ingresso 2", 10, 10);
+
+        // Act
+        var resultadoAtualizarEvento = evento.AtualizarIngresso(ingresso2);
+
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeTrue();
+        resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
+                                .And.Satisfy(a => a.Description == ErrosEvento.QuantidadeTotalIngressosExcedeCapacidadeMaxima);
+    }
 }

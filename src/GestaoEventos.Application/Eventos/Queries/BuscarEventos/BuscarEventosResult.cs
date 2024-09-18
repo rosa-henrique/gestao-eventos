@@ -4,7 +4,7 @@ namespace GestaoEventos.Application.Eventos.Queries.BuscarEventos;
 
 public record BuscarEventosResult(Guid Id, string Nome, DateTime DataHora, string Localizacao, int CapacidadeMaxima)
 {
-    public static BuscarEventosResult DoDominio(Evento evento)
+    public static implicit operator BuscarEventosResult(Evento evento)
     {
         return new BuscarEventosResult(
             evento.Id,

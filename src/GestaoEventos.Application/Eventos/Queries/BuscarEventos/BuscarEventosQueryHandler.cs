@@ -12,6 +12,6 @@ public class BuscarEventosQueryHandler(IEventoRepository repository) : IRequestH
     {
         var eventos = await repository.Buscar(cancellationToken);
 
-        return (dynamic)eventos.Select(BuscarEventosResult.DoDominio);
+        return eventos.Select(e => (BuscarEventosResult)e).ToList();
     }
 }

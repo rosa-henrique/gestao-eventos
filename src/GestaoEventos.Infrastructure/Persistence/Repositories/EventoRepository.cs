@@ -14,7 +14,7 @@ public class EventoRepository(AppDbContext context) : Repository<Evento>(context
             e =>
                 e.Detalhes.Nome.Equals(nome) &&
                 statusConsultar.Contains(e.Detalhes.Status) &&
-                (!id.HasValue || e.Id.Equals(id)),
+                (!id.HasValue || e.Id != id),
             cancellationToken);
     }
 

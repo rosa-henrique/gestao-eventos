@@ -1,5 +1,14 @@
 {
   "profiles": {
+    "http-puro": {
+      "commandName": "Project",
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5271"
+    },
     "http": {
       "commandName": "Project",
       "launchBrowser": true,

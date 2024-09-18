@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿// Stryker disable all
+using System.Reflection;
 
 using ErrorOr;
 
@@ -33,15 +34,13 @@ public static class EventoFactory
         var constructor = eventoType.GetConstructor(
             BindingFlags.NonPublic | BindingFlags.Instance,
             null,
-            [typeof(string), typeof(DateTime), typeof(string), typeof(int), typeof(StatusEvento), typeof(Guid?)],
+            [typeof(DetalhesEvento), typeof(Guid?)],
             null)!;
 
+        var detalhesEvento = DetalheEventoFactory.CriarDetalheEvento(nome, dataHora, localizacao, capacidadeMaxima, status);
+
         return (Evento)constructor.Invoke([
-            nome ?? "Evento",
-            dataHora ?? DateTime.UtcNow.AddDays(8),
-            localizacao ?? "Localização",
-            capacidadeMaxima ?? 100,
-            status ?? StatusEvento.Pendente,
+            detalhesEvento,
             id]);
     }
 }
