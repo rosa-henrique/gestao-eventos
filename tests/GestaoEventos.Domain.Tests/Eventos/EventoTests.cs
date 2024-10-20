@@ -332,4 +332,20 @@ public class EventoTests
         resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
                                 .And.Satisfy(a => a.Description == ErrosEvento.QuantidadeTotalIngressosExcedeCapacidadeMaxima);
     }
+
+    [Fact]
+    public void RemoverIngresso_ComSucesso()
+    {
+        // Arrange
+        var evento = EventoFactory.CriarEvento(capacidadeMaxima: 11);
+        var ingresso = Ingresso.Criar("ingresso", "descricao ingresso", 10, 10);
+        evento.AdicionarIngresso(ingresso);
+
+        // Act
+        var resultadoAtualizarEvento = evento.RemoverIngresso(ingresso);
+
+        // Assert
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeFalse();
+    }
 }

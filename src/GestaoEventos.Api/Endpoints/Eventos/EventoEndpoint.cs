@@ -9,6 +9,7 @@ using GestaoEventos.Application.Eventos.Commands.AlterarEvento;
 using GestaoEventos.Application.Eventos.Commands.AlterarStatusEvento;
 using GestaoEventos.Application.Eventos.Commands.AtualizarIngresso;
 using GestaoEventos.Application.Eventos.Commands.CancelarEvento;
+using GestaoEventos.Application.Eventos.Commands.RemoverIngresso;
 using GestaoEventos.Application.Eventos.Queries.BuscarEvento;
 using GestaoEventos.Application.Eventos.Queries.BuscarEventos;
 
@@ -99,6 +100,16 @@ public class EventoEndpoint : IEndpoint
         mapGroup.MapDelete("/{id}", (ISender mediator, Guid id) =>
         {
             var command = new CancelarEventoCommand(id);
+            var resultado = mediator.Send(command);
+
+            return resultado.Match(
+                v => Results.NoContent(),
+                ProblemRequest.Resolve);
+        });
+
+        mapGroup.MapDelete("/{id}/ingresso/{ingressoId}", (ISender mediator, Guid id, Guid ingressoId) =>
+        {
+            var command = new RemoverIngressoCommand(id, ingressoId);
             var resultado = mediator.Send(command);
 
             return resultado.Match(

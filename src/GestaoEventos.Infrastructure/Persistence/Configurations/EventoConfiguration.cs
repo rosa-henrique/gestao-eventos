@@ -47,7 +47,8 @@ public class EventoConfiguration : IEntityTypeConfiguration<Evento>
             ingressos.HasKey(e => e.Id);
             ingressos.Property(e => e.Id)
                 .IsRequired()
-                .HasColumnName("id");
+                .HasColumnName("id")
+                .ValueGeneratedNever();
 
             ingressos.OwnsOne(i => i.Tipo, tipoIngresso =>
             {

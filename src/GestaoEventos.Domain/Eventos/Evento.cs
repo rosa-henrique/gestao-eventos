@@ -109,6 +109,18 @@ public sealed class Evento : Entity, IAggregateRoot
         return Result.Success;
     }
 
+    public ErrorOr<Success> RemoverIngresso(Ingresso ingresso)
+    {
+        if (StatusEvento.StatusNaoPermitemAlteracao.Contains(Detalhes.Status))
+        {
+            return Error.Failure(description: string.Format(ErrosEvento.NaoPermiteAdicaoIngresso, Detalhes.Status));
+        }
+
+        _ingressos.Remove(ingresso);
+
+        return Result.Success;
+    }
+
     private Evento() { }
 
     // private readonly HashSet<Sessao> _sessoes = [];
