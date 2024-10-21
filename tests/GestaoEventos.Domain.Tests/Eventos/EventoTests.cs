@@ -13,12 +13,13 @@ public class EventoTests
     {
         // Arrange
         var nome = "teste";
-        var dataHora = DateTime.UtcNow.AddDays(7);
+        var dataHoraInicio = DateTime.UtcNow.AddDays(7);
+        var dataHoraFim = DateTime.UtcNow.AddDays(7).AddDays(6);
         var localizacao = "123";
         var capacidadeMaxima = 5;
 
         // Act
-        var resultadoEvento = Evento.Criar(nome, dataHora, localizacao, capacidadeMaxima);
+        var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima);
 
         // Assert
         resultadoEvento.IsError.Should().BeFalse();
@@ -26,7 +27,8 @@ public class EventoTests
                                     .And.BeEquivalentTo(new
                                     {
                                         Nome = nome,
-                                        DataHora = dataHora,
+                                        DataHoraInicio = dataHoraInicio,
+                                        DataHoraFim = dataHoraFim,
                                         Localizacao = localizacao,
                                         CapacidadeMaxima = capacidadeMaxima,
                                         Status = StatusEvento.Pendente,
@@ -38,12 +40,13 @@ public class EventoTests
     {
         // Arrange
         var nome = "teste";
-        var dataHora = DateTime.UtcNow.AddDays(7);
+        var dataHoraInicio = DateTime.UtcNow.AddDays(7);
+        var dataHoraFim = DateTime.UtcNow.AddDays(7).AddHours(6);
         var localizacao = "123";
         var capacidadeMaxima = DetalhesEvento.CapacidadeMinima - 5;
 
         // Act
-        var resultadoEvento = Evento.Criar(nome, dataHora, localizacao, capacidadeMaxima);
+        var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima);
 
         // Assert
         resultadoEvento.IsError.Should().BeTrue();
@@ -56,12 +59,13 @@ public class EventoTests
     {
         // Arrange
         var nome = "teste";
-        var dataHora = DateTime.UtcNow.AddDays(-7);
+        var dataHoraInicio = DateTime.UtcNow.AddDays(-7);
+        var dataHoraFim = DateTime.UtcNow.AddDays(7).AddHours(6);
         var localizacao = "123";
         var capacidadeMaxima = DetalhesEvento.CapacidadeMinima + 5;
 
         // Act
-        var resultadoEvento = Evento.Criar(nome, dataHora, localizacao, capacidadeMaxima);
+        var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima);
 
         // Assert
         resultadoEvento.IsError.Should().BeTrue();
@@ -70,17 +74,37 @@ public class EventoTests
     }
 
     [Fact]
+    public void CriarEvento_ComErro_DataFinalMenorIgualFinal()
+    {
+        // Arrange
+        var nome = "teste";
+        var dataHoraInicio = DateTime.UtcNow.AddDays(7);
+        var dataHoraFim = DateTime.UtcNow.AddDays(7).AddHours(-1);
+        var localizacao = "123";
+        var capacidadeMaxima = DetalhesEvento.CapacidadeMinima + 5;
+
+        // Act
+        var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima);
+
+        // Assert
+        resultadoEvento.IsError.Should().BeTrue();
+        resultadoEvento.Errors.Should().NotBeEmpty()
+                                                .And.Satisfy(a => a.Description == ErrosEvento.DataFinalMenorIgualFinal);
+    }
+
+    [Fact]
     public void AtualizarEvento_ComSucesso()
     {
         // Arrange
         var nome = "teste";
-        var dataHora = DateTime.UtcNow.AddDays(7);
+        var dataHoraInicio = DateTime.UtcNow.AddDays(7);
+        var dataHoraFim = DateTime.UtcNow.AddDays(7).AddHours(6);
         var localizacao = "123";
         var capacidadeMaxima = DetalhesEvento.CapacidadeMinima + 5;
         var evento = EventoFactory.CriarEvento();
 
         // Act
-        var resultadoAtualizarEvento = evento.Atualizar(nome, dataHora, localizacao, capacidadeMaxima, StatusEvento.Pendente);
+        var resultadoAtualizarEvento = evento.Atualizar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, StatusEvento.Pendente);
 
         // Assert
         resultadoAtualizarEvento.IsError.Should().BeFalse();
@@ -88,7 +112,8 @@ public class EventoTests
                                      .And.BeEquivalentTo(new
                                      {
                                          Nome = nome,
-                                         DataHora = dataHora,
+                                         DataHoraInicio = dataHoraInicio,
+                                         DataHoraFim = dataHoraFim,
                                          Localizacao = localizacao,
                                          CapacidadeMaxima = capacidadeMaxima,
                                      });
@@ -99,13 +124,14 @@ public class EventoTests
     {
         // Arrange
         var nome = "teste";
-        var dataHora = DateTime.UtcNow.AddDays(7);
+        var dataHoraInicio = DateTime.UtcNow.AddDays(7);
+        var dataHoraFim = DateTime.UtcNow.AddDays(7).AddDays(6);
         var localizacao = "123";
         var capacidadeMaxima = DetalhesEvento.CapacidadeMinima - 5;
         var evento = EventoFactory.CriarEvento();
 
         // Act
-        var resultadoAtualizarEvento = evento.Atualizar(nome, dataHora, localizacao, capacidadeMaxima, StatusEvento.Pendente);
+        var resultadoAtualizarEvento = evento.Atualizar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, StatusEvento.Pendente);
 
         // Assert
         resultadoAtualizarEvento.IsError.Should().BeTrue();
@@ -118,13 +144,14 @@ public class EventoTests
     {
         // Arrange
         var nome = "teste";
-        var dataHora = DateTime.UtcNow.AddDays(-7);
+        var dataHoraInicio = DateTime.UtcNow.AddDays(-7);
+        var dataHoraFim = DateTime.UtcNow.AddDays(7).AddDays(6);
         var localizacao = "123";
         var capacidadeMaxima = DetalhesEvento.CapacidadeMinima + 5;
         var evento = EventoFactory.CriarEvento();
 
         // Act
-        var resultadoAtualizarEvento = evento.Atualizar(nome, dataHora, localizacao, capacidadeMaxima, StatusEvento.Pendente);
+        var resultadoAtualizarEvento = evento.Atualizar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, StatusEvento.Pendente);
 
         // Assert
         resultadoAtualizarEvento.IsError.Should().BeTrue();
@@ -136,10 +163,10 @@ public class EventoTests
     public void AtualizarEvento_ComErro_EventoJaPassou()
     {
         // Arrange
-        var eventoPassado = EventoFactory.CriarEvento(dataHora: DateTime.Now.AddDays(-8));
+        var eventoPassado = EventoFactory.CriarEvento(dataHoraInicio: DateTime.Now.AddDays(-8));
 
         // Act
-        var resultadoAtualizarEvento = eventoPassado.Atualizar("nome", DateTime.Now, "localizacao", 5, StatusEvento.Pendente);
+        var resultadoAtualizarEvento = eventoPassado.Atualizar("nome", DateTime.Now, DateTime.Now, "localizacao", 5, StatusEvento.Pendente);
 
         // Assert
         resultadoAtualizarEvento.IsError.Should().BeTrue();
@@ -165,7 +192,7 @@ public class EventoTests
     public void CancelarEvento_ComErro_EventoJaPassou()
     {
         // Arrange
-        var eventoPassado = EventoFactory.CriarEvento(dataHora: DateTime.Now.AddDays(-8));
+        var eventoPassado = EventoFactory.CriarEvento(dataHoraInicio: DateTime.Now.AddDays(-8));
 
         var resultadoAtualizarEvento = eventoPassado.Cancelar();
 

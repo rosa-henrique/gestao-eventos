@@ -11,20 +11,23 @@ public static class EventoFactory
 {
     public static ErrorOr<Evento> CriarEventoComValidacao(
         string? nome = null,
-        DateTime? dataHora = null,
+        DateTime? dataHoraInicio = null,
+        DateTime? dataHoraFim = null,
         string? localizacao = null,
         int? capacidadeMaxima = null)
     {
         return Evento.Criar(
             nome ?? "teste",
-            dataHora ?? DateTime.Now.AddDays(7),
+            dataHoraInicio ?? DateTime.Now.AddDays(7),
+            dataHoraFim ?? DateTime.Now.AddDays(7).AddHours(2),
             localizacao ?? "Rua teste",
             capacidadeMaxima ?? DetalhesEvento.CapacidadeMinima + 1);
     }
 
     public static Evento CriarEvento(
         string? nome = null,
-        DateTime? dataHora = null,
+        DateTime? dataHoraInicio = null,
+        DateTime? dataHoraFim = null,
         string? localizacao = null,
         int? capacidadeMaxima = null,
         StatusEvento? status = null,
@@ -37,7 +40,7 @@ public static class EventoFactory
             [typeof(DetalhesEvento), typeof(Guid?)],
             null)!;
 
-        var detalhesEvento = DetalheEventoFactory.CriarDetalheEvento(nome, dataHora, localizacao, capacidadeMaxima, status);
+        var detalhesEvento = DetalheEventoFactory.CriarDetalheEvento(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, status);
 
         return (Evento)constructor.Invoke([
             detalhesEvento,

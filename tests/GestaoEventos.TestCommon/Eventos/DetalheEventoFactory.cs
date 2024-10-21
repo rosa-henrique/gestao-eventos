@@ -9,7 +9,8 @@ public class DetalheEventoFactory
 {
     public static DetalhesEvento CriarDetalheEvento(
         string? nome = null,
-        DateTime? dataHora = null,
+        DateTime? dataHoraInicio = null,
+        DateTime? dataHoraFim = null,
         string? localizacao = null,
         int? capacidadeMaxima = null,
         StatusEvento? status = null)
@@ -18,12 +19,13 @@ public class DetalheEventoFactory
         var constructor = eventoType.GetConstructor(
             BindingFlags.NonPublic | BindingFlags.Instance,
             null,
-            [typeof(string), typeof(DateTime), typeof(string), typeof(int), typeof(StatusEvento)],
+            [typeof(string), typeof(DateTime), typeof(DateTime), typeof(string), typeof(int), typeof(StatusEvento)],
             null)!;
 
         return (DetalhesEvento)constructor.Invoke([
             nome ?? "Evento",
-            dataHora ?? DateTime.UtcNow.AddDays(8),
+            dataHoraInicio ?? DateTime.UtcNow.AddDays(8),
+            dataHoraFim ?? DateTime.UtcNow.AddDays(8).AddHours(5),
             localizacao ?? "Localização",
             capacidadeMaxima ?? 100,
             status ?? StatusEvento.Pendente]);

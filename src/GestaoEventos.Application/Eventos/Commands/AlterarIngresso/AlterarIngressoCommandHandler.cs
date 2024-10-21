@@ -4,7 +4,7 @@ using GestaoEventos.Domain.Eventos;
 
 using MediatR;
 
-namespace GestaoEventos.Application.Eventos.Commands.AtualizarIngresso;
+namespace GestaoEventos.Application.Eventos.Commands.AlterarIngresso;
 
 public class AlterarIngressoCommandHandler(IEventoRepository repository) : IRequestHandler<AlterarIngressoCommand, ErrorOr<Ingresso>>
 {

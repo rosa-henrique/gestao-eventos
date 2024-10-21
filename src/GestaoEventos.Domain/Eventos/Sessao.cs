@@ -1,28 +1,52 @@
-﻿//using ErrorOr;
+﻿using ErrorOr;
 
-//using GestaoEventos.Domain.Common;
+using GestaoEventos.Domain.Common;
 
-//namespace GestaoEventos.Domain.Eventos;
+namespace GestaoEventos.Domain.Eventos;
 
-//public sealed class Sessao : Entity
-//{
-//    private Sessao(string nome, DateTime inicio, DateTime fim)
-//    {
-//        Nome = nome;
-//        Inicio = inicio;
-//        Fim = fim;
-//    }
+public sealed class Sessao : Entity
+{
+    public string Nome { get; private set; } = null!;
+    public DateTime DataHoraInicio { get; private set; }
+    public DateTime DataHoraFim { get; private set; }
 
-//    internal static ErrorOr<Sessao> Criar(string nome, DateTime inicio, DateTime fim)
-//    {
-//        return inicio < fim
-//            ? Error.Failure(description: "validar mensagem")
-//            : new Sessao(nome, inicio, fim);
-//    }
+    internal Sessao(string nome, DateTime dataHoraInicio, DateTime dataHoraFim, Guid? id = null)
+                    : base(id ?? Guid.NewGuid())
+    {
+        Nome = nome;
+        DataHoraInicio = dataHoraInicio;
+        DataHoraFim = dataHoraFim;
+    }
 
-//    public string Nome { get; private set; } = null!;
-//    public DateTime Inicio { get; private set; }
-//    public DateTime Fim { get; private set; }
+    public static ErrorOr<Sessao> Criar(string nome, DateTime dataHoraInicio, DateTime dataHoraFim)
+    {
+        return dataHoraInicio > dataHoraFim
+            ? Error.Failure(description: ErrosEvento.SessaoDataFinalMenorIgualFinal)
+            : new Sessao(nome, dataHoraInicio, dataHoraFim);
+    }
 
-//    // Métodos de domínio
-//}
+    public ErrorOr<Success> Alterar(string nome, DateTime dataHoraInicio, DateTime dataHoraFim)
+    {
+        if (dataHoraInicio > dataHoraFim)
+        {
+            return Error.Failure(description: ErrosEvento.SessaoDataFinalMenorIgualFinal);
+        }
+
+        Nome = nome;
+        DataHoraInicio = dataHoraInicio;
+        DataHoraFim = dataHoraFim;
+
+        return Result.Success;
+    }
+
+    internal void Alterar(Sessao sessao)
+    {
+        Nome = sessao.Nome;
+        DataHoraInicio = sessao.DataHoraInicio;
+        DataHoraFim = sessao.DataHoraFim;
+    }
+
+    private Sessao() { }
+
+    // Métodos de domínio
+}

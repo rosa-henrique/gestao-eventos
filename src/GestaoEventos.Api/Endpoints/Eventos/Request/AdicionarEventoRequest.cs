@@ -1,5 +1,5 @@
 ﻿namespace GestaoEventos.Api.Endpoints.Eventos.Request;
 
-public record AdicionarEventoRequest(string Nome, DateTime DataHora, string Localizacao, int CapacidadeMaxima)
+public record AdicionarEventoRequest(string Nome, DateTime DataHoraInicio, DateTime DataHoraFim, string Localizacao, int CapacidadeMaxima)
 {
 }

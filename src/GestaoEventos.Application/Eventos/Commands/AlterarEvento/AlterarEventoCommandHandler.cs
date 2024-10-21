@@ -16,7 +16,7 @@ public class AlterarEventoCommandHandler(IEventoRepository repository) : IReques
             return Error.NotFound(description: ErrosEvento.EventoNaoEncontrado);
         }
 
-        var resultadoEvento = evento.Atualizar(request.Nome, request.DataHora, request.Localizacao, request.CapacidadeMaxima, StatusEvento.FromValue(request.Status));
+        var resultadoEvento = evento.Atualizar(request.Nome, request.DataHoraInicio, request.DataHoraFim, request.Localizacao, request.CapacidadeMaxima, StatusEvento.FromValue(request.Status));
         if (resultadoEvento.IsError)
         {
             return resultadoEvento.Errors;

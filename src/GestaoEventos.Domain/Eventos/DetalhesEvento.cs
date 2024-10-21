@@ -7,32 +7,34 @@ namespace GestaoEventos.Domain.Eventos;
 public class DetalhesEvento : ValueObject
 {
     public string Nome { get; private set; } = null!;
-    public DateTime DataHora { get; private set; }
+    public DateTime DataHoraInicio { get; private set; }
+    public DateTime DataHoraFim { get; private set; }
     public string Localizacao { get; private set; } = null!;
     public int CapacidadeMaxima { get; private set; }
     public StatusEvento Status { get; private set; } = null!;
 
-    private DetalhesEvento(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima, StatusEvento statusEvento)
+    private DetalhesEvento(string nome, DateTime dataHoraInicio, DateTime dataHoraFim, string localizacao, int capacidadeMaxima, StatusEvento statusEvento)
     {
         Nome = nome;
-        DataHora = dataHora;
+        DataHoraInicio = dataHoraInicio;
+        DataHoraFim = dataHoraFim;
         Localizacao = localizacao;
         CapacidadeMaxima = capacidadeMaxima;
         Status = statusEvento;
     }
 
-    public static ErrorOr<DetalhesEvento> Criar(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima)
+    public static ErrorOr<DetalhesEvento> Criar(string nome, DateTime dataHoraInicio, DateTime dataHoraFim, string localizacao, int capacidadeMaxima)
     {
-        var resultadoValidacao = Validar(dataHora, capacidadeMaxima);
+        var resultadoValidacao = Validar(dataHoraInicio, dataHoraFim, capacidadeMaxima);
         if (resultadoValidacao.IsError)
         {
             return resultadoValidacao.Errors;
         }
 
-        return new DetalhesEvento(nome, dataHora, localizacao, capacidadeMaxima, StatusEvento.Pendente);
+        return new DetalhesEvento(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, StatusEvento.Pendente);
     }
 
-    public ErrorOr<Success> Atualizar(string nome, DateTime dataHora, string localizacao, int capacidadeMaxima, StatusEvento status)
+    public ErrorOr<Success> Atualizar(string nome, DateTime dataHoraInicio, DateTime dataHoraFim, string localizacao, int capacidadeMaxima, StatusEvento status)
     {
         var validarAlterar = ValidarAlterarCancelar(status);
         if (validarAlterar.IsError)
@@ -40,7 +42,7 @@ public class DetalhesEvento : ValueObject
             return validarAlterar.Errors;
         }
 
-        var resultadoValidacao = Validar(dataHora, capacidadeMaxima);
+        var resultadoValidacao = Validar(dataHoraInicio, dataHoraFim, capacidadeMaxima);
 
         if (resultadoValidacao.IsError)
         {
@@ -48,7 +50,8 @@ public class DetalhesEvento : ValueObject
         }
 
         Nome = nome;
-        DataHora = dataHora;
+        DataHoraInicio = dataHoraInicio;
+        DataHoraFim = dataHoraFim;
         Localizacao = localizacao;
         CapacidadeMaxima = capacidadeMaxima;
         Status = status;
@@ -58,7 +61,7 @@ public class DetalhesEvento : ValueObject
 
     internal ErrorOr<Success> ValidarAlterarCancelar(StatusEvento? novoStatus = null)
     {
-        if (DataHora < DateTime.UtcNow)
+        if (DataHoraInicio < DateTime.UtcNow)
         {
             return Error.Failure(description: ErrosEvento.NaoAlterarEventoPassado);
         }
@@ -100,14 +103,24 @@ public class DetalhesEvento : ValueObject
         return Result.Success;
     }
 
-    private static ErrorOr<Success> Validar(DateTime dataHora, int capacidadeMaxima)
+    private static ErrorOr<Success> Validar(DateTime dataHoraInicio, DateTime dataHoraFim, int capacidadeMaxima)
     {
-        if (dataHora < DateTime.UtcNow)
+        if (dataHoraInicio < DateTime.UtcNow)
         {
             return Error.Failure(description: ErrosEvento.DataRetroativa);
         }
 
-        if (capacidadeMaxima < DetalhesEvento.CapacidadeMinima)
+        if (dataHoraFim < dataHoraInicio)
+        {
+            return Error.Failure(description: ErrosEvento.DataFinalMenorIgualFinal);
+        }
+
+        if (capacidadeMaxima < CapacidadeMinima)
+        {
+            return Error.Failure(description: ErrosEvento.CapacidadeInvalida);
+        }
+
+        if (capacidadeMaxima < CapacidadeMinima)
         {
             return Error.Failure(description: ErrosEvento.CapacidadeInvalida);
         }
@@ -123,7 +136,8 @@ public class DetalhesEvento : ValueObject
     protected override IEnumerable<object> GetAtomicValues()
     {
         yield return Nome;
-        yield return DataHora;
+        yield return DataHoraInicio;
+        yield return DataHoraFim;
         yield return Localizacao;
         yield return CapacidadeMaxima;
         yield return Status;

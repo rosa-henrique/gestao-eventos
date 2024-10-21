@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GestaoEventos.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240818215018_Inicial")]
-    partial class Inicial
+    [Migration("20241020221428_MigrationsRefeitas")]
+    partial class MigrationsRefeitas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,9 +48,13 @@ namespace GestaoEventos.Infrastructure.Persistence.Migrations
                                 .HasColumnType("integer")
                                 .HasColumnName("capacidade_maxima");
 
-                            b1.Property<DateTime>("DataHora")
+                            b1.Property<DateTime>("DataHoraFim")
                                 .HasColumnType("timestamp with time zone")
-                                .HasColumnName("data_hora");
+                                .HasColumnName("data_hora_fim");
+
+                            b1.Property<DateTime>("DataHoraInicio")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("data_hora_inico");
 
                             b1.Property<string>("Localizacao")
                                 .IsRequired()
@@ -79,12 +83,8 @@ namespace GestaoEventos.Infrastructure.Persistence.Migrations
                     b.OwnsMany("GestaoEventos.Domain.Eventos.Ingresso", "Ingressos", b1 =>
                         {
                             b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd()
                                 .HasColumnType("uuid")
                                 .HasColumnName("id");
-
-                            b1.Property<Guid>("EventoId")
-                                .HasColumnType("uuid");
 
                             b1.Property<decimal>("Preco")
                                 .HasPrecision(8, 2)
@@ -95,14 +95,17 @@ namespace GestaoEventos.Infrastructure.Persistence.Migrations
                                 .HasColumnType("integer")
                                 .HasColumnName("quantidade");
 
+                            b1.Property<Guid>("evento_id")
+                                .HasColumnType("uuid");
+
                             b1.HasKey("Id");
 
-                            b1.HasIndex("EventoId");
+                            b1.HasIndex("evento_id");
 
                             b1.ToTable("eventos_ingressos", (string)null);
 
                             b1.WithOwner()
-                                .HasForeignKey("EventoId");
+                                .HasForeignKey("evento_id");
 
                             b1.OwnsOne("GestaoEventos.Domain.Eventos.TipoIngresso", "Tipo", b2 =>
                                 {
@@ -133,10 +136,45 @@ namespace GestaoEventos.Infrastructure.Persistence.Migrations
                                 .IsRequired();
                         });
 
+                    b.OwnsMany("GestaoEventos.Domain.Eventos.Sessao", "Sessoes", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.Property<DateTime>("DataHoraFim")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("data_hora_fim");
+
+                            b1.Property<DateTime>("DataHoraInicio")
+                                .HasColumnType("timestamp with time zone")
+                                .HasColumnName("data_hora_inico");
+
+                            b1.Property<string>("Nome")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("character varying(200)")
+                                .HasColumnName("nome");
+
+                            b1.Property<Guid>("evento_id")
+                                .HasColumnType("uuid");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("evento_id");
+
+                            b1.ToTable("eventos_sessoes", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("evento_id");
+                        });
+
                     b.Navigation("Detalhes")
                         .IsRequired();
 
                     b.Navigation("Ingressos");
+
+                    b.Navigation("Sessoes");
                 });
 #pragma warning restore 612, 618
         }

@@ -10,7 +10,7 @@ public class AdicionarEventoCommandHandler(IEventoRepository repository) : IRequ
 {
     public async Task<ErrorOr<Evento>> Handle(AdicionarEventoCommand request, CancellationToken cancellationToken)
     {
-        var resultadoEvento = Evento.Criar(request.Nome, request.DataHora, request.Localizacao, request.CapacidadeMaxima);
+        var resultadoEvento = Evento.Criar(request.Nome, request.DataHoraInicio, request.DataHoraFim, request.Localizacao, request.CapacidadeMaxima);
 
         if (resultadoEvento.IsError)
         {
