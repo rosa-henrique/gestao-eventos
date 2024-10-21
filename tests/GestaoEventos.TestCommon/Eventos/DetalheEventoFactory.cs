@@ -25,7 +25,7 @@ public class DetalheEventoFactory
         return (DetalhesEvento)constructor.Invoke([
             nome ?? "Evento",
             dataHoraInicio ?? DateTime.UtcNow.AddDays(8),
-            dataHoraFim ?? DateTime.UtcNow.AddDays(8).AddHours(5),
+            dataHoraFim ?? DateTime.UtcNow.AddDays(8).AddHours(12),
             localizacao ?? "Localização",
             capacidadeMaxima ?? 100,
             status ?? StatusEvento.Pendente]);

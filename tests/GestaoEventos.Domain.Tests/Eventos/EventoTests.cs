@@ -175,6 +175,23 @@ public class EventoTests
     }
 
     [Fact]
+    public void AtualizarEvento_ComErro_ConflitoSessoes()
+    {
+        // Arrange
+        var evento = EventoFactory.CriarEvento();
+        var sessao = SessaoFactory.CriarSessao(dataHoraInicio: evento.Detalhes.DataHoraInicio, dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        evento.AdicionarSessao(sessao);
+
+        // Act
+        var resultadoAtualizarEvento = evento.Atualizar(evento.Detalhes.Nome, sessao.DataHoraInicio.AddMinutes(4), evento.Detalhes.DataHoraFim, evento.Detalhes.Localizacao, evento.Detalhes.CapacidadeMaxima, evento.Detalhes.Status);
+
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeTrue();
+        resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
+                                                .And.Satisfy(a => a.Description == ErrosEvento.ConflitoSessoes);
+    }
+
+    [Fact]
     public void CancelarEvento_ComSucesso()
     {
         // Arrange
@@ -370,6 +387,110 @@ public class EventoTests
 
         // Act
         var resultadoAtualizarEvento = evento.RemoverIngresso(ingresso);
+
+        // Assert
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeFalse();
+    }
+
+    [Fact]
+    public void AdicionarSessao_Sucesso()
+    {
+        // Arrange
+        var nome = "teste";
+        var evento = EventoFactory.CriarEvento();
+        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.Detalhes.DataHoraInicio, dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+
+        // Act
+        var resultadoAtualizarEvento = evento.AdicionarSessao(sessao);
+
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeFalse();
+        evento.Sessoes.Should().NotBeEmpty()
+                                .And.Satisfy(a => a.Nome == nome);
+    }
+
+    [Fact]
+    public void AdicionarSessao_ComErro_DataSessaoForaIntervaloEvento()
+    {
+        // Arrange
+        var nome = "teste";
+        var evento = EventoFactory.CriarEvento();
+        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.Detalhes.DataHoraInicio.AddHours(-2), dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+
+        // Act
+        var resultadoAtualizarEvento = evento.AdicionarSessao(sessao);
+
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeTrue();
+        resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
+                                .And.Satisfy(a => a.Description == ErrosEvento.DataSessaoForaIntervaloEvento);
+    }
+
+    [Fact]
+    public void AdicionarSessao_ComErro_ConflitoDataHoraInicialSessao()
+    {
+        // Arrange
+        var evento = EventoFactory.CriarEvento();
+        var sessao = SessaoFactory.CriarSessao(dataHoraInicio: evento.Detalhes.DataHoraInicio, dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        var a = evento.AdicionarSessao(sessao);
+        var novaSessao = SessaoFactory.CriarSessao(dataHoraInicio: sessao.DataHoraInicio, dataHoraFim: sessao.DataHoraInicio.AddMinutes(10));
+
+        // Act
+        var resultadoAtualizarEvento = evento.AdicionarSessao(novaSessao);
+
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeTrue();
+        resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
+                                .And.Satisfy(a => a.Description == ErrosEvento.ConflitoDataHoraSessao);
+    }
+
+    [Fact]
+    public void AdicionarSessao_ComErro_ConflitoDataHoraFinalSessao()
+    {
+        // Arrange
+        var evento = EventoFactory.CriarEvento();
+        var sessao = SessaoFactory.CriarSessao(dataHoraInicio: evento.Detalhes.DataHoraInicio, dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        var a = evento.AdicionarSessao(sessao);
+        var novaSessao = SessaoFactory.CriarSessao(dataHoraInicio: sessao.DataHoraFim.AddMinutes(-5), dataHoraFim: sessao.DataHoraFim);
+
+        // Act
+        var resultadoAtualizarEvento = evento.AdicionarSessao(novaSessao);
+
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeTrue();
+        resultadoAtualizarEvento.Errors.Should().NotBeEmpty()
+                                .And.Satisfy(a => a.Description == ErrosEvento.ConflitoDataHoraSessao);
+    }
+
+    [Fact]
+    public void AtualizarSessao_Sucesso()
+    {
+        // Arrange
+        var nome = "teste";
+        var evento = EventoFactory.CriarEvento();
+        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.Detalhes.DataHoraInicio, dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        evento.AdicionarSessao(sessao);
+
+        // Act
+        var resultadoAtualizarEvento = evento.AtualizarSessao(sessao);
+
+        // Assert
+        resultadoAtualizarEvento.IsError.Should().BeFalse();
+        evento.Sessoes.Should().NotBeEmpty()
+                                .And.Satisfy(a => a.Nome == nome);
+    }
+
+    [Fact]
+    public void RemoverSessao_ComSucesso()
+    {
+        // Arrange
+        var evento = EventoFactory.CriarEvento();
+        var sessao = SessaoFactory.CriarSessao(dataHoraInicio: evento.Detalhes.DataHoraInicio, dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        evento.AdicionarSessao(sessao);
+
+        // Act
+        var resultadoAtualizarEvento = evento.RemoverSessao(sessao);
 
         // Assert
         // Assert
