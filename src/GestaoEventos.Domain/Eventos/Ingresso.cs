@@ -1,10 +1,12 @@
-﻿using GestaoEventos.Domain.Common;
+﻿using ErrorOr;
+
+using GestaoEventos.Domain.Common;
 
 namespace GestaoEventos.Domain.Eventos;
 
 public sealed class Ingresso : Entity
 {
-    internal Ingresso(string nome, string descricao, decimal preco, int quantidade, Guid? id = null)
+    private Ingresso(string nome, string descricao, decimal preco, int quantidade, Guid? id = null)
                         : base(id ?? Guid.NewGuid())
     {
         Tipo = new TipoIngresso(nome, descricao);
@@ -16,16 +18,18 @@ public sealed class Ingresso : Entity
     public decimal Preco { get; private set; }
     public int Quantidade { get; private set; }
 
-    public static Ingresso Criar(string nome, string descricao, decimal preco, int quantidade)
+    public static ErrorOr<Ingresso> Criar(string nome, string descricao, decimal preco, int quantidade)
     {
         return new Ingresso(nome, descricao, preco, quantidade);
     }
 
-    public void Alterar(string nome, string descricao, decimal preco, int quantidade)
+    public ErrorOr<Success> Alterar(string nome, string descricao, decimal preco, int quantidade)
     {
         Tipo = new TipoIngresso(nome, descricao);
         Preco = preco;
         Quantidade = quantidade;
+
+        return Result.Success;
     }
 
     internal void Alterar(Ingresso novosDados)

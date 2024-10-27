@@ -10,7 +10,7 @@ public sealed class Sessao : Entity
     public DateTime DataHoraInicio { get; private set; }
     public DateTime DataHoraFim { get; private set; }
 
-    internal Sessao(string nome, DateTime dataHoraInicio, DateTime dataHoraFim, Guid? id = null)
+    private Sessao(string nome, DateTime dataHoraInicio, DateTime dataHoraFim, Guid? id = null)
                     : base(id ?? Guid.NewGuid())
     {
         Nome = nome;

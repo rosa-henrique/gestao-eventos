@@ -185,28 +185,4 @@ public sealed class Evento : Entity, IAggregateRoot
     }
 
     private Evento() { }
-
-    // private readonly HashSet<Sessao> _sessoes = [];
-
-    // public ErrorOr<Success> AdicionarSessao(string nome, DateTime inicio, DateTime fim)
-    // {
-    //    var resultado = Sessao.Criar(nome, inicio, fim);
-
-    // if (!resultado.IsError)
-    //    {
-    //        return resultado.Errors;
-    //    }
-
-    // _sessoes.Add(resultado.Value);
-
-    // return Result.Success;
-    // }
-
-    // public void AdicionarTicket(string nome, string descricao, decimal preco)
-    // {
-    //    var ticket = new Ticket(nome, descricao, preco);
-    //    _tickets.Add(ticket);
-    // }
-
-    // Métodos de domínio
 }

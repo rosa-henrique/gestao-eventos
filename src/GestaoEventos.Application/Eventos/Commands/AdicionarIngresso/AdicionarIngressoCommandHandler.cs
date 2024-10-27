@@ -18,7 +18,7 @@ public class AdicionarIngressoCommandHandler(IEventoRepository repository) : IRe
 
         var ingresso = Ingresso.Criar(request.Nome, request.Descricao, request.Preco, request.Quantidade);
 
-        var resultadoAdicionarIngresso = evento.AdicionarIngresso(ingresso);
+        var resultadoAdicionarIngresso = evento.AdicionarIngresso(ingresso.Value);
         if (resultadoAdicionarIngresso.IsError)
         {
             return resultadoAdicionarIngresso.Errors;
