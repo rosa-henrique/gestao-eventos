@@ -1,4 +1,5 @@
 ﻿using GestaoEventos.Domain.Eventos;
+using GestaoEventos.Domain.Usuarios;
 using GestaoEventos.Infrastructure.Persistence;
 using GestaoEventos.Infrastructure.Persistence.Repositories;
 
@@ -22,6 +23,7 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("GestaoEventos")));
 
         services.AddScoped<IEventoRepository, EventoRepository>();
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 
         return services;
     }
