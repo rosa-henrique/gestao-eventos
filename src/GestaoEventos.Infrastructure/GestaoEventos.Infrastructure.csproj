@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\GestaoEventos.Application\GestaoEventos.Application.csproj" />
     <ProjectReference Include="..\GestaoEventos.Domain\GestaoEventos.Domain.csproj" />
   </ItemGroup>
 
