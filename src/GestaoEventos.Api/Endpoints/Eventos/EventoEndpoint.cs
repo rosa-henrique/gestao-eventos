@@ -29,7 +29,7 @@ public class EventoEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        var mapGroup = app.MapGroup(EndpointSchema.Eventos).WithTags(EndpointSchema.Eventos);
+        var mapGroup = app.MapGroup(EndpointSchema.Eventos).WithTags(EndpointSchema.Eventos).RequireAuthorization();
 
         mapGroup.MapGet(string.Empty, (ISender mediator) =>
         {
@@ -39,7 +39,7 @@ public class EventoEndpoint : IEndpoint
             return resultado.Match(
                 v => Results.Ok(v.Adapt<IEnumerable<EventoResponse>>()),
                 ProblemRequest.Resolve);
-        });
+        }).AllowAnonymous();
 
         mapGroup.MapGet("/{id:guid}", (ISender mediator, Guid id) =>
         {
@@ -49,7 +49,7 @@ public class EventoEndpoint : IEndpoint
             return resultado.Match(
                 v => Results.Ok(v.Adapt<EventoResponse>()),
                 ProblemRequest.Resolve);
-        });
+        }).AllowAnonymous();
 
         mapGroup.MapPost(string.Empty, (ISender mediator, [FromBody] AdicionarEventoRequest request) =>
         {

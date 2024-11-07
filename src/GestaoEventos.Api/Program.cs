@@ -20,11 +20,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 {
+    app.UseExceptionHandler();
+
     // Configure the HTTP request pipeline.
     app.UsePresentation();
 
     app.UseSerilogRequestLogging();
     app.UseMiddleware<RequestContextLoggingMiddleware>();
-
+    app.UseAuthorization();
     app.Run();
 }

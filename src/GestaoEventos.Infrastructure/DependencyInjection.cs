@@ -18,7 +18,8 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddPersistence(configuration)
-                .AddAuthentication(configuration);
+                .AddAuthentication(configuration)
+                .AddAuthorization();
 
         return services;
     }
