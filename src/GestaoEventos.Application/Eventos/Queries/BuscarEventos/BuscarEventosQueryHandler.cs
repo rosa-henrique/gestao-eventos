@@ -6,12 +6,12 @@ using MediatR;
 
 namespace GestaoEventos.Application.Eventos.Queries.BuscarEventos;
 
-public class BuscarEventosQueryHandler(IEventoRepository repository) : IRequestHandler<BuscarEventosQuery, ErrorOr<IEnumerable<BuscarEventosResult>>>
+public class BuscarEventosQueryHandler(IEventoRepository repository) : IRequestHandler<BuscarEventosQuery, ErrorOr<IEnumerable<BuscarEventosResponse>>>
 {
-    public async Task<ErrorOr<IEnumerable<BuscarEventosResult>>> Handle(BuscarEventosQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<IEnumerable<BuscarEventosResponse>>> Handle(BuscarEventosQuery request, CancellationToken cancellationToken)
     {
         var eventos = await repository.Buscar(cancellationToken);
 
-        return eventos.Select(e => (BuscarEventosResult)e).ToList();
+        return eventos.Select(e => (BuscarEventosResponse)e).ToList();
     }
 }

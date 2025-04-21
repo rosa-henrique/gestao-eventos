@@ -4,6 +4,6 @@ using MediatR;
 
 namespace GestaoEventos.Application.Eventos.Queries.BuscarEventos;
 
-public record BuscarEventosQuery : IRequest<ErrorOr<IEnumerable<BuscarEventosResult>>>
+public record BuscarEventosQuery : IRequest<ErrorOr<IEnumerable<BuscarEventosResponse>>>
 {
 }

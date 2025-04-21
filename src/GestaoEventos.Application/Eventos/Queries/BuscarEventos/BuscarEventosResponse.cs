@@ -2,11 +2,11 @@
 
 namespace GestaoEventos.Application.Eventos.Queries.BuscarEventos;
 
-public record BuscarEventosResult(Guid Id, string Nome, DateTime DataHoraInicio, DateTime DataHoraFim, string Localizacao, int CapacidadeMaxima)
+public record BuscarEventosResponse(Guid Id, string Nome, DateTime DataHoraInicio, DateTime DataHoraFim, string Localizacao, int CapacidadeMaxima)
 {
-    public static implicit operator BuscarEventosResult(Evento evento)
+    public static implicit operator BuscarEventosResponse(Evento evento)
     {
-        return new BuscarEventosResult(
+        return new BuscarEventosResponse(
             evento.Id,
             evento.Nome,
             evento.DataHoraInicio,

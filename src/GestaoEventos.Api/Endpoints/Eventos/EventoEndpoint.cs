@@ -2,7 +2,6 @@
 
 using GestaoEventos.Api.Abstractions;
 using GestaoEventos.Api.Endpoints.Eventos.Request;
-using GestaoEventos.Api.Endpoints.Eventos.Response;
 using GestaoEventos.Application.Eventos.Commands.AdicionarEvento;
 using GestaoEventos.Application.Eventos.Commands.AdicionarIngresso;
 using GestaoEventos.Application.Eventos.Commands.AdicionarSessao;
@@ -16,11 +15,8 @@ using GestaoEventos.Application.Eventos.Commands.RemoverSessao;
 using GestaoEventos.Application.Eventos.Queries.BuscarEvento;
 using GestaoEventos.Application.Eventos.Queries.BuscarEventos;
 
-using Mapster;
-
 using MediatR;
 
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GestaoEventos.Api.Endpoints.Eventos;
@@ -37,7 +33,7 @@ public class EventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(v.Adapt<IEnumerable<EventoResponse>>()),
+                v => Results.Ok(v),
                 ProblemRequest.Resolve);
         }).AllowAnonymous();
 
@@ -47,7 +43,7 @@ public class EventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(v.Adapt<EventoResponse>()),
+                v => Results.Ok(v),
                 ProblemRequest.Resolve);
         }).AllowAnonymous();
 
@@ -57,11 +53,11 @@ public class EventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Created($"{EndpointSchema.Eventos}/{v.Id}", v.Adapt<EventoResponse>()),
+                v => Results.Created($"{EndpointSchema.Eventos}/{v.Id}", v),
                 ProblemRequest.Resolve);
         });
 
-        mapGroup.MapPost("{id:guid}/ingresso", (ISender mediator, Guid id, [FromBody] AdicionarIngressoRequest request) =>
+        mapGroup.MapPost("{id:guid}/ingressos", (ISender mediator, Guid id, [FromBody] AdicionarIngressoRequest request) =>
         {
             var command = new AdicionarIngressoCommand(request.Nome, request.Descricao, request.Preco, request.Quantidade, id);
             var resultado = mediator.Send(command);
@@ -71,7 +67,7 @@ public class EventoEndpoint : IEndpoint
                 ProblemRequest.Resolve);
         });
 
-        mapGroup.MapPost("{id:guid}/sessao", (ISender mediator, Guid id, [FromBody] AdicionarSessaoRequest request) =>
+        mapGroup.MapPost("{id:guid}/sessoes", (ISender mediator, Guid id, [FromBody] AdicionarSessaoRequest request) =>
         {
             var command = new AdicionarSessaoCommand(id, request.Nome, request.DataHoraInicio, request.DataHoraFim);
             var resultado = mediator.Send(command);
@@ -87,21 +83,21 @@ public class EventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(v.Adapt<EventoResponse>()),
+                v => Results.Ok(v),
                 ProblemRequest.Resolve);
         });
 
-        mapGroup.MapPut("/{id:guid}/ingresso/{ingressoId:guid}", (ISender mediator, Guid id, Guid ingressoId, [FromBody] AdicionarIngressoRequest request) =>
+        mapGroup.MapPut("/{id:guid}/ingressos/{ingressoId:guid}", (ISender mediator, Guid id, Guid ingressoId, [FromBody] AdicionarIngressoRequest request) =>
         {
             var command = new AlterarIngressoCommand(ingressoId, request.Nome, request.Descricao, request.Preco, request.Quantidade, id);
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(v.Adapt<EventoResponse>()),
+                v => Results.Ok(v),
                 ProblemRequest.Resolve);
         });
 
-        mapGroup.MapPut("/{id:guid}/sessao/{sessaoId:guid}", (ISender mediator, Guid id, Guid sessaoId, [FromBody] AdicionarSessaoRequest request) =>
+        mapGroup.MapPut("/{id:guid}/sessoes/{sessaoId:guid}", (ISender mediator, Guid id, Guid sessaoId, [FromBody] AdicionarSessaoRequest request) =>
         {
             var command = new AlterarSessaoCommand(id, sessaoId, request.Nome, request.DataHoraInicio, request.DataHoraFim);
             var resultado = mediator.Send(command);
@@ -117,7 +113,7 @@ public class EventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(v.Adapt<EventoResponse>()),
+                v => Results.Ok(v),
                 ProblemRequest.Resolve);
         });
 
@@ -131,7 +127,7 @@ public class EventoEndpoint : IEndpoint
                 ProblemRequest.Resolve);
         });
 
-        mapGroup.MapDelete("/{id}/ingresso/{ingressoId}", (ISender mediator, Guid id, Guid ingressoId) =>
+        mapGroup.MapDelete("/{id}/ingressos/{ingressoId}", (ISender mediator, Guid id, Guid ingressoId) =>
         {
             var command = new RemoverIngressoCommand(id, ingressoId);
             var resultado = mediator.Send(command);
@@ -141,7 +137,7 @@ public class EventoEndpoint : IEndpoint
                 ProblemRequest.Resolve);
         });
 
-        mapGroup.MapDelete("/{id}/sessao/{sessaoId}", (ISender mediator, Guid id, Guid sessaoId) =>
+        mapGroup.MapDelete("/{id}/sessoes/{sessaoId}", (ISender mediator, Guid id, Guid sessaoId) =>
         {
             var command = new RemoverSessaoCommand(id, sessaoId);
             var resultado = mediator.Send(command);
