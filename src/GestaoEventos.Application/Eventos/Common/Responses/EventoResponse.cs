@@ -1,5 +1,3 @@
-using GestaoEventos.Domain.Eventos;
-
 namespace GestaoEventos.Application.Eventos.Common.Responses;
 
 public record EventoResponse(
@@ -9,17 +7,6 @@ public record EventoResponse(
     DateTime DataHoraFim,
     string Localizacao,
     int CapacidadeMaxima,
-    string Status)
+    string Status) : BaseEventoResponse(Id, Nome, DataHoraInicio, DataHoraFim, Localizacao, CapacidadeMaxima, Status)
 {
-    public static implicit operator EventoResponse(Evento evento)
-    {
-        return new EventoResponse(
-            evento.Id,
-            evento.Nome,
-            evento.DataHoraInicio,
-            evento.DataHoraFim,
-            evento.Localizacao,
-            evento.CapacidadeMaxima,
-            evento.Status.Name);
-    }
 }

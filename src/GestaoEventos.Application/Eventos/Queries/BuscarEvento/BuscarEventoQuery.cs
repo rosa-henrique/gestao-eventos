@@ -7,6 +7,6 @@ using MediatR;
 
 namespace GestaoEventos.Application.Eventos.Queries.BuscarEvento;
 
-public record BuscarEventoQuery(Guid Id) : IRequest<ErrorOr<EventoResponse>>
+public record BuscarEventoQuery(Guid Id) : IRequest<ErrorOr<BaseEventoResponse>>
 {
 }

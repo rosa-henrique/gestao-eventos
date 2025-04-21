@@ -7,6 +7,8 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
+
     builder.Host.UseSerilog((context, loggerConfig) =>
         loggerConfig.ReadFrom.Configuration(context.Configuration));
 

@@ -1,16 +1,19 @@
 ﻿using ErrorOr;
 
+using GestaoEventos.Application.Eventos.Common.Responses;
 using GestaoEventos.Domain.Eventos;
 
 using MediatR;
 
 namespace GestaoEventos.Application.Eventos.Commands.AdicionarEvento;
 
-public class AdicionarEventoCommandHandler(IEventoRepository repository) : IRequestHandler<AdicionarEventoCommand, ErrorOr<Evento>>
+public class AdicionarEventoCommandHandler(IEventoRepository repository)
+    : IRequestHandler<AdicionarEventoCommand, ErrorOr<BaseEventoResponse>>
 {
-    public async Task<ErrorOr<Evento>> Handle(AdicionarEventoCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<BaseEventoResponse>> Handle(AdicionarEventoCommand request, CancellationToken cancellationToken)
     {
-        var resultadoEvento = Evento.Criar(request.Nome, request.DataHoraInicio, request.DataHoraFim, request.Localizacao, request.CapacidadeMaxima);
+        var resultadoEvento = Evento.Criar(request.Nome, request.DataHoraInicio, request.DataHoraFim,
+            request.Localizacao, request.CapacidadeMaxima);
 
         if (resultadoEvento.IsError)
         {
@@ -27,6 +30,6 @@ public class AdicionarEventoCommandHandler(IEventoRepository repository) : IRequ
         repository.Adicionar(evento);
         await repository.SaveChangesAsync(cancellationToken);
 
-        return evento;
+        return (BaseEventoResponse)evento;
     }
 }

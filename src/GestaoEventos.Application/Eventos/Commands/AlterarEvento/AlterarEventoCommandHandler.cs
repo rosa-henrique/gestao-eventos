@@ -1,14 +1,15 @@
 ﻿using ErrorOr;
 
+using GestaoEventos.Application.Eventos.Common.Responses;
 using GestaoEventos.Domain.Eventos;
 
 using MediatR;
 
 namespace GestaoEventos.Application.Eventos.Commands.AlterarEvento;
 
-public class AlterarEventoCommandHandler(IEventoRepository repository) : IRequestHandler<AlterarEventoCommand, ErrorOr<Evento>>
+public class AlterarEventoCommandHandler(IEventoRepository repository) : IRequestHandler<AlterarEventoCommand, ErrorOr<BaseEventoResponse>>
 {
-    public async Task<ErrorOr<Evento>> Handle(AlterarEventoCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<BaseEventoResponse>> Handle(AlterarEventoCommand request, CancellationToken cancellationToken)
     {
         var evento = await repository.BuscarPorId(request.Id, cancellationToken);
         if (evento is null)
@@ -29,6 +30,6 @@ public class AlterarEventoCommandHandler(IEventoRepository repository) : IReques
 
         await repository.SaveChangesAsync(cancellationToken);
 
-        return evento;
+        return (BaseEventoResponse)evento;
     }
 }

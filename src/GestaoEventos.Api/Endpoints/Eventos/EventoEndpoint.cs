@@ -14,6 +14,8 @@ using GestaoEventos.Application.Eventos.Commands.RemoverIngresso;
 using GestaoEventos.Application.Eventos.Commands.RemoverSessao;
 using GestaoEventos.Application.Eventos.Queries.BuscarEvento;
 using GestaoEventos.Application.Eventos.Queries.BuscarEventos;
+using GestaoEventos.Application.Eventos.Queries.BuscarIngressoPorEvento;
+using GestaoEventos.Application.Eventos.Queries.BuscarSessoesPorEvento;
 
 using MediatR;
 
@@ -33,7 +35,7 @@ public class EventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(v),
+                Results.Ok,
                 ProblemRequest.Resolve);
         }).AllowAnonymous();
 
@@ -43,7 +45,27 @@ public class EventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(v),
+                Results.Ok,
+                ProblemRequest.Resolve);
+        }).AllowAnonymous();
+
+        mapGroup.MapGet("/{id:guid}/ingressos", (ISender mediator, Guid id) =>
+        {
+            var command = new BuscarIngressoPorEventoQuery(id);
+            var resultado = mediator.Send(command);
+
+            return resultado.Match(
+                Results.Ok,
+                ProblemRequest.Resolve);
+        }).AllowAnonymous();
+
+        mapGroup.MapGet("/{id:guid}/sessoes", (ISender mediator, Guid id) =>
+        {
+            var command = new BuscarSessoesPorEventoQuery(id);
+            var resultado = mediator.Send(command);
+
+            return resultado.Match(
+                Results.Ok,
                 ProblemRequest.Resolve);
         }).AllowAnonymous();
 
@@ -63,7 +85,7 @@ public class EventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(),
+                v => Results.Created($"{EndpointSchema.Eventos}/{id}/ingressos/{v.Id}", v),
                 ProblemRequest.Resolve);
         });
 
@@ -73,7 +95,7 @@ public class EventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(),
+                v => Results.Created($"{EndpointSchema.Eventos}/{id}/sessoes/{v.Id}", v),
                 ProblemRequest.Resolve);
         });
 
@@ -83,7 +105,7 @@ public class EventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(v),
+                Results.Ok,
                 ProblemRequest.Resolve);
         });
 
@@ -93,7 +115,7 @@ public class EventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(v),
+                Results.Ok,
                 ProblemRequest.Resolve);
         });
 
@@ -103,7 +125,7 @@ public class EventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(),
+                Results.Ok,
                 ProblemRequest.Resolve);
         });
 
@@ -113,7 +135,7 @@ public class EventoEndpoint : IEndpoint
             var resultado = mediator.Send(command);
 
             return resultado.Match(
-                v => Results.Ok(v),
+                Results.Ok,
                 ProblemRequest.Resolve);
         });
 

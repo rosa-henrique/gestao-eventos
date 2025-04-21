@@ -1,14 +1,16 @@
 ﻿using ErrorOr;
 
+using GestaoEventos.Application.Eventos.Common.Responses;
 using GestaoEventos.Domain.Eventos;
 
 using MediatR;
 
 namespace GestaoEventos.Application.Eventos.Commands.AlterarIngresso;
 
-public class AlterarIngressoCommandHandler(IEventoRepository repository) : IRequestHandler<AlterarIngressoCommand, ErrorOr<Ingresso>>
+public class AlterarIngressoCommandHandler(IEventoRepository repository)
+    : IRequestHandler<AlterarIngressoCommand, ErrorOr<IngressoResponse>>
 {
-    public async Task<ErrorOr<Ingresso>> Handle(AlterarIngressoCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<IngressoResponse>> Handle(AlterarIngressoCommand request, CancellationToken cancellationToken)
     {
         var evento = await repository.BuscarPorId(request.EventoId, cancellationToken);
         if (evento is null)
@@ -31,6 +33,6 @@ public class AlterarIngressoCommandHandler(IEventoRepository repository) : IRequ
 
         await repository.SaveChangesAsync(cancellationToken);
 
-        return ingresso;
+        return (IngressoResponse)ingresso;
     }
 }
