@@ -22,7 +22,7 @@ public class AlterarEventoCommandHandler(IEventoRepository repository) : IReques
             return resultadoEvento.Errors;
         }
 
-        if (await repository.ObterPorNomeId(evento.Detalhes.Nome, evento.Id, cancellationToken) is not null)
+        if (await repository.ObterPorNomeId(evento.Nome, evento.Id, cancellationToken) is not null)
         {
             return Error.Conflict(description: ErrosEvento.NomeEventoJaExiste);
         }

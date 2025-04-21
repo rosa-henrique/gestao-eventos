@@ -16,37 +16,34 @@ public class EventoConfiguration : IEntityTypeConfiguration<Evento>
             .IsRequired()
             .HasColumnName("id");
 
-        builder.OwnsOne(e => e.Detalhes, detalhes =>
-        {
-            detalhes.Property(d => d.Nome)
-                        .IsRequired()
-                        .HasColumnName("nome")
-                        .HasMaxLength(200);
+        builder.Property(d => d.Nome)
+            .IsRequired()
+            .HasColumnName("nome")
+            .HasMaxLength(200);
 
-            detalhes.Property(d => d.DataHoraInicio)
-                        .IsRequired()
-                        .HasColumnName("data_hora_inico");
+        builder.Property(d => d.DataHoraInicio)
+            .IsRequired()
+            .HasColumnName("data_hora_inico");
 
-            detalhes.Property(d => d.DataHoraFim)
-                        .IsRequired()
-                        .HasColumnName("data_hora_fim");
+        builder.Property(d => d.DataHoraFim)
+            .IsRequired()
+            .HasColumnName("data_hora_fim");
 
-            detalhes.Property(d => d.Localizacao)
-                        .IsRequired()
-                        .HasColumnName("localizacao")
-                        .HasMaxLength(500);
+        builder.Property(d => d.Localizacao)
+            .IsRequired()
+            .HasColumnName("localizacao")
+            .HasMaxLength(500);
 
-            detalhes.Property(d => d.CapacidadeMaxima)
-                        .IsRequired()
-                        .HasColumnName("capacidade_maxima");
+        builder.Property(d => d.CapacidadeMaxima)
+            .IsRequired()
+            .HasColumnName("capacidade_maxima");
 
-            detalhes.Property(d => d.Status)
-                        .IsRequired()
-                        .HasColumnName("status")
-                        .HasConversion(
-                        s => s.Value,
-                        s => StatusEvento.FromValue(s));
-        });
+        builder.Property(d => d.Status)
+            .IsRequired()
+            .HasColumnName("status")
+            .HasConversion(
+                s => s.Value,
+                s => StatusEvento.FromValue(s));
 
         builder.OwnsMany(e => e.Ingressos, ingressos =>
         {
@@ -63,24 +60,24 @@ public class EventoConfiguration : IEntityTypeConfiguration<Evento>
             ingressos.OwnsOne(i => i.Tipo, tipoIngresso =>
             {
                 tipoIngresso.Property(d => d.Nome)
-                        .IsRequired()
-                        .HasColumnName("nome")
-                        .HasMaxLength(200);
+                    .IsRequired()
+                    .HasColumnName("nome")
+                    .HasMaxLength(200);
 
                 tipoIngresso.Property(d => d.Descricao)
-                            .IsRequired()
-                            .HasColumnName("descricao")
-                            .HasMaxLength(100);
+                    .IsRequired()
+                    .HasColumnName("descricao")
+                    .HasMaxLength(100);
             });
 
             ingressos.Property(i => i.Preco)
-                    .IsRequired()
-                    .HasPrecision(8, 2)
-                    .HasColumnName("preco");
+                .IsRequired()
+                .HasPrecision(8, 2)
+                .HasColumnName("preco");
 
             ingressos.Property(i => i.Quantidade)
-                    .IsRequired()
-                    .HasColumnName("quantidade");
+                .IsRequired()
+                .HasColumnName("quantidade");
         }).UsePropertyAccessMode(PropertyAccessMode.Field);
 
         builder.Navigation(x => x.Ingressos).Metadata.SetField("_ingressos");
@@ -98,17 +95,17 @@ public class EventoConfiguration : IEntityTypeConfiguration<Evento>
                 .ValueGeneratedNever();
 
             sessoes.Property(d => d.Nome)
-                        .IsRequired()
-                        .HasColumnName("nome")
-                        .HasMaxLength(200);
+                .IsRequired()
+                .HasColumnName("nome")
+                .HasMaxLength(200);
 
             sessoes.Property(d => d.DataHoraInicio)
-                        .IsRequired()
-                        .HasColumnName("data_hora_inico");
+                .IsRequired()
+                .HasColumnName("data_hora_inico");
 
             sessoes.Property(d => d.DataHoraFim)
-                        .IsRequired()
-                        .HasColumnName("data_hora_fim");
+                .IsRequired()
+                .HasColumnName("data_hora_fim");
         }).UsePropertyAccessMode(PropertyAccessMode.Field);
 
         builder.Navigation(x => x.Sessoes).Metadata.SetField("_sessoes");

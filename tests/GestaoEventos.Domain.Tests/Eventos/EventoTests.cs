@@ -23,7 +23,7 @@ public class EventoTests
 
         // Assert
         resultadoEvento.IsError.Should().BeFalse();
-        resultadoEvento.Value.Detalhes.Should().NotBeNull()
+        resultadoEvento.Value.Should().NotBeNull()
             .And.BeEquivalentTo(new
             {
                 Nome = nome,
@@ -43,7 +43,7 @@ public class EventoTests
         var dataHoraInicio = DateTime.UtcNow.AddDays(7);
         var dataHoraFim = DateTime.UtcNow.AddDays(7).AddHours(6);
         const string localizacao = "123";
-        const int capacidadeMaxima = DetalhesEvento.CapacidadeMinima - 5;
+        const int capacidadeMaxima = Evento.CapacidadeMinima - 5;
 
         // Act
         var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima);
@@ -62,7 +62,7 @@ public class EventoTests
         var dataHoraInicio = DateTime.UtcNow.AddDays(-7);
         var dataHoraFim = DateTime.UtcNow.AddDays(7).AddHours(6);
         const string localizacao = "123";
-        const int capacidadeMaxima = DetalhesEvento.CapacidadeMinima + 5;
+        const int capacidadeMaxima = Evento.CapacidadeMinima + 5;
 
         // Act
         var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima);
@@ -81,7 +81,7 @@ public class EventoTests
         var dataHoraInicio = DateTime.UtcNow.AddDays(7);
         var dataHoraFim = DateTime.UtcNow.AddDays(7).AddHours(-1);
         const string localizacao = "123";
-        const int capacidadeMaxima = DetalhesEvento.CapacidadeMinima + 5;
+        const int capacidadeMaxima = Evento.CapacidadeMinima + 5;
 
         // Act
         var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima);
@@ -100,7 +100,7 @@ public class EventoTests
         var dataHoraInicio = DateTime.UtcNow.AddDays(7);
         var dataHoraFim = DateTime.UtcNow.AddDays(7).AddHours(6);
         const string localizacao = "123";
-        const int capacidadeMaxima = DetalhesEvento.CapacidadeMinima + 5;
+        const int capacidadeMaxima = Evento.CapacidadeMinima + 5;
         var evento = EventoFactory.CriarEvento();
 
         // Act
@@ -109,7 +109,7 @@ public class EventoTests
 
         // Assert
         resultadoAtualizarEvento.IsError.Should().BeFalse();
-        evento.Detalhes.Should().NotBeNull()
+        evento.Should().NotBeNull()
             .And.BeEquivalentTo(new
             {
                 Nome = nome,
@@ -128,7 +128,7 @@ public class EventoTests
         var dataHoraInicio = DateTime.UtcNow.AddDays(7);
         var dataHoraFim = DateTime.UtcNow.AddDays(7).AddDays(6);
         const string localizacao = "123";
-        const int capacidadeMaxima = DetalhesEvento.CapacidadeMinima - 5;
+        const int capacidadeMaxima = Evento.CapacidadeMinima - 5;
         var evento = EventoFactory.CriarEvento();
 
         // Act
@@ -149,7 +149,7 @@ public class EventoTests
         var dataHoraInicio = DateTime.UtcNow.AddDays(-7);
         var dataHoraFim = DateTime.UtcNow.AddDays(7).AddDays(6);
         const string localizacao = "123";
-        const int capacidadeMaxima = DetalhesEvento.CapacidadeMinima + 5;
+        const int capacidadeMaxima = Evento.CapacidadeMinima + 5;
         var evento = EventoFactory.CriarEvento();
 
         // Act
@@ -183,14 +183,14 @@ public class EventoTests
     {
         // Arrange
         var evento = EventoFactory.CriarEvento();
-        var sessao = SessaoFactory.CriarSessao(dataHoraInicio: evento.Detalhes.DataHoraInicio,
-            dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        var sessao = SessaoFactory.CriarSessao(dataHoraInicio: evento.DataHoraInicio,
+            dataHoraFim: evento.DataHoraInicio.AddHours(2));
         evento.AdicionarSessao(sessao);
 
         // Act
-        var resultadoAtualizarEvento = evento.Atualizar(evento.Detalhes.Nome, sessao.DataHoraInicio.AddMinutes(4),
-            evento.Detalhes.DataHoraFim, evento.Detalhes.Localizacao, evento.Detalhes.CapacidadeMaxima,
-            evento.Detalhes.Status);
+        var resultadoAtualizarEvento = evento.Atualizar(evento.Nome, sessao.DataHoraInicio.AddMinutes(4),
+            evento.DataHoraFim, evento.Localizacao, evento.CapacidadeMaxima,
+            evento.Status);
 
         // Assert
         resultadoAtualizarEvento.IsError.Should().BeTrue();
@@ -209,7 +209,7 @@ public class EventoTests
 
         // Assert
         resultadoAtualizarEvento.IsError.Should().BeFalse();
-        evento.Detalhes.Status.Should().BeSameAs(StatusEvento.Cancelado);
+        evento.Status.Should().BeSameAs(StatusEvento.Cancelado);
     }
 
     [Fact]
@@ -238,7 +238,7 @@ public class EventoTests
 
         // Assert
         resultadoAtualizarEvento.IsError.Should().BeFalse();
-        evento.Detalhes.Status.Should().BeSameAs(novoStatus);
+        evento.Status.Should().BeSameAs(novoStatus);
     }
 
     [Fact]
@@ -416,7 +416,7 @@ public class EventoTests
         var ingresso = Ingresso.Criar(nomeIngresso, "descricao ingresso", 10, 10).Value;
         evento.AdicionarIngresso(ingresso);
         ingresso.Alterar(ingresso.Tipo.Nome, ingresso.Tipo.Descricao, ingresso.Preco,
-            evento.Detalhes.CapacidadeMaxima + 1);
+            evento.CapacidadeMaxima + 1);
 
         // Act
         var resultadoAtualizarEvento = evento.AtualizarIngresso(ingresso);
@@ -468,8 +468,8 @@ public class EventoTests
         // Arrange
         const string nome = "teste";
         var evento = EventoFactory.CriarEvento();
-        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.Detalhes.DataHoraInicio,
-            dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.DataHoraInicio,
+            dataHoraFim: evento.DataHoraInicio.AddHours(2));
 
         // Act
         var resultadoAdicionarSessao = evento.AdicionarSessao(sessao);
@@ -485,8 +485,8 @@ public class EventoTests
         const string nome = "ingresso";
         var statusEvento = StatusEvento.Cancelado;
         var evento = EventoFactory.CriarEvento();
-        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.Detalhes.DataHoraInicio,
-            dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.DataHoraInicio,
+            dataHoraFim: evento.DataHoraInicio.AddHours(2));
         evento.AtualizarStatus(statusEvento);
         var msgErro = string.Format(ErrosEvento.NaoPermiteAdicaoIngresso, statusEvento);
 
@@ -505,8 +505,8 @@ public class EventoTests
         // Arrange
         const string nome = "teste";
         var evento = EventoFactory.CriarEvento();
-        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.Detalhes.DataHoraInicio.AddHours(-2),
-            dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.DataHoraInicio.AddHours(-2),
+            dataHoraFim: evento.DataHoraInicio.AddHours(2));
 
         // Act
         var resultadoAdicionarSessao = evento.AdicionarSessao(sessao);
@@ -523,8 +523,8 @@ public class EventoTests
         // Arrange
         const string nome = "teste";
         var evento = EventoFactory.CriarEvento();
-        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.Detalhes.DataHoraInicio,
-            dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.DataHoraInicio,
+            dataHoraFim: evento.DataHoraInicio.AddHours(2));
         evento.AdicionarSessao(sessao);
         var novaSessao = SessaoFactory.CriarSessao(dataHoraInicio: sessao.DataHoraInicio,
             dataHoraFim: sessao.DataHoraInicio.AddMinutes(10));
@@ -544,8 +544,8 @@ public class EventoTests
         // Arrange
         const string nome = "teste";
         var evento = EventoFactory.CriarEvento();
-        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.Detalhes.DataHoraInicio,
-            dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.DataHoraInicio,
+            dataHoraFim: evento.DataHoraInicio.AddHours(2));
         evento.AdicionarSessao(sessao);
 
         // Act
@@ -562,8 +562,8 @@ public class EventoTests
         const string nome = "teste";
         var statusEvento = StatusEvento.Cancelado;
         var evento = EventoFactory.CriarEvento();
-        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.Detalhes.DataHoraInicio,
-            dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.DataHoraInicio,
+            dataHoraFim: evento.DataHoraInicio.AddHours(2));
         evento.AdicionarSessao(sessao);
         evento.AtualizarStatus(statusEvento);
         var msgErro = string.Format(ErrosEvento.NaoPermiteAdicaoIngresso, statusEvento);
@@ -583,8 +583,8 @@ public class EventoTests
         // Arrange
         const string nome = "teste";
         var evento = EventoFactory.CriarEvento();
-        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.Detalhes.DataHoraInicio.AddHours(-2),
-            dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.DataHoraInicio.AddHours(-2),
+            dataHoraFim: evento.DataHoraInicio.AddHours(2));
 
         // Act
         var resultadoAtualizarSessao = evento.AtualizarSessao(sessao);
@@ -601,8 +601,8 @@ public class EventoTests
         // Arrange
         const string nome = "teste";
         var evento = EventoFactory.CriarEvento();
-        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.Detalhes.DataHoraInicio,
-            dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        var sessao = SessaoFactory.CriarSessao(nome: nome, dataHoraInicio: evento.DataHoraInicio,
+            dataHoraFim: evento.DataHoraInicio.AddHours(2));
         evento.AdicionarSessao(sessao);
         var novaSessao = SessaoFactory.CriarSessao(dataHoraInicio: sessao.DataHoraInicio,
             dataHoraFim: sessao.DataHoraInicio.AddMinutes(10));
@@ -621,8 +621,8 @@ public class EventoTests
     {
         // Arrange
         var evento = EventoFactory.CriarEvento();
-        var sessao = SessaoFactory.CriarSessao(dataHoraInicio: evento.Detalhes.DataHoraInicio,
-            dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        var sessao = SessaoFactory.CriarSessao(dataHoraInicio: evento.DataHoraInicio,
+            dataHoraFim: evento.DataHoraInicio.AddHours(2));
         evento.AdicionarSessao(sessao);
 
         // Act
@@ -639,8 +639,8 @@ public class EventoTests
         // Arrange
         var statusEvento = StatusEvento.Cancelado;
         var evento = EventoFactory.CriarEvento();
-        var sessao = SessaoFactory.CriarSessao(dataHoraInicio: evento.Detalhes.DataHoraInicio,
-            dataHoraFim: evento.Detalhes.DataHoraInicio.AddHours(2));
+        var sessao = SessaoFactory.CriarSessao(dataHoraInicio: evento.DataHoraInicio,
+            dataHoraFim: evento.DataHoraInicio.AddHours(2));
         evento.AdicionarSessao(sessao);
         evento.AtualizarStatus(statusEvento);
         var msgErro = string.Format(ErrosEvento.NaoPermiteAdicaoIngresso, statusEvento);

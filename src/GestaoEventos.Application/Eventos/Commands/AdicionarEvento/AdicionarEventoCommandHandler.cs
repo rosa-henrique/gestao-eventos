@@ -19,7 +19,7 @@ public class AdicionarEventoCommandHandler(IEventoRepository repository) : IRequ
 
         var evento = resultadoEvento.Value;
 
-        if (await repository.ObterPorNomeId(evento.Detalhes.Nome, cancellationToken: cancellationToken) is not null)
+        if (await repository.ObterPorNomeId(evento.Nome, cancellationToken: cancellationToken) is not null)
         {
             return Error.Conflict(description: ErrosEvento.NomeEventoJaExiste);
         }

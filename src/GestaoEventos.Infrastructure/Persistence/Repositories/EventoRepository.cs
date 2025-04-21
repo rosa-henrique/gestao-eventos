@@ -12,8 +12,8 @@ public class EventoRepository(AppDbContext context) : Repository<Evento>(context
         return await _dbSet.AsNoTracking()
             .FirstOrDefaultAsync(
             e =>
-                e.Detalhes.Nome.Equals(nome) &&
-                statusConsultar.Contains(e.Detalhes.Status) &&
+                e.Nome.Equals(nome) &&
+                statusConsultar.Contains(e.Status) &&
                 (!id.HasValue || e.Id != id),
             cancellationToken);
     }

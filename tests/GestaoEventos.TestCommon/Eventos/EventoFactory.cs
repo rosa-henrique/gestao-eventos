@@ -1,4 +1,5 @@
 ﻿// Stryker disable all
+
 using System.Reflection;
 
 using ErrorOr;
@@ -21,7 +22,7 @@ public static class EventoFactory
             dataHoraInicio ?? DateTime.Now.AddDays(7),
             dataHoraFim ?? DateTime.Now.AddDays(7).AddHours(2),
             localizacao ?? "Rua teste",
-            capacidadeMaxima ?? DetalhesEvento.CapacidadeMinima + 1);
+            capacidadeMaxima ?? Evento.CapacidadeMinima + 1);
     }
 
     public static Evento CriarEvento(
@@ -37,13 +38,26 @@ public static class EventoFactory
         var constructor = eventoType.GetConstructor(
             BindingFlags.NonPublic | BindingFlags.Instance,
             null,
-            [typeof(DetalhesEvento), typeof(Guid?)],
+            [
+                typeof(string),
+                typeof(DateTime),
+                typeof(DateTime),
+                typeof(string),
+                typeof(int),
+                typeof(StatusEvento),
+                typeof(Guid?)
+            ],
             null)!;
 
-        var detalhesEvento = DetalheEventoFactory.CriarDetalheEvento(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, status);
-
-        return (Evento)constructor.Invoke([
-            detalhesEvento,
-            id]);
+        return (Evento)constructor.Invoke(
+        [
+            nome ?? "Evento",
+            dataHoraInicio ?? DateTime.UtcNow.AddDays(8),
+            dataHoraFim ?? DateTime.UtcNow.AddDays(8).AddHours(12),
+            localizacao ?? "Localização",
+            capacidadeMaxima ?? 100,
+            status ?? StatusEvento.Pendente,
+            id
+        ]);
     }
 }

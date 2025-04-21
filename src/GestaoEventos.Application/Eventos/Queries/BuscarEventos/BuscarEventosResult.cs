@@ -8,10 +8,10 @@ public record BuscarEventosResult(Guid Id, string Nome, DateTime DataHoraInicio,
     {
         return new BuscarEventosResult(
             evento.Id,
-            evento.Detalhes.Nome,
-            evento.Detalhes.DataHoraInicio,
-            evento.Detalhes.DataHoraFim,
-            evento.Detalhes.Localizacao,
-            evento.Detalhes.CapacidadeMaxima);
+            evento.Nome,
+            evento.DataHoraInicio,
+            evento.DataHoraFim,
+            evento.Localizacao,
+            evento.CapacidadeMaxima);
     }
 }
