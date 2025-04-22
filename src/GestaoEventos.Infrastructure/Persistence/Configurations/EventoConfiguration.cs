@@ -45,6 +45,10 @@ public class EventoConfiguration : IEntityTypeConfiguration<Evento>
                 s => s.Value,
                 s => StatusEvento.FromValue(s));
 
+        builder.Property(d => d.CriadoPor)
+            .IsRequired()
+            .HasColumnName("criado_por");
+
         builder.OwnsMany(e => e.Ingressos, ingressos =>
         {
             ingressos.ToTable("eventos_ingressos");

@@ -3,11 +3,14 @@ using GestaoEventos.Domain.Eventos;
 using GestaoEventos.Domain.Usuarios;
 using GestaoEventos.Infrastructure.Persistence;
 using GestaoEventos.Infrastructure.Persistence.Repositories;
+using GestaoEventos.Infrastructure.Security;
+using GestaoEventos.Infrastructure.Security.CurrentUserProvider;
 using GestaoEventos.Infrastructure.Security.TokenGenerator;
 using GestaoEventos.Infrastructure.Security.TokenValidation;
 
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,9 +20,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddPersistence(configuration)
-                .AddAuthentication(configuration)
-                .AddAuthorization();
+        services.AddHttpContextAccessor()
+            .AddPersistence(configuration)
+            .AddAuthentication(configuration)
+            .AddAuthorization();
 
         return services;
     }
@@ -40,6 +44,9 @@ public static class DependencyInjection
         services.Configure<JwtSettings>(configuration.GetSection(JwtSettings.Section));
 
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
+
+        services.AddSingleton<ICurrentUserProvider, CurrentUserProvider>();
+        services.AddSingleton<IAuthorizationService, AuthorizationService>();
 
         services
             .ConfigureOptions<JwtBearerTokenValidationConfiguration>()

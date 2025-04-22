@@ -12,6 +12,8 @@ public sealed class Evento : Entity, IAggregateRoot
     public string Localizacao { get; private set; } = null!;
     public int CapacidadeMaxima { get; private set; }
     public StatusEvento Status { get; private set; } = null!;
+    public Guid CriadoPor { get; private set; }
+
     private readonly IList<Ingresso> _ingressos = [];
     public IReadOnlyCollection<Ingresso> Ingressos => [.. _ingressos];
 
@@ -19,7 +21,7 @@ public sealed class Evento : Entity, IAggregateRoot
     public IReadOnlyCollection<Sessao> Sessoes => [.. _sessoes];
 
     private Evento(string nome, DateTime dataHoraInicio, DateTime dataHoraFim, string localizacao, int capacidadeMaxima,
-        StatusEvento status, Guid? id = null)
+        StatusEvento status, Guid criadoPor, Guid? id = null)
         : base(id ?? Guid.NewGuid())
     {
         Nome = nome;
@@ -28,10 +30,11 @@ public sealed class Evento : Entity, IAggregateRoot
         Localizacao = localizacao;
         CapacidadeMaxima = capacidadeMaxima;
         Status = status;
+        CriadoPor = criadoPor;
     }
 
     public static ErrorOr<Evento> Criar(string nome, DateTime dataHoraInicio, DateTime dataHoraFim, string localizacao,
-        int capacidadeMaxima)
+        int capacidadeMaxima, Guid criadoPor)
     {
         var resultadoValidacao = Validar(dataHoraInicio, dataHoraFim, capacidadeMaxima);
         if (resultadoValidacao.IsError)
@@ -39,7 +42,7 @@ public sealed class Evento : Entity, IAggregateRoot
             return resultadoValidacao.Errors;
         }
 
-        return new Evento(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, StatusEvento.Pendente);
+        return new Evento(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, StatusEvento.Pendente, criadoPor);
     }
 
     public ErrorOr<Success> Atualizar(string nome, DateTime dataHoraInicio, DateTime dataHoraFim, string localizacao,

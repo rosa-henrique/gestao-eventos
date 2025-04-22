@@ -1,5 +1,6 @@
 ﻿using ErrorOr;
 
+using GestaoEventos.Application.Common.Interfaces;
 using GestaoEventos.Application.Eventos.Common.Responses;
 using GestaoEventos.Domain.Eventos;
 
@@ -7,13 +8,14 @@ using MediatR;
 
 namespace GestaoEventos.Application.Eventos.Commands.AdicionarEvento;
 
-public class AdicionarEventoCommandHandler(IEventoRepository repository)
+public class AdicionarEventoCommandHandler(IEventoRepository repository, IAuthorizationService authorizationService)
     : IRequestHandler<AdicionarEventoCommand, ErrorOr<BaseEventoResponse>>
 {
     public async Task<ErrorOr<BaseEventoResponse>> Handle(AdicionarEventoCommand request, CancellationToken cancellationToken)
     {
+        var idUsuario = authorizationService.ObterIdUsuario();
         var resultadoEvento = Evento.Criar(request.Nome, request.DataHoraInicio, request.DataHoraFim,
-            request.Localizacao, request.CapacidadeMaxima);
+            request.Localizacao, request.CapacidadeMaxima, idUsuario);
 
         if (resultadoEvento.IsError)
         {

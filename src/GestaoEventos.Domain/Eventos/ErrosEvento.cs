@@ -18,4 +18,5 @@ public class ErrosEvento
     public const string DataSessaoForaIntervaloEvento = "Data da sessão não pode estar fora do intervalo do evento.";
     public const string ConflitoSessoes = "As novas datas do evento entram em conflito com uma ou mais sessões associadas. Altere as datas das sessões ou ajuste as datas do evento.";
     public const string SessaoNaoEncontrada = "Sessao não encontrada.";
+    public const string UsuarioNaoAutorizado = "Usuário não autorizado para realizar essa operação.";
 }

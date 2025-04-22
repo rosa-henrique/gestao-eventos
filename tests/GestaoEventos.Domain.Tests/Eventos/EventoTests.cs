@@ -19,7 +19,7 @@ public class EventoTests
         const int capacidadeMaxima = 5;
 
         // Act
-        var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima);
+        var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, Guid.NewGuid());
 
         // Assert
         resultadoEvento.IsError.Should().BeFalse();
@@ -46,7 +46,7 @@ public class EventoTests
         const int capacidadeMaxima = Evento.CapacidadeMinima - 5;
 
         // Act
-        var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima);
+        var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, Guid.NewGuid());
 
         // Assert
         resultadoEvento.IsError.Should().BeTrue();
@@ -65,7 +65,7 @@ public class EventoTests
         const int capacidadeMaxima = Evento.CapacidadeMinima + 5;
 
         // Act
-        var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima);
+        var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, Guid.NewGuid());
 
         // Assert
         resultadoEvento.IsError.Should().BeTrue();
@@ -84,7 +84,7 @@ public class EventoTests
         const int capacidadeMaxima = Evento.CapacidadeMinima + 5;
 
         // Act
-        var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima);
+        var resultadoEvento = Evento.Criar(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, Guid.NewGuid());
 
         // Assert
         resultadoEvento.IsError.Should().BeTrue();

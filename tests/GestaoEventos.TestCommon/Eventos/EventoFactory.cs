@@ -22,7 +22,8 @@ public static class EventoFactory
             dataHoraInicio ?? DateTime.Now.AddDays(7),
             dataHoraFim ?? DateTime.Now.AddDays(7).AddHours(2),
             localizacao ?? "Rua teste",
-            capacidadeMaxima ?? Evento.CapacidadeMinima + 1);
+            capacidadeMaxima ?? Evento.CapacidadeMinima + 1,
+            Guid.NewGuid());
     }
 
     public static Evento CriarEvento(
@@ -32,6 +33,7 @@ public static class EventoFactory
         string? localizacao = null,
         int? capacidadeMaxima = null,
         StatusEvento? status = null,
+        Guid? criadoPor = null,
         Guid? id = null)
     {
         var eventoType = typeof(Evento);
@@ -45,6 +47,7 @@ public static class EventoFactory
                 typeof(string),
                 typeof(int),
                 typeof(StatusEvento),
+                typeof(Guid),
                 typeof(Guid?)
             ],
             null)!;
@@ -57,6 +60,7 @@ public static class EventoFactory
             localizacao ?? "Localização",
             capacidadeMaxima ?? 100,
             status ?? StatusEvento.Pendente,
+            criadoPor ?? Guid.NewGuid(),
             id
         ]);
     }
