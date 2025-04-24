@@ -1,4 +1,5 @@
-﻿using GestaoEventos.Domain.Eventos;
+﻿using GestaoEventos.Domain.Compras;
+using GestaoEventos.Domain.Eventos;
 using GestaoEventos.Domain.Usuarios;
 
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
 {
     public DbSet<Evento> Eventos { get; set; }
     public DbSet<Usuario> Usuarios { get; set; }
+    public DbSet<CompraIngresso> ComprasIngressos { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

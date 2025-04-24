@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GestaoEventos.Infrastructure.Persistence.Configurations;
 
-public class UsuarioRepository : IEntityTypeConfiguration<Usuario>
+public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
 {
     public void Configure(EntityTypeBuilder<Usuario> builder)
     {

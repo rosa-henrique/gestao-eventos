@@ -422,5 +422,8 @@ dotnet_diagnostic.SA1615.severity = none
 # SA1117: The parameters to a C# method or indexer call or declaration are not all on the same line or each on a separate line.
 dotnet_diagnostic.SA1117.severity = none
 
+
+dotnet_diagnostic.SA1116.severity = none
+
 [**/Migrations/*]
 generated_code = true

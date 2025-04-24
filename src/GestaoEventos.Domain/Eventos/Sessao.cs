@@ -11,7 +11,7 @@ public sealed class Sessao : Entity
     public DateTime DataHoraFim { get; private set; }
 
     private Sessao(string nome, DateTime dataHoraInicio, DateTime dataHoraFim, Guid? id = null)
-                    : base(id ?? Guid.NewGuid())
+        : base(id ?? Guid.NewGuid())
     {
         Nome = nome;
         DataHoraInicio = dataHoraInicio;

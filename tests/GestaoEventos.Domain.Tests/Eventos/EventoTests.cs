@@ -166,11 +166,11 @@ public class EventoTests
     public void AtualizarEvento_ComErro_EventoJaPassou()
     {
         // Arrange
-        var eventoPassado = EventoFactory.CriarEvento(dataHoraInicio: DateTime.Now.AddDays(-8));
+        var eventoPassado = EventoFactory.CriarEvento(dataHoraInicio: DateTime.UtcNow.AddDays(-8));
 
         // Act
         var resultadoAtualizarEvento =
-            eventoPassado.Atualizar("nome", DateTime.Now, DateTime.Now, "localizacao", 5, StatusEvento.Pendente);
+            eventoPassado.Atualizar("nome", DateTime.UtcNow, DateTime.UtcNow, "localizacao", 5, StatusEvento.Pendente);
 
         // Assert
         resultadoAtualizarEvento.IsError.Should().BeTrue();
@@ -216,7 +216,7 @@ public class EventoTests
     public void CancelarEvento_ComErro_EventoJaPassou()
     {
         // Arrange
-        var eventoPassado = EventoFactory.CriarEvento(dataHoraInicio: DateTime.Now.AddDays(-8));
+        var eventoPassado = EventoFactory.CriarEvento(dataHoraInicio: DateTime.UtcNow.AddDays(-8));
 
         var resultadoAtualizarEvento = eventoPassado.Cancelar();
 

@@ -9,7 +9,7 @@ public class IngressoTests
     {
         // Arrange
         const string nome = "ingresso";
-        var dataInicio = DateTime.Now;
+        var dataInicio = DateTime.UtcNow;
 
         // Act
         var resultadoCriarIngresso = Ingresso.Criar(nome, "teste", 10, 10);

@@ -6,16 +6,18 @@ namespace GestaoEventos.Infrastructure.Persistence.Repositories;
 
 public class EventoRepository(AppDbContext context) : Repository<Evento>(context), IEventoRepository
 {
-    public async Task<Evento?> ObterPorNomeId(string nome, Guid? id = null, CancellationToken cancellationToken = default)
+    public async Task<Evento?> ObterPorNomeId(string nome, Guid? id = null,
+        CancellationToken cancellationToken = default)
     {
-        IList<StatusEvento> statusConsultar = [StatusEvento.Pendente, StatusEvento.Confirmado, StatusEvento.EmAndamento];
+        IList<StatusEvento> statusConsultar =
+            [StatusEvento.Pendente, StatusEvento.Confirmado, StatusEvento.EmAndamento];
         return await _dbSet.AsNoTracking()
             .FirstOrDefaultAsync(
-            e =>
-                e.Nome.Equals(nome) &&
-                statusConsultar.Contains(e.Status) &&
-                (!id.HasValue || e.Id != id),
-            cancellationToken);
+                e =>
+                    e.Nome.Equals(nome) &&
+                    statusConsultar.Contains(e.Status) &&
+                    (!id.HasValue || e.Id != id),
+                cancellationToken);
     }
 
     public async Task<IEnumerable<Evento>> Buscar(CancellationToken cancellationToken)
@@ -26,6 +28,12 @@ public class EventoRepository(AppDbContext context) : Repository<Evento>(context
     public async Task<Evento?> BuscarPorId(Guid id, CancellationToken cancellationToken, bool track = true)
     {
         return await _dbSet.AsTracking(track ? QueryTrackingBehavior.TrackAll : QueryTrackingBehavior.NoTracking)
-                        .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+            .FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+    }
+
+    public async Task<Evento?> BuscarPorSessao(Guid sessaoId, CancellationToken cancellationToken)
+    {
+        return await _dbSet.AsNoTracking()
+            .FirstOrDefaultAsync(e => e.Sessoes.Any(s => s.Id == sessaoId), cancellationToken);
     }
 }

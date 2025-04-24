@@ -19,8 +19,8 @@ public static class EventoFactory
     {
         return Evento.Criar(
             nome ?? "teste",
-            dataHoraInicio ?? DateTime.Now.AddDays(7),
-            dataHoraFim ?? DateTime.Now.AddDays(7).AddHours(2),
+            dataHoraInicio ?? DateTime.UtcNow.AddDays(7),
+            dataHoraFim ?? DateTime.UtcNow.AddDays(7).AddHours(2),
             localizacao ?? "Rua teste",
             capacidadeMaxima ?? Evento.CapacidadeMinima + 1,
             Guid.NewGuid());

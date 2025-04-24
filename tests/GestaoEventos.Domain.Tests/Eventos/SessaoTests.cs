@@ -9,7 +9,7 @@ public class SessaoTests
     {
         // Arrange
         const string nome = "sessao";
-        var dataInicio = DateTime.Now;
+        var dataInicio = DateTime.UtcNow;
 
         // Act
         var resultadoCriarSessao = Sessao.Criar(nome, dataInicio, dataInicio.AddMinutes(5));
@@ -24,7 +24,7 @@ public class SessaoTests
     {
         // Arrange
         const string nome = "sessao";
-        var dataInicio = DateTime.Now;
+        var dataInicio = DateTime.UtcNow;
 
         // Act
         var resultadoCriarSessao = Sessao.Criar(nome, dataInicio, dataInicio.AddMinutes(-5));
@@ -41,7 +41,7 @@ public class SessaoTests
         // Arrange
         const string nome = "sessao";
         const string nomeAlterado = "sessao alterada";
-        var dataInicio = DateTime.Now;
+        var dataInicio = DateTime.UtcNow;
         var sessao = Sessao.Criar(nome, dataInicio, dataInicio.AddMinutes(5)).Value;
 
         // Act
@@ -58,7 +58,7 @@ public class SessaoTests
         // Arrange
         const string nome = "sessao";
         const string nomeAlterado = "sessao alterada";
-        var dataInicio = DateTime.Now;
+        var dataInicio = DateTime.UtcNow;
         var sessao = Sessao.Criar(nome, dataInicio, dataInicio.AddMinutes(5)).Value;
 
         // Act

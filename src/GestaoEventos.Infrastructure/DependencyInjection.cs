@@ -1,4 +1,5 @@
 ﻿using GestaoEventos.Application.Common.Interfaces;
+using GestaoEventos.Domain.Compras;
 using GestaoEventos.Domain.Eventos;
 using GestaoEventos.Domain.Usuarios;
 using GestaoEventos.Infrastructure.Persistence;
@@ -33,8 +34,11 @@ public static class DependencyInjection
         services.AddDbContext<AppDbContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("GestaoEventos")));
 
+        services.AddScoped<ICompraIngressoDomainService, CompraIngressoDomainService>();
+
         services.AddScoped<IEventoRepository, EventoRepository>();
         services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+        services.AddScoped<ICompraIngressoRepository, CompraIngressoRepository>();
 
         return services;
     }
