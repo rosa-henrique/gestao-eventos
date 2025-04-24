@@ -32,9 +32,12 @@ public class ComprarIngressosCommandHandler(
 
         try
         {
+            var ingressosParaCompra = request.IngressosCompra
+                .GroupBy(a => a.IngressoId)
+                .ToDictionary(a => a.Key,
+                    a => a.Sum(i => i.Quantidade));
             var compra = await compraIngressoDomainService.RealizarCompra(eventoPorSessao.Ingressos, request.SessaoId,
-                usuarioId, request.IngressosCompra.ToDictionary(i => i.IngressoId, i => i.Quantidade),
-                cancellationToken);
+                usuarioId, ingressosParaCompra, cancellationToken);
 
             if (compra.IsError)
             {
