@@ -12,7 +12,7 @@ public class IngressoFactory
         string? nome = null,
         string? descricao = null,
         decimal? preco = null,
-        int? capacidadeMaxima = null,
+        int? quantidade = null,
         Guid? id = null)
     {
         var eventoType = typeof(Ingresso);
@@ -26,7 +26,7 @@ public class IngressoFactory
             nome ?? "Evento",
             descricao ?? "Descricao evento",
             preco ?? 100,
-            capacidadeMaxima ?? 100,
+            quantidade ?? 100,
             id ?? Guid.NewGuid()
         ]);
     }
