@@ -1,4 +1,5 @@
 ﻿// Stryker disable all
+
 using System.Reflection;
 
 using GestaoEventos.Domain.Eventos;
@@ -7,12 +8,12 @@ namespace GestaoEventos.TestCommon.Eventos;
 
 public class IngressoFactory
 {
-    public static Ingresso CriarDetalheEvento(
-       string? nome = null,
-       DateTime? dataHora = null,
-       string? localizacao = null,
-       int? capacidadeMaxima = null,
-       StatusEvento? status = null)
+    public static Ingresso CriarIngresso(
+        string? nome = null,
+        string? descricao = null,
+        decimal? preco = null,
+        int? capacidadeMaxima = null,
+        Guid? id = null)
     {
         var eventoType = typeof(Ingresso);
         var constructor = eventoType.GetConstructor(
@@ -23,9 +24,10 @@ public class IngressoFactory
 
         return (Ingresso)constructor.Invoke([
             nome ?? "Evento",
-            dataHora ?? DateTime.UtcNow.AddDays(8),
-            localizacao ?? "Localização",
+            descricao ?? "Descricao evento",
+            preco ?? 100,
             capacidadeMaxima ?? 100,
-            status ?? StatusEvento.Pendente]);
+            id ?? Guid.NewGuid()
+        ]);
     }
 }

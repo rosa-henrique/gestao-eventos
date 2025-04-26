@@ -8,11 +8,11 @@ public class CompraIngressoDomainService(ICompraIngressoRepository compraIngress
     : ICompraIngressoDomainService
 {
     public async Task<ErrorOr<CompraIngresso>> RealizarCompra(IEnumerable<Ingresso> ingressos, Guid sessaoId,
-        Guid usuarioId, IDictionary<Guid, int> itensCompra, CancellationToken cancellationToken)
+        Guid usuarioId, IDictionary<Guid, int> itensCompra, CancellationToken cancellationToken = default)
     {
         var ingressosDisponiveis = ingressos.ToDictionary(i => i.Id, i => i);
         var compraIngressosPorSessao =
-            await compraIngressoRepository.ObterQuantidadeIngressosVendidosPorSessao(sessaoId);
+            await compraIngressoRepository.ObterQuantidadeIngressosVendidosPorSessao(sessaoId, cancellationToken);
         IList<IngressoComprado> ingressosComprados = new List<IngressoComprado>();
 
         foreach (var itemCompra in itensCompra)

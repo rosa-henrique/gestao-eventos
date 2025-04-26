@@ -12,7 +12,8 @@ public class CompraIngresso : Entity, IAggregateRoot
     private readonly List<IngressoComprado> _ingressos = [];
     public IReadOnlyCollection<IngressoComprado> Ingressos => [.. _ingressos];
 
-    public CompraIngresso(Guid usuarioId, Guid sessaoId, IEnumerable<IngressoComprado> ingressos)
+    public CompraIngresso(Guid usuarioId, Guid sessaoId, IEnumerable<IngressoComprado> ingressos, Guid? id = null)
+        : base(id ?? Guid.NewGuid())
     {
         UsuarioId = usuarioId;
         SessaoId = sessaoId;
