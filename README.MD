@@ -29,6 +29,15 @@ O **EventFlow** é um sistema de gestão de eventos onde os usuários podem:
 - **Monitoramento**: Serilog (logs estruturados) + Seq (visualização).
 - **Testes**: XUnit (unit/integration) + NSubstitute (mocks).
 
+### Ferramentas de Qualidade
+| Ferramenta | Finalidade |
+|------------|------------|
+| `Directory.Packages.props` | Centralização de pacotes NuGet |
+| `Directory.Build.props` | Configurações compartilhadas de build |
+| `.editorconfig` | Padronização de estilo de código |
+| `StyleCop.Analyzers` | Análise estática de código C# |
+
+
 ```shell
 # Exemplo de instalação (ajuste conforme seu projeto):
 dotnet run --project src/GestaoEventos.Api

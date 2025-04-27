@@ -16,7 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens
 		Directory.Packages.props = Directory.Packages.props
 		docker-compose.yml = docker-compose.yml
 		README.MD = README.MD
-		stryker-config.json = stryker-config.json
 		LICENSE = LICENSE
 		run.MD = run.MD
 	EndProjectSection
