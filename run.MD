@@ -1,0 +1,45 @@
+<div align="center">
+
+[![GitHub license](https://img.shields.io/github/license/seu-usuario/gestao-eventos)](https://github.com/seu-usuario/gestao-eventos/blob/main/LICENSE)  
+[![EF Core Version](https://img.shields.io/nuget/v/Microsoft.EntityFrameworkCore)](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore)
+
+---
+
+</div>
+
+# Configuração do Ambiente ⚙️
+
+## Pré-requisitos
+- [.NET 8 SDK](https://dotnet.microsoft.com/download)
+- [EF Core CLI](https://learn.microsoft.com/ef/core/cli/dotnet)
+- [Node.js](https://nodejs.org/) (apenas para geração de secrets)
+
+## Comandos Essenciais
+
+### 🔧 Restaurar Ferramentas
+```shell
+dotnet tool restore
+```
+
+### 🛠️ Gerenciamento de Migrations
+#### Criar nova migration:
+```shell
+dotnet ef migrations add NomeDaMigration -o Persistence/Migrations --startup-project ../GestaoEventos.Api
+```
+
+#### Aplicar migrations:
+```shell
+dotnet ef database update --startup-project ../GestaoEventos.Api
+```
+
+### **Atenção**
+Ambos comandos é preciso estar na pasta do projeto Infrastructure
+```shell
+cd src/GestaoEventos.Infrastructure
+```
+
+### 🔐 Geração de Secrets
+Infortante para geração e validação de jwt, adicionar no arquivo appsettings.Development.json, seção JwtSettings.Secret
+```shell
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+```

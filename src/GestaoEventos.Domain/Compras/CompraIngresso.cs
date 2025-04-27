@@ -1,4 +1,6 @@
 using GestaoEventos.Domain.Common;
+using GestaoEventos.Domain.Compras.Events;
+using GestaoEventos.Domain.Eventos;
 
 namespace GestaoEventos.Domain.Compras;
 
@@ -21,6 +23,11 @@ public class CompraIngresso : Entity, IAggregateRoot
 
         _ingressos.AddRange(ingressos);
         ValorTotal = _ingressos.Sum(i => i.ValorTotal);
+    }
+
+    public void IngressosComprado(Evento evento)
+    {
+        _domainEvents.Add(new CompraIngressoRealizadaEvent(evento, UsuarioId));
     }
 
     private CompraIngresso() { }

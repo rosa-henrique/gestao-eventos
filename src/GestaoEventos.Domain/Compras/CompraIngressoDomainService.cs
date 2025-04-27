@@ -7,10 +7,15 @@ namespace GestaoEventos.Domain.Compras;
 public class CompraIngressoDomainService(ICompraIngressoRepository compraIngressoRepository)
     : ICompraIngressoDomainService
 {
-    public async Task<ErrorOr<CompraIngresso>> RealizarCompra(IEnumerable<Ingresso> ingressos, Guid sessaoId,
+    public async Task<ErrorOr<CompraIngresso>> RealizarCompra(Evento evento, Guid sessaoId,
         Guid usuarioId, IDictionary<Guid, int> itensCompra, CancellationToken cancellationToken = default)
     {
-        var ingressosDisponiveis = ingressos.ToDictionary(i => i.Id, i => i);
+        if (!evento.EventoPermiteCompraIngresso())
+        {
+            return Error.Failure(description: ErrosCompras.EventoNaoPermiteCompra);
+        }
+
+        var ingressosDisponiveis = evento.Ingressos.ToDictionary(i => i.Id, i => i);
         var compraIngressosPorSessao =
             await compraIngressoRepository.ObterQuantidadeIngressosVendidosPorSessao(sessaoId, cancellationToken);
         IList<IngressoComprado> ingressosComprados = new List<IngressoComprado>();
@@ -37,6 +42,9 @@ public class CompraIngressoDomainService(ICompraIngressoRepository compraIngress
                 ingressoDisponivel.Preco));
         }
 
-        return new CompraIngresso(usuarioId, sessaoId, ingressosComprados);
+        var compraIngresso = new CompraIngresso(usuarioId, sessaoId, ingressosComprados);
+        compraIngresso.IngressosComprado(evento);
+
+        return compraIngresso;
     }
 }

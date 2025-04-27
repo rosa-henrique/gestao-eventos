@@ -25,7 +25,8 @@ public class ComprarIngressosCommandHandler(
             return Error.NotFound(description: ErrosCompras.SessaoNaoEncontrada);
         }
 
-        var sessao = eventoPorSessao.Sessoes.FirstOrDefault(s => s.Id == request.SessaoId);
+        var sessao = eventoPorSessao.Sessoes.FirstOrDefault(s => s.Id == request.SessaoId)!;
+
         var usuarioId = authorizationService.ObterIdUsuario();
 
         await _semaphore.WaitAsync(cancellationToken);
@@ -36,7 +37,7 @@ public class ComprarIngressosCommandHandler(
                 .GroupBy(a => a.IngressoId)
                 .ToDictionary(a => a.Key,
                     a => a.Sum(i => i.Quantidade));
-            var compra = await compraIngressoDomainService.RealizarCompra(eventoPorSessao.Ingressos, request.SessaoId,
+            var compra = await compraIngressoDomainService.RealizarCompra(eventoPorSessao, sessao.Id,
                 usuarioId, ingressosParaCompra, cancellationToken);
 
             if (compra.IsError)
@@ -45,6 +46,7 @@ public class ComprarIngressosCommandHandler(
             }
 
             compraIngressoRepository.Adicionar(compra.Value);
+
             await compraIngressoRepository.SaveChangesAsync(cancellationToken);
         }
         finally

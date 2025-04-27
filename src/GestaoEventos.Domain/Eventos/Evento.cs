@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 
 using GestaoEventos.Domain.Common;
+using GestaoEventos.Domain.Compras.Events;
 
 namespace GestaoEventos.Domain.Eventos;
 
@@ -42,7 +43,8 @@ public sealed class Evento : Entity, IAggregateRoot
             return resultadoValidacao.Errors;
         }
 
-        return new Evento(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, StatusEvento.Pendente, criadoPor);
+        return new Evento(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, StatusEvento.Pendente,
+            criadoPor);
     }
 
     public ErrorOr<Success> Atualizar(string nome, DateTime dataHoraInicio, DateTime dataHoraFim, string localizacao,
@@ -212,6 +214,9 @@ public sealed class Evento : Entity, IAggregateRoot
 
         return Result.Success;
     }
+
+    public bool EventoPermiteCompraIngresso()
+        => StatusEvento.StatusPermiteCompra.Contains(Status);
 
     internal ErrorOr<Success> ValidarAlterarCancelar(StatusEvento? novoStatus = null)
     {

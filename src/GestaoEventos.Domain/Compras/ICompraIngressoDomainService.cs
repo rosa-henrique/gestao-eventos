@@ -6,6 +6,6 @@ namespace GestaoEventos.Domain.Compras;
 
 public interface ICompraIngressoDomainService
 {
-    Task<ErrorOr<CompraIngresso>> RealizarCompra(IEnumerable<Ingresso> ingressos, Guid sessaoId,
+    Task<ErrorOr<CompraIngresso>> RealizarCompra(Evento evento, Guid sessaoId,
         Guid usuarioId, IDictionary<Guid, int> itensCompra, CancellationToken cancellationToken = default);
 }
