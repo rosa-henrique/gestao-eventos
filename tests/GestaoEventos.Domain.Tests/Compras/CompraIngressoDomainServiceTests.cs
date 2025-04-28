@@ -1,3 +1,5 @@
+using System.Collections.Frozen;
+
 using GestaoEventos.Domain.Compras;
 using GestaoEventos.Domain.Eventos;
 using GestaoEventos.TestCommon.Eventos;
@@ -25,7 +27,7 @@ public class CompraIngressoDomainServiceTests
         evento.AdicionarIngresso(ingresso);
         var sessaoId = Guid.NewGuid();
         var usuarioId = Guid.NewGuid();
-        var itensCompra = new Dictionary<Guid, int> { { ingresso.Id, 1 }, };
+        var itensCompra = new Dictionary<Guid, int> { { ingresso.Id, 1 }, }.ToFrozenDictionary();
 
         _compraIngressoRepositoryMock.ObterQuantidadeIngressosVendidosPorSessao(sessaoId)
             .Returns(Task.FromResult(new Dictionary<Guid, int>()));
@@ -45,7 +47,8 @@ public class CompraIngressoDomainServiceTests
         var ingresso = IngressoFactory.CriarIngresso();
         var sessaoId = Guid.NewGuid();
         var usuarioId = Guid.NewGuid();
-        var itensCompra = new Dictionary<Guid, int> { { ingresso.Id, 1 }, };
+        var itensCompra = new Dictionary<Guid, int> { { ingresso.Id, 1 } }
+            .ToFrozenDictionary();
 
         _compraIngressoRepositoryMock.ObterQuantidadeIngressosVendidosPorSessao(sessaoId)
             .Returns(Task.FromResult(new Dictionary<Guid, int>()));
@@ -64,7 +67,7 @@ public class CompraIngressoDomainServiceTests
         var ingresso = IngressoFactory.CriarIngresso();
         var sessaoId = Guid.NewGuid();
         var usuarioId = Guid.NewGuid();
-        var itensCompra = new Dictionary<Guid, int> { { ingresso.Id, 1 }, };
+        var itensCompra = new Dictionary<Guid, int> { { ingresso.Id, 1 }, }.ToFrozenDictionary();
 
         _compraIngressoRepositoryMock.ObterQuantidadeIngressosVendidosPorSessao(sessaoId)
             .Returns(Task.FromResult(new Dictionary<Guid, int>()));
@@ -84,7 +87,7 @@ public class CompraIngressoDomainServiceTests
         evento.AdicionarIngresso(ingresso);
         var sessaoId = Guid.NewGuid();
         var usuarioId = Guid.NewGuid();
-        var itensCompra = new Dictionary<Guid, int> { { ingresso.Id, ingresso.Quantidade + 1 }, };
+        var itensCompra = new Dictionary<Guid, int> { { ingresso.Id, ingresso.Quantidade + 1 }, }.ToFrozenDictionary();
 
         _compraIngressoRepositoryMock.ObterQuantidadeIngressosVendidosPorSessao(sessaoId)
             .Returns(Task.FromResult(new Dictionary<Guid, int>()));
@@ -104,7 +107,7 @@ public class CompraIngressoDomainServiceTests
         evento.AdicionarIngresso(ingresso);
         var sessaoId = Guid.NewGuid();
         var usuarioId = Guid.NewGuid();
-        var itensCompra = new Dictionary<Guid, int> { { ingresso.Id, 1 }, };
+        var itensCompra = new Dictionary<Guid, int> { { ingresso.Id, 1 }, }.ToFrozenDictionary();
         var retornoRepository = new Dictionary<Guid, int>() { { ingresso.Id, ingresso.Quantidade } };
 
         _compraIngressoRepositoryMock.ObterQuantidadeIngressosVendidosPorSessao(sessaoId)

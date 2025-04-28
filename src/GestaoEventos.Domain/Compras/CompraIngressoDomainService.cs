@@ -1,3 +1,5 @@
+using System.Collections.Frozen;
+
 using ErrorOr;
 
 using GestaoEventos.Domain.Eventos;
@@ -8,14 +10,14 @@ public class CompraIngressoDomainService(ICompraIngressoRepository compraIngress
     : ICompraIngressoDomainService
 {
     public async Task<ErrorOr<CompraIngresso>> RealizarCompra(Evento evento, Guid sessaoId,
-        Guid usuarioId, IDictionary<Guid, int> itensCompra, CancellationToken cancellationToken = default)
+        Guid usuarioId, FrozenDictionary<Guid, int> itensCompra, CancellationToken cancellationToken = default)
     {
         if (!evento.EventoPermiteCompraIngresso())
         {
             return Error.Failure(description: ErrosCompras.EventoNaoPermiteCompra);
         }
 
-        var ingressosDisponiveis = evento.Ingressos.ToDictionary(i => i.Id, i => i);
+        var ingressosDisponiveis = evento.Ingressos.ToFrozenDictionary(i => i.Id, i => i);
         var compraIngressosPorSessao =
             await compraIngressoRepository.ObterQuantidadeIngressosVendidosPorSessao(sessaoId, cancellationToken);
         IList<IngressoComprado> ingressosComprados = new List<IngressoComprado>();

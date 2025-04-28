@@ -1,6 +1,6 @@
 <div align="center">
 
-[![Build](https://github.com/rosa-henrique/gestao-eventos/actions/workflows/build.yml/badge.svg)](https://github.com/rosa-henrique/gestao-eventos/actions/workflows/build.yml)
+[![Build](https://github.com/rosa-henrique/gestao-eventos/actions/workflows/build.yaml/badge.svg)](https://github.com/rosa-henrique/gestao-eventos/actions/workflows/build.yml)
 [![GitHub license](./assets/license.svg)](https://github.com/seu-usuario/seu-projeto/blob/main/LICENSE)  
 [![codecov](https://codecov.io/gh/rosa-henrique/gestao-eventos/graph/badge.svg?token=GYB8E8MWV3)](https://codecov.io/gh/rosa-henrique/gestao-eventos)
 

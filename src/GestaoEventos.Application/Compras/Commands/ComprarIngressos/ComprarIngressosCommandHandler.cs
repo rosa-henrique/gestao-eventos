@@ -1,3 +1,5 @@
+using System.Collections.Frozen;
+
 using ErrorOr;
 
 using GestaoEventos.Application.Common.Interfaces;
@@ -35,7 +37,7 @@ public class ComprarIngressosCommandHandler(
         {
             var ingressosParaCompra = request.IngressosCompra
                 .GroupBy(a => a.IngressoId)
-                .ToDictionary(a => a.Key,
+                .ToFrozenDictionary(a => a.Key,
                     a => a.Sum(i => i.Quantidade));
             var compra = await compraIngressoDomainService.RealizarCompra(eventoPorSessao, sessao.Id,
                 usuarioId, ingressosParaCompra, cancellationToken);
