@@ -1,0 +1,28 @@
+# Pastas desnecessárias
+**/bin/
+**/obj/
+**/.vs/
+.vscode/
+.idea/
+
+# Git
+.git/
+.gitignore
+
+# CI/CD
+*.yml
+*.yaml
+*.md
+
+# Secrets e configurações locais
+*.env
+*.pfx
+*.key
+*.crt
+*.db
+*.suo
+*.user
+
+# Docker
+Dockerfile*
+docker-compose*
