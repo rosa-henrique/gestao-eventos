@@ -1,6 +1,6 @@
 ﻿namespace GestaoEventos.Domain.Eventos;
 
-public class ErrosEvento
+public static class ErrosEvento
 {
     public const string DataRetroativa = "A data do evento deve ser no futuro.";
     public const string DataFinalMenorIgualFinal = "A data de fim do evento deve ser após a de início.";

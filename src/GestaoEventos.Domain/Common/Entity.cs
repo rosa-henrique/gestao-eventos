@@ -1,5 +1,4 @@
 ﻿namespace GestaoEventos.Domain.Common;
-
 public abstract class Entity
 {
     public Guid Id { get; private init; }
@@ -11,6 +10,8 @@ public abstract class Entity
         Id = id;
     }
 
+    protected Entity() { }
+
     public List<IDomainEvent> PopDomainEvents()
     {
         var copy = _domainEvents.ToList();
@@ -18,6 +19,4 @@ public abstract class Entity
 
         return copy;
     }
-
-    protected Entity() { }
 }

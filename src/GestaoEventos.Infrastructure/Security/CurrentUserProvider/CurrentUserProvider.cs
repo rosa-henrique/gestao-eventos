@@ -14,12 +14,6 @@ public class CurrentUserProvider(IHttpContextAccessor _httpContextAccessor) : IC
         return new CurrentUser(id, nome, string.Empty);
     }
 
-    private List<string> GetClaimValues(string claimType) =>
-        _httpContextAccessor.HttpContext!.User.Claims
-            .Where(claim => claim.Type == claimType)
-            .Select(claim => claim.Value)
-            .ToList();
-
     private string GetSingleClaimValue(string claimType) =>
         _httpContextAccessor.HttpContext!.User.Claims
             .Single(claim => claim.Type == claimType)

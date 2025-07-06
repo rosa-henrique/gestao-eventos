@@ -14,6 +14,6 @@ public class CompraIngressoRepository(AppDbContext context)
             .SelectMany(cp => cp.Ingressos) // Achata a lista de ingressos
             .GroupBy(i => i.IngressoId)
             .Select(g => new { IngressoId = g.Key, QuantidadeTotal = g.Sum(i => i.Quantidade) })
-            .ToDictionaryAsync(x => x.IngressoId, x => x.QuantidadeTotal);
+            .ToDictionaryAsync(x => x.IngressoId, x => x.QuantidadeTotal, cancellationToken);
     }
 }

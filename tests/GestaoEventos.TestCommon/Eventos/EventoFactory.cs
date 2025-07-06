@@ -33,10 +33,11 @@ public static class EventoFactory
         string? localizacao = null,
         int? capacidadeMaxima = null,
         StatusEvento? status = null,
-        Guid? criadoPor = null,
-        Guid? id = null)
+        Guid? criadoPor = null)
     {
         var eventoType = typeof(Evento);
+
+#pragma warning disable S3011
         var constructor = eventoType.GetConstructor(
             BindingFlags.NonPublic | BindingFlags.Instance,
             null,
@@ -61,7 +62,7 @@ public static class EventoFactory
             capacidadeMaxima ?? 100,
             status ?? StatusEvento.Pendente,
             criadoPor ?? Guid.NewGuid(),
-            id
+            null
         ]);
     }
 }

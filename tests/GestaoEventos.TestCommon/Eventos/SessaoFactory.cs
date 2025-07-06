@@ -14,6 +14,8 @@ public static class SessaoFactory
        Guid? id = null)
     {
         var eventoType = typeof(Sessao);
+
+#pragma warning disable S3011
         var constructor = eventoType.GetConstructor(
             BindingFlags.NonPublic | BindingFlags.Instance,
             null,

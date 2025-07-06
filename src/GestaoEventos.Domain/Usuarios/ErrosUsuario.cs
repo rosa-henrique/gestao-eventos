@@ -1,6 +1,6 @@
 namespace GestaoEventos.Domain.Usuarios;
 
-public class ErrosUsuario
+public static class ErrosUsuario
 {
     public const string JaExisteEmail = "E-mail já cadastrado";
 }

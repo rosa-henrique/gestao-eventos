@@ -15,11 +15,11 @@ COPY src/GestaoEventos.Application/GestaoEventos.Application.csproj src/GestaoEv
 COPY src/GestaoEventos.Infrastructure/GestaoEventos.Infrastructure.csproj src/GestaoEventos.Infrastructure/
 COPY Directory.Build.props .
 WORKDIR "/src/src/GestaoEventos.Api"
-RUN dotnet build "./GestaoEventos.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build -p:HUSKY=0
+RUN dotnet build "./GestaoEventos.Api.csproj" -c "$BUILD_CONFIGURATION" -o /app/build -p:HUSKY=0
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./GestaoEventos.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false -p:HUSKY=0
+RUN dotnet publish "./GestaoEventos.Api.csproj" -c "$BUILD_CONFIGURATION" -o /app/publish /p:UseAppHost=false -p:HUSKY=0
 
 FROM base AS final
 WORKDIR /app

@@ -12,7 +12,7 @@ public abstract class Repository<TEntity> : IRepository<TEntity>
     protected readonly DbSet<TEntity> _dbSet;
     private readonly AppDbContext _context;
 
-    public Repository(AppDbContext context)
+    protected Repository(AppDbContext context)
     {
         _context = context;
         _dbSet = _context.Set<TEntity>();

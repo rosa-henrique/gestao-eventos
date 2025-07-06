@@ -6,7 +6,7 @@ using GestaoEventos.Domain.Eventos;
 
 namespace GestaoEventos.TestCommon.Eventos;
 
-public class IngressoFactory
+public static class IngressoFactory
 {
     public static Ingresso CriarIngresso(
         string? nome = null,
@@ -16,6 +16,8 @@ public class IngressoFactory
         Guid? id = null)
     {
         var eventoType = typeof(Ingresso);
+
+#pragma warning disable S3011
         var constructor = eventoType.GetConstructor(
             BindingFlags.NonPublic | BindingFlags.Instance,
             null,

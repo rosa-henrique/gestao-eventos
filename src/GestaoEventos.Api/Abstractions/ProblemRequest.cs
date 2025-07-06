@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace GestaoEventos.Api.Abstractions;
 
-public class ProblemRequest
+public static class ProblemRequest
 {
     public static IResult Resolve(List<Error> errors)
     {

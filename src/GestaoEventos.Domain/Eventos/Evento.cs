@@ -34,6 +34,8 @@ public sealed class Evento : Entity, IAggregateRoot
         CriadoPor = criadoPor;
     }
 
+    private Evento() { }
+
     public static ErrorOr<Evento> Criar(string nome, DateTime dataHoraInicio, DateTime dataHoraFim, string localizacao,
         int capacidadeMaxima, Guid criadoPor)
     {
@@ -265,6 +267,4 @@ public sealed class Evento : Entity, IAggregateRoot
     }
 
     public const int CapacidadeMinima = 1;
-
-    private Evento() { }
 }

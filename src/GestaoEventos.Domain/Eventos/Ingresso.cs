@@ -7,12 +7,14 @@ namespace GestaoEventos.Domain.Eventos;
 public sealed class Ingresso : Entity
 {
     private Ingresso(string nome, string descricao, decimal preco, int quantidade, Guid? id = null)
-                        : base(id ?? Guid.NewGuid())
+        : base(id ?? Guid.NewGuid())
     {
         Tipo = new TipoIngresso(nome, descricao);
         Preco = preco;
         Quantidade = quantidade;
     }
+
+    private Ingresso() { }
 
     public TipoIngresso Tipo { get; private set; } = null!;
     public decimal Preco { get; private set; }
@@ -38,6 +40,4 @@ public sealed class Ingresso : Entity
         Preco = novosDados.Preco;
         Quantidade = novosDados.Quantidade;
     }
-
-    private Ingresso() { }
 }

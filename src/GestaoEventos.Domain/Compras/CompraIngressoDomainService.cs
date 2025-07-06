@@ -20,7 +20,7 @@ public class CompraIngressoDomainService(ICompraIngressoRepository compraIngress
         var ingressosDisponiveis = evento.Ingressos.ToFrozenDictionary(i => i.Id, i => i);
         var compraIngressosPorSessao =
             await compraIngressoRepository.ObterQuantidadeIngressosVendidosPorSessao(sessaoId, cancellationToken);
-        IList<IngressoComprado> ingressosComprados = new List<IngressoComprado>();
+        var ingressosComprados = new List<IngressoComprado>();
 
         foreach (var itemCompra in itensCompra)
         {

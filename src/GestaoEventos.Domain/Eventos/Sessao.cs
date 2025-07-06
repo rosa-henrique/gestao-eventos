@@ -18,6 +18,8 @@ public sealed class Sessao : Entity
         DataHoraFim = dataHoraFim;
     }
 
+    private Sessao() { }
+
     public static ErrorOr<Sessao> Criar(string nome, DateTime dataHoraInicio, DateTime dataHoraFim)
     {
         return dataHoraInicio > dataHoraFim
@@ -45,8 +47,6 @@ public sealed class Sessao : Entity
         DataHoraInicio = sessao.DataHoraInicio;
         DataHoraFim = sessao.DataHoraFim;
     }
-
-    private Sessao() { }
 
     // Métodos de domínio
 }

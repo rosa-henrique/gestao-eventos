@@ -46,7 +46,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 
 dotnet tool install --global dotnet-sonarscanner
 dotnet tool install --global dotnet-coverage
-dotnet sonarscanner begin /k:"teste" /d:sonar.host.url="http://localhost:9000"  /d:sonar.token="<token>" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.qualitygate.wait=true /d:sonar.scanner.scanAll=true
+dotnet sonarscanner begin /k:"teste" /d:sonar.host.url="http://localhost:9000"  /d:sonar.token="<token>" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml /d:sonar.qualitygate.wait=true /d:sonar.scanner.scanAll=true /d:sonar.exclusions=**/Migrations/*.cs
 dotnet build --no-incremental
 dotnet-coverage collect "dotnet test" -f xml -o "coverage.xml"  
 dotnet sonarscanner end /d:sonar.token="<token>"

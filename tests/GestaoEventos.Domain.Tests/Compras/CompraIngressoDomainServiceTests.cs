@@ -57,7 +57,7 @@ public class CompraIngressoDomainServiceTests
         retorno.IsError.Should().BeTrue();
 
         retorno.Errors.Should().NotBeEmpty()
-            .And.Satisfy(a => a.Description == string.Format(ErrosCompras.EventoNaoPermiteCompra, ingresso.Id));
+            .And.Satisfy(a => a.Description == ErrosCompras.EventoNaoPermiteCompra);
     }
 
     [Fact]
