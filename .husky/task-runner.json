@@ -57,13 +57,13 @@
       "command": "dotnet",
       "args": ["format", "--include", "${staged}"],
       "include": ["**/*.cs"]
-    },
-    {
-      "name": "staged files",
-      "pathMode": "absolute",
-      "command": "cmd",
-      "group": "pre-commit",
-      "args": ["/c", "echo", "${staged}"]
     }
+    // {
+    //   "name": "staged files",
+    //   "pathMode": "absolute",
+    //   "command": "cmd",
+    //   "group": "pre-commit",
+    //   "args": ["/c", "echo", "${staged}"]
+    // }
   ]
 }

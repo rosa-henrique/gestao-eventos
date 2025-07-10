@@ -7,6 +7,9 @@
   <ItemGroup>
     <Compile Remove="Middleware\**" />
     <Content Remove="Middleware\**" />
+    <Content Include="..\..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
     <EmbeddedResource Remove="Middleware\**" />
     <None Remove="Middleware\**" />
   </ItemGroup>
