@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Logging;
@@ -7,6 +8,8 @@ using Microsoft.Extensions.ServiceDiscovery;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
+
+using Serilog;
 
 namespace Microsoft.Extensions.Hosting;
 
@@ -21,6 +24,9 @@ public static class Extensions
     public static TBuilder AddServiceDefaults<TBuilder>(this TBuilder builder)
         where TBuilder : IHostApplicationBuilder
     {
+        // Add services to the container.
+        builder.Services.AddProblemDetails();
+
         builder.ConfigureOpenTelemetry();
 
         builder.AddDefaultHealthChecks();
@@ -130,6 +136,31 @@ public static class Extensions
                 });
 
         builder.Services.AddAuthorization();
+
+        return builder;
+    }
+
+    public static TBuilder AddLogs<TBuilder>(this TBuilder builder)
+        where TBuilder : IHostApplicationBuilder
+    {
+        var useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
+        var logBuilder = new LoggerConfiguration()
+            .Enrich.FromLogContext()
+            .WriteTo.Console();
+
+        if (useOtlpExporter)
+        {
+            logBuilder
+                .WriteTo.OpenTelemetry(options =>
+                {
+                    options.Endpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
+                    options.ResourceAttributes.Add("service.name", "apiservice");
+                });
+        }
+
+        Log.Logger = logBuilder.CreateBootstrapLogger();
+
+        builder.Logging.AddSerilog();
 
         return builder;
     }

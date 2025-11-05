@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\EventFlow.Eventos.Application\EventFlow.Eventos.Application.csproj" />
+      <ProjectReference Include="..\EventFlow.Eventos.Domain\EventFlow.Eventos.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="HttpService\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore">
+        <HintPath>..\..\..\..\..\..\..\..\usr\local\share\dotnet\shared\Microsoft.AspNetCore.App\9.0.10\Microsoft.AspNetCore.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

@@ -1,7 +1,13 @@
+using EventFlow.Eventos.Api.Endpoints;
+using EventFlow.Eventos.Application;
+using EventFlow.Eventos.Infrastructure;
+
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", false);
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire client integrations.
-builder.AddServiceDefaults();
+builder.AddLogs().AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddProblemDetails();
@@ -9,7 +15,10 @@ builder.Services.AddProblemDetails();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-builder.AddKeycloakAuthentication();
+builder.AddKeycloakAuthentication()
+        .AddInfrastructure();
+
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
@@ -19,12 +28,15 @@ app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseMigrations();
 }
 
 app.UseAuthorization();
 app.UseAuthorization();
 
 app.MapGet("/", () => "Hello World!").RequireAuthorization();
+
+app.MapCriar();
 
 app.MapDefaultEndpoints();
 

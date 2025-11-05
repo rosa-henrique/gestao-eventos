@@ -8,10 +8,16 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\aspire\EventFlow.ServiceDefaults\EventFlow.ServiceDefaults.csproj" />
+      <ProjectReference Include="..\EventFlow.Eventos.Application\EventFlow.Eventos.Application.csproj" />
+      <ProjectReference Include="..\EventFlow.Eventos.Infrastructure\EventFlow.Eventos.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
