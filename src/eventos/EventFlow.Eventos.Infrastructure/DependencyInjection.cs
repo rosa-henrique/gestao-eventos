@@ -1,5 +1,6 @@
 using EventFlow.Eventos.Domain;
 using EventFlow.Eventos.Infrastructure.Persistence;
+using EventFlow.Eventos.Infrastructure.Persistence.Repositories;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;

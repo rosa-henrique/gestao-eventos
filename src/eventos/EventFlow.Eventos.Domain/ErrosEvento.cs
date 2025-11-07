@@ -10,6 +10,7 @@ public static class ErrosEvento
     public const string NaoAlterarEventoPassadoCode = "Evento.NaoAlterarEventoPassado";
     public const string NaoPermiteAlteracaoCode = "Evento.NaoPermiteAlteracao";
     public const string NaoPermiteAlteracaoDiretamenteCode = "Evento.NaoPermiteAlteracaoDiretamente";
+    public const string EventoNaoEncontradoCode = "Evento.EventoNaoEncontrado";
 
     public static Error DataRetroativa = Error.Failure(
         code: DataRetroativaCode,
@@ -29,4 +30,7 @@ public static class ErrosEvento
     public static Error NaoPermiteAlteracaoDiretamente(StatusEvento statusAtual, StatusEvento statusNovo) => Error.Failure(
         code: NaoPermiteAlteracaoDiretamenteCode,
         description: $"Não é possível alterar um evento {statusAtual} diretamente para {statusNovo}.");
+    public static Error EventoNaoEncontrado = Error.NotFound(
+        code: EventoNaoEncontradoCode,
+        description: "Eventos não encontrado.");
 }

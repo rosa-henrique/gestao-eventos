@@ -16,7 +16,7 @@ public class CriarRequestHandler(IEventoRepository repository) : IRequestHandler
 
         if (resultadoEvento.IsError)
         {
-            return Task.FromResult(resultadoEvento.Errors as dynamic);
+            return resultadoEvento.Errors;
         }
 
         var evento = resultadoEvento.Value;

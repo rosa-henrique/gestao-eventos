@@ -4,13 +4,14 @@ var username = builder.AddParameter("username", value: "admin");
 var password = builder.AddParameter("password", secret: true, value: "admin");
 
 var keycloak = builder.AddKeycloak("keycloak", 8080, username, password)
-    .WithDataVolume("keycloak")
+    .WithDataVolume("keycloak-eventos")
     .WithRealmImport("./Infra/Keycloak")
     .WithEnvironment("KC_HTTP_ENABLED", "true")
     .WithEnvironment("KC_PROXY_HEADERS", "xforwarded")
     .WithEnvironment("KC_HOSTNAME_STRICT", "false");
 
 var postgres = builder.AddPostgres("postgres")
+    .WithDataVolume("postgres-eventos")
     .WithPgAdmin(pgAdmin => pgAdmin.WithHostPort(5050))
     .WithLifetime(ContainerLifetime.Persistent);
 
