@@ -4,6 +4,7 @@ namespace EventFlow.Eventos.Domain;
 
 public interface IEventoRepository : IRepository<Evento>
 {
+    Task<IList<Evento>> Buscar();
     Task<Evento?> BuscarPorId(Guid id, CancellationToken cancellationToken);
     void Adicionar(Evento evento);
     void Alterar(Evento evento);

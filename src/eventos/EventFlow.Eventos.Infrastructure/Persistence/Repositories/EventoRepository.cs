@@ -11,6 +11,11 @@ public class EventoRepository(EventosDbContext dbContext) : IEventoRepository
         return dbContext.Eventos.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
     }
 
+    public async Task<IList<Evento>> Buscar()
+    {
+        return await dbContext.Eventos.ToListAsync();
+    }
+
     public void Adicionar(Evento evento)
     {
         dbContext.Eventos.Add(evento);

@@ -36,6 +36,8 @@ app.UseAuthorization();
 
 app.MapGet("/", () => "Hello World!").RequireAuthorization();
 
+app.MapBuscar();
+app.MapBuscarPorId();
 app.MapCriar();
 app.MapAlterar();
 app.MapCancelar();
