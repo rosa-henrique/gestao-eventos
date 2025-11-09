@@ -7,7 +7,8 @@ public record EventoContract(
     DateTime DataHoraFim,
     string Localizacao,
     int CapacidadeMaxima,
-    StatusEvento StatusEvento) : IContract;
+    StatusEvento Status,
+    Guid CriadoPor) : IContract;
 
 public enum StatusEvento
 {

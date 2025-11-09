@@ -32,6 +32,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventFlow.Shared.Applicatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventFlow.Shared.Infrastructure", "src\shared\EventFlow.Shared.Infrastructure\EventFlow.Shared.Infrastructure.csproj", "{E26A7E13-A8DF-4222-A815-B39556CCC4E3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "inventario", "inventario", "{A3B76AFC-4177-4446-8A18-6B76C6FE2D3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventFlow.Inventario.Domain", "src\inventario\EventFlow.Inventario.Domain\EventFlow.Inventario.Domain.csproj", "{24C155C0-5378-4FBF-B5E0-324D38985B98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventFlow.Inventario.Infrastructure", "src\inventario\EventFlow.Inventario.Infrastructure\EventFlow.Inventario.Infrastructure.csproj", "{CCC281F9-CE28-48F7-922E-376362C470D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventFlow.Inventario.Application", "src\inventario\EventFlow.Inventario.Application\EventFlow.Inventario.Application.csproj", "{16210277-E4B3-43E9-A997-BD377EF76CE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventFlow.Inventario.Api", "src\inventario\EventFlow.Inventario.Api\EventFlow.Inventario.Api.csproj", "{42720D19-759D-481A-A8F8-B8EF8044E8EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -74,6 +84,22 @@ Global
 		{E26A7E13-A8DF-4222-A815-B39556CCC4E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E26A7E13-A8DF-4222-A815-B39556CCC4E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E26A7E13-A8DF-4222-A815-B39556CCC4E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24C155C0-5378-4FBF-B5E0-324D38985B98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24C155C0-5378-4FBF-B5E0-324D38985B98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24C155C0-5378-4FBF-B5E0-324D38985B98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24C155C0-5378-4FBF-B5E0-324D38985B98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CCC281F9-CE28-48F7-922E-376362C470D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CCC281F9-CE28-48F7-922E-376362C470D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CCC281F9-CE28-48F7-922E-376362C470D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CCC281F9-CE28-48F7-922E-376362C470D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{16210277-E4B3-43E9-A997-BD377EF76CE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{16210277-E4B3-43E9-A997-BD377EF76CE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{16210277-E4B3-43E9-A997-BD377EF76CE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{16210277-E4B3-43E9-A997-BD377EF76CE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42720D19-759D-481A-A8F8-B8EF8044E8EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42720D19-759D-481A-A8F8-B8EF8044E8EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42720D19-759D-481A-A8F8-B8EF8044E8EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42720D19-759D-481A-A8F8-B8EF8044E8EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{08B69897-FE58-4A77-B72C-47E52240F0E3} = {C8BFC6B6-F566-45C4-8EF3-8473CA1EB609}
@@ -85,5 +111,9 @@ Global
 		{51DCD802-69A9-4733-9E6E-E0115B4CF634} = {7262A415-60BA-4794-95DF-E506FC40397C}
 		{C556DF33-558B-4EAD-B14B-4F66C5862112} = {C111E89D-3D95-4ABB-9D3A-8A85324FAA3F}
 		{E26A7E13-A8DF-4222-A815-B39556CCC4E3} = {C111E89D-3D95-4ABB-9D3A-8A85324FAA3F}
+		{24C155C0-5378-4FBF-B5E0-324D38985B98} = {A3B76AFC-4177-4446-8A18-6B76C6FE2D3F}
+		{CCC281F9-CE28-48F7-922E-376362C470D3} = {A3B76AFC-4177-4446-8A18-6B76C6FE2D3F}
+		{16210277-E4B3-43E9-A997-BD377EF76CE3} = {A3B76AFC-4177-4446-8A18-6B76C6FE2D3F}
+		{42720D19-759D-481A-A8F8-B8EF8044E8EB} = {A3B76AFC-4177-4446-8A18-6B76C6FE2D3F}
 	EndGlobalSection
 EndGlobal

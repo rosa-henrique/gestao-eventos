@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\eventos\EventFlow.Eventos.Api\EventFlow.Eventos.Api.csproj" />
+      <ProjectReference Include="..\..\inventario\EventFlow.Inventario.Api\EventFlow.Inventario.Api.csproj" />
     </ItemGroup>
 
 </Project>

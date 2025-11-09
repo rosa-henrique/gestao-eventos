@@ -23,7 +23,8 @@ public class EvendoCriadoEventHandler(IMessagePublisher messagePublisher, IConfi
             evento.DataHoraFim,
             evento.Localizacao,
             evento.CapacidadeMaxima,
-            Enum.Parse<StatusEvento>(evento.Status.Name));
+            Enum.Parse<StatusEvento>(evento.Status.Name),
+            evento.CriadoPor);
 
         await messagePublisher.Publicar(
             contract,

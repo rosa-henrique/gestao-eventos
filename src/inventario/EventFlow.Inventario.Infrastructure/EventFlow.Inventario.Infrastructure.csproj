@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\shared\EventFlow.Shared.Infrastructure\EventFlow.Shared.Infrastructure.csproj" />
+      <ProjectReference Include="..\EventFlow.Inventario.Application\EventFlow.Inventario.Application.csproj" />
+      <ProjectReference Include="..\EventFlow.Inventario.Domain\EventFlow.Inventario.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="IntegrationEvents\" />
+    </ItemGroup>
+
+</Project>

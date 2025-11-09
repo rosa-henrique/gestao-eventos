@@ -11,7 +11,6 @@ public class StatusEvento(string name, int value) : SmartEnum<StatusEvento>(name
     public static readonly StatusEvento Concluido = new("Concluído", 4);
 
     public static readonly IReadOnlyCollection<StatusEvento> StatusNaoPermitemAlteracao = [Cancelado, Concluido];
-    public static readonly IReadOnlyCollection<StatusEvento> StatusPermiteCompra = [Confirmado, EmAndamento];
 
     public static readonly IReadOnlyDictionary<StatusEvento, IList<StatusEvento>> StatusPermitemAlterarDiretamente = new Dictionary<StatusEvento, IList<StatusEvento>>
     {

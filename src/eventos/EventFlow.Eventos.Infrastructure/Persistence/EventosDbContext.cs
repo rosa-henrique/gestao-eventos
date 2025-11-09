@@ -15,12 +15,15 @@ public class EventosDbContext(DbContextOptions<EventosDbContext> options, IPubli
     {
         NormalizeDateTimes();
 
+        var result = await base.SaveChangesAsync(cancellationToken);
+
         var domainEvents = ChangeTracker.Entries<Entity>()
             .SelectMany(entry => entry.Entity.PopDomainEvents())
             .ToList();
 
         await PublishDomainEvents(domainEvents);
-        return await base.SaveChangesAsync(cancellationToken);
+
+        return result;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
