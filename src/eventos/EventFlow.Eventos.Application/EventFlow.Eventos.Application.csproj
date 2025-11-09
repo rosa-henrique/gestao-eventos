@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\shared\EventFlow.Shared.Application\EventFlow.Shared.Application.csproj" />
+      <ProjectReference Include="..\..\shared\EventFlow.Shared.Infrastructure\EventFlow.Shared.Infrastructure.csproj" />
       <ProjectReference Include="..\EventFlow.Eventos.Domain\EventFlow.Eventos.Domain.csproj" />
     </ItemGroup>
 

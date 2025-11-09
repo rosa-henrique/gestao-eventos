@@ -1,5 +1,6 @@
 using ErrorOr;
 
+using EventFlow.Eventos.Domain.Events;
 using EventFlow.Shared.Domain;
 
 namespace EventFlow.Eventos.Domain;
@@ -36,8 +37,12 @@ public class Evento : Entity, IAggregateRoot
             return resultadoValidacao.Errors;
         }
 
-        return new Evento(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, StatusEvento.Pendente,
+        var evento = new Evento(nome, dataHoraInicio, dataHoraFim, localizacao, capacidadeMaxima, StatusEvento.Pendente,
             criadoPor);
+
+        evento._domainEvents.Add(new EventoCriadoEvent(evento));
+
+        return evento;
     }
 
     public ErrorOr<Success> Atualizar(string nome, DateTime dataHoraInicio, DateTime dataHoraFim, string localizacao,
@@ -50,7 +55,6 @@ public class Evento : Entity, IAggregateRoot
         }
 
         var resultadoValidacao = Validar(dataHoraInicio, dataHoraFim, capacidadeMaxima);
-
         if (resultadoValidacao.IsError)
         {
             return resultadoValidacao.Errors;
@@ -62,6 +66,8 @@ public class Evento : Entity, IAggregateRoot
         Localizacao = localizacao;
         CapacidadeMaxima = capacidadeMaxima;
         Status = status;
+
+        _domainEvents.Add(new EventoAlteradoEvent(this));
 
         return Result.Success;
     }

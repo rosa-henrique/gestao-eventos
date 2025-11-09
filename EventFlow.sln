@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventFlow.Eventos.Applicati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventFlow.Shared.Application", "src\shared\EventFlow.Shared.Application\EventFlow.Shared.Application.csproj", "{C556DF33-558B-4EAD-B14B-4F66C5862112}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventFlow.Shared.Infrastructure", "src\shared\EventFlow.Shared.Infrastructure\EventFlow.Shared.Infrastructure.csproj", "{E26A7E13-A8DF-4222-A815-B39556CCC4E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{C556DF33-558B-4EAD-B14B-4F66C5862112}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C556DF33-558B-4EAD-B14B-4F66C5862112}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C556DF33-558B-4EAD-B14B-4F66C5862112}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E26A7E13-A8DF-4222-A815-B39556CCC4E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E26A7E13-A8DF-4222-A815-B39556CCC4E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E26A7E13-A8DF-4222-A815-B39556CCC4E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E26A7E13-A8DF-4222-A815-B39556CCC4E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{08B69897-FE58-4A77-B72C-47E52240F0E3} = {C8BFC6B6-F566-45C4-8EF3-8473CA1EB609}
@@ -78,5 +84,6 @@ Global
 		{1FA7EAF4-49AB-4948-BF80-6D7646990AEE} = {7262A415-60BA-4794-95DF-E506FC40397C}
 		{51DCD802-69A9-4733-9E6E-E0115B4CF634} = {7262A415-60BA-4794-95DF-E506FC40397C}
 		{C556DF33-558B-4EAD-B14B-4F66C5862112} = {C111E89D-3D95-4ABB-9D3A-8A85324FAA3F}
+		{E26A7E13-A8DF-4222-A815-B39556CCC4E3} = {C111E89D-3D95-4ABB-9D3A-8A85324FAA3F}
 	EndGlobalSection
 EndGlobal

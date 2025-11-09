@@ -1,5 +1,7 @@
 using EventFlow.Eventos.Domain;
 
+using StatusEvento = EventFlow.Eventos.Application.Enums.StatusEvento;
+
 namespace EventFlow.Eventos.Application.Response;
 
 public record EventoResponse(
@@ -8,8 +10,9 @@ public record EventoResponse(
     DateTime DataHoraInicio,
     DateTime DataHoraFim,
     string Localizacao,
-    int CapacidadeMaxima)
+    int CapacidadeMaxima,
+    StatusEvento StatusEvento)
 {
     public static implicit operator EventoResponse(Evento evento)
-        => new(evento.Id, evento.Nome, evento.DataHoraInicio, evento.DataHoraFim,  evento.Localizacao, evento.CapacidadeMaxima);
+        => new(evento.Id, evento.Nome, evento.DataHoraInicio, evento.DataHoraFim,  evento.Localizacao, evento.CapacidadeMaxima, Enum.Parse<StatusEvento>(evento.Status.Name));
 }

@@ -28,7 +28,6 @@ app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseMigrations();
 }
 
 app.UseAuthorization();

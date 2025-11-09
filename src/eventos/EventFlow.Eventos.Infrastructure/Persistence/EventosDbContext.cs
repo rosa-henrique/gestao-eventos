@@ -1,17 +1,26 @@
 using EventFlow.Eventos.Domain;
+using EventFlow.Shared.Domain;
+
+using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
 namespace EventFlow.Eventos.Infrastructure.Persistence;
 
-public class EventosDbContext(DbContextOptions<EventosDbContext> options) : DbContext(options)
+public class EventosDbContext(DbContextOptions<EventosDbContext> options, IPublisher publisher) : DbContext(options)
 {
     public DbSet<Evento> Eventos { get; set; } = null!;
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         NormalizeDateTimes();
-        return base.SaveChangesAsync(cancellationToken);
+
+        var domainEvents = ChangeTracker.Entries<Entity>()
+            .SelectMany(entry => entry.Entity.PopDomainEvents())
+            .ToList();
+
+        await PublishDomainEvents(domainEvents);
+        return await base.SaveChangesAsync(cancellationToken);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,7 +42,7 @@ public class EventosDbContext(DbContextOptions<EventosDbContext> options) : DbCo
     private void NormalizeDateTimes()
     {
         foreach (var entry in ChangeTracker.Entries()
-                     .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified))
+                     .Where(e => e.State is EntityState.Added or EntityState.Modified))
         {
             foreach (var prop in entry.Properties
                          .Where(p => p.CurrentValue is DateTime))
@@ -43,6 +52,14 @@ public class EventosDbContext(DbContextOptions<EventosDbContext> options) : DbCo
                     ? date
                     : DateTime.SpecifyKind(date, DateTimeKind.Utc);
             }
+        }
+    }
+
+    private async Task PublishDomainEvents(List<IDomainEvent> domainEvents)
+    {
+        foreach (var domainEvent in domainEvents)
+        {
+            await publisher.Publish(domainEvent);
         }
     }
 }
