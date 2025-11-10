@@ -1,13 +1,23 @@
+using EventFlow.Inventario.Domain;
 using EventFlow.Inventario.Domain.Events;
 
 using MediatR;
 
+using Microsoft.Extensions.DependencyInjection;
+
 namespace EventFlow.Inventario.Application.Events;
 
-public class EventoCriandoEventHandler : INotificationHandler<EventoCriadoEvent>
+public class EventoCriandoEventHandler(IServiceScopeFactory serviceScopeFactory) : INotificationHandler<EventoCriadoEvent>
 {
-    public Task Handle(EventoCriadoEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(EventoCriadoEvent notification, CancellationToken cancellationToken)
     {
-        return Task.CompletedTask;
+        using var scope = serviceScopeFactory.CreateScope();
+        var eventoRepository = scope.ServiceProvider.GetRequiredService<IEventoRepository>();
+
+        var evento = new Evento(notification.Id, notification.Status, notification.CriadoPor);
+
+        eventoRepository.Adicionar(evento);
+
+        await eventoRepository.SalvarAlteracoes(cancellationToken);
     }
 }

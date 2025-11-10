@@ -11,6 +11,7 @@ public class InventarioDbContext(DbContextOptions<InventarioDbContext> options, 
     : DbContext(options)
 {
     public DbSet<Evento> Eventos { get; set; } = null!;
+    public DbSet<Ingresso> Ingressos { get; set; } = null!;
 
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {

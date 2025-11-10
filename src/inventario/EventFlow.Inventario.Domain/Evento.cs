@@ -7,6 +7,8 @@ public class Evento : Entity
     public StatusEvento Status { get; private set; } = null!;
     public Guid CriadoPor { get; private set; }
 
+    public virtual ICollection<Ingresso> Ingressos { get; private set; } = null!;
+
     public Evento(Guid id, StatusEvento status, Guid criadoPor)
         : base(id)
     {
@@ -14,10 +16,9 @@ public class Evento : Entity
         CriadoPor = criadoPor;
     }
 
-    public void Alterar(StatusEvento status, Guid criadoPor)
+    public void Alterar(StatusEvento status)
     {
         Status = status;
-        CriadoPor = criadoPor;
     }
 
     private Evento() { }

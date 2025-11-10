@@ -16,8 +16,4 @@
       <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="IntegrationEvents\" />
-    </ItemGroup>
-
 </Project>

@@ -1,5 +1,8 @@
+using EventFlow.Inventario.Domain;
 using EventFlow.Inventario.Domain.Events;
+using EventFlow.Inventario.Infrastructure.IntegrationEvents;
 using EventFlow.Inventario.Infrastructure.Persistence;
+using EventFlow.Inventario.Infrastructure.Persistence.Repositories;
 using EventFlow.Shared.Infrastructure;
 using EventFlow.Shared.Infrastructure.HostedServices;
 using EventFlow.Shared.Infrastructure.Messaging.Consumer;
@@ -16,14 +19,14 @@ public static class DependencyInjection
 {
     public static IHostApplicationBuilder AddInfrastructure(this IHostApplicationBuilder builder)
     {
-        // builder.Services.AddHttpContextAccessor();
         builder.AddPersistence()
             .AddMessaging("EventoService");
 
         builder.Services.AddHostedService<DatabaseMigrationHostedService<InventarioDbContext>>();
         builder.Services.AddHostedService<RabbitTopologyInitializerHostedService>();
 
-        builder.Services.AddRabbitConsumer<EventoCriadoHandler, EventoContract>();
+        builder.Services.AddRabbitConsumer<EventoCriadoIntegrationEvent, EventoContract>();
+        builder.Services.AddRabbitConsumer<EventoAlteradoIntegrationEvent, EventoContract>();
 
         return builder;
     }
@@ -39,17 +42,8 @@ public static class DependencyInjection
                 settings.CommandTimeout = 30;
             });
 
-        return builder;
-    }
-}
+        builder.Services.AddScoped<IEventoRepository, EventoRepository>();
 
-public sealed class EventoCriadoHandler(IPublisher publisher) : RabbitMessageHandler<EventoContract>
-{
-    public override string QueueName => "inventario.eventos.criado";
-    protected override async Task HandleMessageAsync(EventoContract message, CancellationToken cancellationToken)
-    {
-        var status = Domain.StatusEvento.FromName(message.Status.ToString());
-        var @event = new EventoCriadoEvent(message.Id, status, message.CriadoPor);
-        await publisher.Publish(@event, cancellationToken);
+        return builder;
     }
 }
