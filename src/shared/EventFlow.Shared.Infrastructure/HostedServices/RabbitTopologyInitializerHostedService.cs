@@ -93,7 +93,8 @@ public class RabbitTopologyInitializerHostedService(
                 queue: queue.Name,
                 durable: queue.Durable,
                 exclusive: queue.Exclusive,
-                autoDelete: queue.AutoDelete);
+                autoDelete: queue.AutoDelete,
+                arguments: queue.Arguments);
 
             logger.LogInformation("🧩 Fila declarada: {Queue}", queue.Name);
 

@@ -24,6 +24,7 @@ public class QueueConfig
     public bool Exclusive { get; set; } = false;
     public bool AutoDelete { get; set; } = false;
     public IList<BindingConfig>? Bindings { get; set; }
+    public IDictionary<string, object>? Arguments { get; set; }
 }
 
 public class BindingConfig

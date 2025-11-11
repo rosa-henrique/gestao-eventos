@@ -23,7 +23,7 @@ public class EventoAlteradoEventHandler(ILogger<EventoAlteradoEventHandler> logg
             return;
         }
 
-        evento.Alterar(notification.Status);
+        evento.Alterar(notification.CapacidadeMaxima, notification.Status);
         eventoRepository.Alterar(evento);
 
         await eventoRepository.SalvarAlteracoes(cancellationToken);

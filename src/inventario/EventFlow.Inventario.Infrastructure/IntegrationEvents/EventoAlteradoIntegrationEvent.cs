@@ -12,7 +12,7 @@ public class EventoAlteradoIntegrationEvent(IPublisher publisher) : RabbitMessag
     protected override async Task HandleMessageAsync(EventoContract message, CancellationToken cancellationToken)
     {
         var status = Domain.StatusEvento.FromName(message.Status.ToString());
-        var @event = new EventoAlteradoEvent(message.Id, status);
+        var @event = new EventoAlteradoEvent(message.Id, message.CapacidadeMaxima, status);
         await publisher.Publish(@event, cancellationToken);
     }
 }

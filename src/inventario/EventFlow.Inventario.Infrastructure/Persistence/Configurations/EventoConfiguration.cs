@@ -16,6 +16,10 @@ public class EventoConfiguration : IEntityTypeConfiguration<Evento>
             .IsRequired()
             .HasColumnName("id");
 
+        builder.Property(e => e.CapacidadeMaxima)
+            .IsRequired()
+            .HasColumnName("capacidade_maxima");
+
         builder.Property(d => d.Status)
             .IsRequired()
             .HasColumnName("status")

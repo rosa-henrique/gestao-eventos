@@ -26,10 +26,10 @@ public static class ErrosEvento
         description: "Eventos passados não podem ser alterados.");
     public static Error NaoPermiteAlteracao(StatusEvento status) => Error.Failure(
         code: NaoPermiteAlteracaoCode,
-        description: $"Não é possível alterar o status de um evento {status}.");
+        description: $"Não é possível alterar o status de um evento {status.NomeExibicao}.");
     public static Error NaoPermiteAlteracaoDiretamente(StatusEvento statusAtual, StatusEvento statusNovo) => Error.Failure(
         code: NaoPermiteAlteracaoDiretamenteCode,
-        description: $"Não é possível alterar um evento {statusAtual} diretamente para {statusNovo}.");
+        description: $"Não é possível alterar um evento {statusAtual.NomeExibicao} diretamente para {statusNovo.NomeExibicao}.");
     public static Error EventoNaoEncontrado = Error.NotFound(
         code: EventoNaoEncontradoCode,
         description: "Eventos não encontrado.");

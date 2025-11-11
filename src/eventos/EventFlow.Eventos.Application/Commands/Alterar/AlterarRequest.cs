@@ -13,4 +13,4 @@ public record AlterarRequest(Guid Id,
     DateTime DataHoraFim,
     string Localizacao,
     int CapacidadeMaxima,
-    StatusEvento Status) : IRequest<ErrorOr<EventoResponse>>;
+    StatusEvento? Status) : IRequest<ErrorOr<EventoResponse>>;

@@ -14,7 +14,7 @@ public class EventoCriandoEventHandler(IServiceScopeFactory serviceScopeFactory)
         using var scope = serviceScopeFactory.CreateScope();
         var eventoRepository = scope.ServiceProvider.GetRequiredService<IEventoRepository>();
 
-        var evento = new Evento(notification.Id, notification.Status, notification.CriadoPor);
+        var evento = new Evento(notification.Id, notification.CapacidadeMaxima, notification.Status, notification.CriadoPor);
 
         eventoRepository.Adicionar(evento);
 

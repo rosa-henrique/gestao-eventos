@@ -32,5 +32,5 @@ public static class AlterarEndpoint
         DateTime DataHoraFim,
         string Localizacao,
         int CapacidadeMaxima,
-        StatusEvento Status);
+        StatusEvento? Status);
 }

@@ -1,3 +1,4 @@
+using EventFlow.Inventario.Api.Endpoints;
 using EventFlow.Inventario.Application;
 using EventFlow.Inventario.Infrastructure;
 
@@ -33,6 +34,8 @@ app.UseAuthorization();
 app.UseAuthorization();
 
 app.MapGet("/", () => "Hello World!").RequireAuthorization();
+
+app.MapCriarIngressoEndpoint();
 
 app.MapDefaultEndpoints();
 

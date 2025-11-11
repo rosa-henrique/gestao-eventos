@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EventFlow.Inventario.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(InventarioDbContext))]
-    [Migration("20251109162238_InitialMigration")]
+    [Migration("20251111001028_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -31,6 +31,10 @@ namespace EventFlow.Inventario.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
+
+                    b.Property<int>("CapacidadeMaxima")
+                        .HasColumnType("integer")
+                        .HasColumnName("capacidade_maxima");
 
                     b.Property<Guid>("CriadoPor")
                         .HasColumnType("uuid")

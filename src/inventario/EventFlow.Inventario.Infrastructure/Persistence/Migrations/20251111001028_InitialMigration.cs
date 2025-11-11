@@ -16,6 +16,7 @@ namespace EventFlow.Inventario.Infrastructure.Persistence.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
+                    capacidade_maxima = table.Column<int>(type: "integer", nullable: false),
                     status = table.Column<int>(type: "integer", nullable: false),
                     criado_por = table.Column<Guid>(type: "uuid", nullable: false)
                 },

@@ -21,25 +21,31 @@ public class Ingresso : Entity, IAggregateRoot
         Preco = preco;
         QuantidadeTotal = quantidade;
         EventoId = evento.Id;
-        Evento = evento;
     }
 
     public static ErrorOr<Ingresso> Criar(string nome, string descricao, decimal preco, int quantidade, Evento evento)
     {
-        if (!StatusEvento.StatusPermiteCompra.Contains(evento.Status))
+        if (!StatusEvento.StatusPermiteAlteracaoIngresso.Contains(evento.Status))
         {
-            return ErrosIngresso.EventoNaoPermiteCompraIngresso;
+            return ErrosIngresso.StatusEventoNaoPermiteAlteracaoIngresso(evento.Status);
         }
 
         return new Ingresso(nome, descricao, preco, quantidade, evento);
     }
 
-    public void Alterar(string nome, string descricao, decimal preco, int quantidade)
+    public ErrorOr<Success> Alterar(string nome, string descricao, decimal preco, int quantidade)
     {
+        if (!StatusEvento.StatusPermiteAlteracaoIngresso.Contains(Evento.Status))
+        {
+            return ErrosIngresso.StatusEventoNaoPermiteAlteracaoIngresso(Evento.Status);
+        }
+
         Nome = nome;
         Descricao = descricao;
         Preco = preco;
         QuantidadeTotal = quantidade;
+
+        return Result.Success;
     }
 
     private Ingresso() { }

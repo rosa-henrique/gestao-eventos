@@ -11,7 +11,7 @@ public class BuscarRequestHandler(IEventoRepository repository) : IRequestHandle
 {
     public async Task<ErrorOr<IEnumerable<EventoResponse>>> Handle(BuscarRequest request, CancellationToken cancellationToken)
     {
-        var eventos = await repository.Buscar();
+        var eventos = await repository.Buscar(cancellationToken);
 
         return eventos.Select(e => (EventoResponse)e) as dynamic;
     }

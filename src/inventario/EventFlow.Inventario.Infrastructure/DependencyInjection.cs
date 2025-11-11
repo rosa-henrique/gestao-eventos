@@ -43,6 +43,7 @@ public static class DependencyInjection
             });
 
         builder.Services.AddScoped<IEventoRepository, EventoRepository>();
+        builder.Services.AddScoped<IIngressoRepository, IngressoRepository>();
 
         return builder;
     }

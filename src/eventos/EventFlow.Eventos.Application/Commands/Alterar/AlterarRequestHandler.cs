@@ -17,7 +17,7 @@ public class AlterarRequestHandler(IEventoRepository repository) : IRequestHandl
             return ErrosEvento.EventoNaoEncontrado;
         }
 
-        var status = StatusEvento.FromName(request.Status.ToString());
+        var status = StatusEvento.FromName(request.Status!.ToString());
         var resultadoAtualizar = evento.Atualizar(request.Nome, request.DataHoraInicio, request.DataHoraFim, request.Localizacao, request.CapacidadeMaxima, status);
 
         if (resultadoAtualizar.IsError)

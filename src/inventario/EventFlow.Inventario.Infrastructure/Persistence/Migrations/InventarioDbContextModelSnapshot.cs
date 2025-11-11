@@ -29,6 +29,10 @@ namespace EventFlow.Inventario.Infrastructure.Persistence.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
+                    b.Property<int>("CapacidadeMaxima")
+                        .HasColumnType("integer")
+                        .HasColumnName("capacidade_maxima");
+
                     b.Property<Guid>("CriadoPor")
                         .HasColumnType("uuid")
                         .HasColumnName("criado_por");
