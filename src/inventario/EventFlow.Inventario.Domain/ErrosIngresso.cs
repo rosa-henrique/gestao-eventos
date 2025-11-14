@@ -6,6 +6,7 @@ public static class ErrosIngresso
 {
     public const string StatusEventoNaoPermiteAlteracaoIngressoCode = "Ingresso.StatusEventoNaoPermiteAlteracaoIngresso";
     public const string EventoNaoEncontradoCode = "Ingresso.EventoNaoEncontrado";
+    public const string IngressoNaoEncontradoCode = "Ingresso.IngressoNaoEncontrado";
 
     public static Error StatusEventoNaoPermiteAlteracaoIngresso(StatusEvento statusEvento) => Error.Failure(
         code: StatusEventoNaoPermiteAlteracaoIngressoCode,
@@ -13,5 +14,9 @@ public static class ErrosIngresso
 
     public static Error EventoNaoEncontrado = Error.NotFound(
         code: EventoNaoEncontradoCode,
-        description: "Eventos selecionado não encontrado.");
+        description: "Evento selecionado não encontrado.");
+
+    public static Error IngressoNaoEncontrado = Error.NotFound(
+        code: IngressoNaoEncontradoCode,
+        description: "Ingresso selecionado não encontrado.");
 }
