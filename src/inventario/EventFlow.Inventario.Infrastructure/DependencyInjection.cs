@@ -1,14 +1,10 @@
 using EventFlow.Inventario.Domain;
-using EventFlow.Inventario.Domain.Events;
 using EventFlow.Inventario.Infrastructure.IntegrationEvents;
 using EventFlow.Inventario.Infrastructure.Persistence;
 using EventFlow.Inventario.Infrastructure.Persistence.Repositories;
+using EventFlow.Shared.Application.Contracts;
 using EventFlow.Shared.Infrastructure;
 using EventFlow.Shared.Infrastructure.HostedServices;
-using EventFlow.Shared.Infrastructure.Messaging.Consumer;
-using EventFlow.Shared.Infrastructure.Messaging.Contracts;
-
-using MediatR;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

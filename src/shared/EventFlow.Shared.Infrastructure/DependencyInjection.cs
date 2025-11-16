@@ -1,12 +1,12 @@
+using EventFlow.Shared.Application.Contracts;
+using EventFlow.Shared.Application.Interfaces;
 using EventFlow.Shared.Infrastructure.HostedServices;
-using EventFlow.Shared.Infrastructure.Messaging.Consumer;
-using EventFlow.Shared.Infrastructure.Messaging.Contracts;
+using EventFlow.Shared.Infrastructure.Messaging.Consumers;
+using EventFlow.Shared.Infrastructure.Messaging.Publishers;
 using EventFlow.Shared.Infrastructure.Messaging.RabbitTopology;
-using EventFlow.Shared.Infrastructure.Messaging.Services;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace EventFlow.Shared.Infrastructure;
 
@@ -34,4 +34,3 @@ public static class DependencyInjection
         return services;
     }
 }
-

@@ -1,17 +1,18 @@
 using System.Text.Json;
 
-using EventFlow.Shared.Infrastructure.Messaging.Contracts;
+using EventFlow.Shared.Application.Contracts;
+using EventFlow.Shared.Application.Interfaces;
 
 using Microsoft.Extensions.Logging;
 
 using RabbitMQ.Client;
 
-namespace EventFlow.Shared.Infrastructure.Messaging.Services;
+namespace EventFlow.Shared.Infrastructure.Messaging.Publishers;
 
 public class RabbitMessagePublisher(IConnection connection,
     ILogger<RabbitMessagePublisher> logger) : IMessagePublisher
 {
-    public Task Publicar<T>(
+    public async Task Publicar<T>(
         T mensagem,
         string exchange,
         string routingKey,
@@ -33,25 +34,27 @@ public class RabbitMessagePublisher(IConnection connection,
             throw new ArgumentException("RoutingKey inválida.", nameof(routingKey));
         }
 
-        var channel = connection.CreateModel();
+        var channel = await connection.CreateChannelAsync();
 
         var body = JsonSerializer.SerializeToUtf8Bytes(mensagem);
 
-        var props = channel.CreateBasicProperties();
-        props.Persistent = true;
-        props.ContentType = "application/json";
+        var props = new BasicProperties
+        {
+            Persistent = true,
+            ContentType = "application/json",
+        };
 
-        channel.BasicPublish(
+        await channel.BasicPublishAsync(
             exchange: exchange,
             routingKey: routingKey,
+            mandatory: false,
             basicProperties: props,
-            body: body);
+            body: body,
+            cancellationToken: cancellationToken);
 
         logger.LogInformation(
             "📤 Mensagem publicada na exchange '{Exchange}' com routingKey '{RoutingKey}'.",
             exchange,
             routingKey);
-
-        return Task.CompletedTask;
     }
 }

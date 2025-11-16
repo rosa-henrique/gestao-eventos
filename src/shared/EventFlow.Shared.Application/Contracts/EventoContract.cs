@@ -1,4 +1,4 @@
-namespace EventFlow.Shared.Infrastructure.Messaging.Contracts;
+namespace EventFlow.Shared.Application.Contracts;
 
 public record EventoContract(
     Guid Id,

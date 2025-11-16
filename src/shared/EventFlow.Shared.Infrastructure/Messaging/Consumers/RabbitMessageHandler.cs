@@ -1,8 +1,6 @@
-using EventFlow.Shared.Infrastructure.Messaging.Contracts;
+using EventFlow.Shared.Application.Contracts;
 
-using Microsoft.Extensions.Logging;
-
-namespace EventFlow.Shared.Infrastructure.Messaging.Consumer;
+namespace EventFlow.Shared.Infrastructure.Messaging.Consumers;
 
 public abstract class RabbitMessageHandler<TMessage>
     where TMessage : IContract

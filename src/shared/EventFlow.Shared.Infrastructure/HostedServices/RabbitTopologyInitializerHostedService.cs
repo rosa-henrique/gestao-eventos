@@ -1,4 +1,3 @@
-using EventFlow.Shared.Infrastructure.Messaging;
 using EventFlow.Shared.Infrastructure.Messaging.RabbitTopology;
 
 using Microsoft.Extensions.Hosting;
@@ -15,30 +14,30 @@ public class RabbitTopologyInitializerHostedService(
     ILogger<RabbitTopologyInitializerHostedService> logger) : IHostedService
 {
     private readonly RabbitTopologyOptions rabbitTopology = rabbitTopologyOptions?.Value ?? new RabbitTopologyOptions();
-    private IModel? _channel;
+    private IChannel? _channel;
 
-    public Task StartAsync(CancellationToken stoppingToken)
+    public async Task StartAsync(CancellationToken stoppingToken)
     {
         if (!rabbitTopology.HasAnyConfig)
         {
             logger.LogInformation("ℹ️ Nenhuma configuração de topologia RabbitMQ encontrada. Ignorando inicialização.");
-            return Task.CompletedTask;
+            return;
         }
 
         logger.LogInformation("🎯 Iniciando configuração de topologia RabbitMQ...");
 
-        _channel = connection.CreateModel();
+        _channel = await connection.CreateChannelAsync(cancellationToken: stoppingToken);
 
         try
         {
             if (rabbitTopology.Exchanges?.Any() == true)
             {
-                CriarExchanges();
+                await CriarExchanges(stoppingToken);
             }
 
             if (rabbitTopology.Queues?.Any() == true)
             {
-                CriarQueuesEBindings();
+                await CriarQueuesEBindings(stoppingToken);
             }
 
             logger.LogInformation("✅ Topologia RabbitMQ configurada com sucesso!");
@@ -49,7 +48,7 @@ public class RabbitTopologyInitializerHostedService(
             throw;
         }
 
-        return Task.CompletedTask;
+        return;
     }
 
     public Task StopAsync(CancellationToken cancellationToken)
@@ -58,7 +57,7 @@ public class RabbitTopologyInitializerHostedService(
         return Task.CompletedTask;
     }
 
-    private void CriarExchanges()
+    private async Task CriarExchanges(CancellationToken cancellationToken)
     {
         foreach (var exchange in rabbitTopology.Exchanges!)
         {
@@ -68,18 +67,19 @@ public class RabbitTopologyInitializerHostedService(
                 continue;
             }
 
-            _channel!.ExchangeDeclare(
+            await _channel!.ExchangeDeclareAsync(
                 exchange: exchange.Name,
                 type: exchange.Type ?? ExchangeType.Direct,
                 durable: exchange.Durable,
-                autoDelete: exchange.AutoDelete);
+                autoDelete: exchange.AutoDelete,
+                cancellationToken: cancellationToken);
 
             logger.LogInformation("📦 Exchange declarada: {Exchange} ({Type})", exchange.Name,
                 exchange.Type ?? "direct");
         }
     }
 
-    private void CriarQueuesEBindings()
+    private async Task CriarQueuesEBindings(CancellationToken cancellationToken)
     {
         foreach (var queue in rabbitTopology.Queues!)
         {
@@ -89,12 +89,13 @@ public class RabbitTopologyInitializerHostedService(
                 continue;
             }
 
-            _channel!.QueueDeclare(
+            await _channel!.QueueDeclareAsync(
                 queue: queue.Name,
                 durable: queue.Durable,
                 exclusive: queue.Exclusive,
                 autoDelete: queue.AutoDelete,
-                arguments: queue.Arguments);
+                arguments: queue.Arguments,
+                cancellationToken: cancellationToken);
 
             logger.LogInformation("🧩 Fila declarada: {Queue}", queue.Name);
 
@@ -113,10 +114,11 @@ public class RabbitTopologyInitializerHostedService(
                     continue;
                 }
 
-                _channel.QueueBind(
+                await _channel.QueueBindAsync(
                     queue: queue.Name,
                     exchange: binding.Exchange,
-                    routingKey: binding.RoutingKey);
+                    routingKey: binding.RoutingKey,
+                    cancellationToken: cancellationToken);
 
                 logger.LogInformation(
                     "🔗 Binding criado: {Queue} ← {Exchange} ({RoutingKey})",

@@ -1,6 +1,6 @@
-using EventFlow.Shared.Infrastructure.Messaging.Contracts;
+using EventFlow.Shared.Application.Contracts;
 
-namespace EventFlow.Shared.Infrastructure.Messaging.Services;
+namespace EventFlow.Shared.Application.Interfaces;
 
 public interface IMessagePublisher
 {

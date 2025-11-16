@@ -1,6 +1,6 @@
 using EventFlow.Inventario.Domain.Events;
-using EventFlow.Shared.Infrastructure.Messaging.Consumer;
-using EventFlow.Shared.Infrastructure.Messaging.Contracts;
+using EventFlow.Shared.Application.Contracts;
+using EventFlow.Shared.Infrastructure.Messaging.Consumers;
 
 using MediatR;
 

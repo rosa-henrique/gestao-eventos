@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\shared\EventFlow.Shared.Domain\EventFlow.Shared.Domain.csproj" />
       <ProjectReference Include="..\..\shared\EventFlow.Shared.Infrastructure\EventFlow.Shared.Infrastructure.csproj" />
       <ProjectReference Include="..\EventFlow.Inventario.Application\EventFlow.Inventario.Application.csproj" />
       <ProjectReference Include="..\EventFlow.Inventario.Domain\EventFlow.Inventario.Domain.csproj" />

@@ -1,23 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
+        <ProjectReference Include="..\..\aspire\EventFlow.ServiceDefaults\EventFlow.ServiceDefaults.csproj" />
+        <ProjectReference Include="..\EventFlow.Eventos.Application\EventFlow.Eventos.Application.csproj" />
+        <ProjectReference Include="..\EventFlow.Eventos.Infrastructure\EventFlow.Eventos.Infrastructure.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\aspire\EventFlow.ServiceDefaults\EventFlow.ServiceDefaults.csproj" />
-      <ProjectReference Include="..\EventFlow.Eventos.Application\EventFlow.Eventos.Application.csproj" />
-      <ProjectReference Include="..\EventFlow.Eventos.Infrastructure\EventFlow.Eventos.Infrastructure.csproj" />
+      <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
     </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 using System.Text;
 using System.Text.Json;
 
-using EventFlow.Shared.Infrastructure.Messaging.Contracts;
+using EventFlow.Shared.Application.Contracts;
 
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace EventFlow.Shared.Infrastructure.Messaging.Consumer;
+namespace EventFlow.Shared.Infrastructure.Messaging.Consumers;
 
 public class RabbitMqConsumerService<TMessage, THandler>(
     THandler handler,
@@ -22,14 +22,14 @@ public class RabbitMqConsumerService<TMessage, THandler>(
     {
         var queue = handler.QueueName;
 
-        using var channel = connection.CreateModel();
-        channel.BasicQos(0, 1, false);
+        await using var channel = await connection.CreateChannelAsync(cancellationToken: stoppingToken);
+        await channel.BasicQosAsync(0, 1, false, stoppingToken);
 
         logger.LogInformation("Iniciando consumo da fila {Queue}", queue);
 
-        var consumer = new EventingBasicConsumer(channel);
+        var consumer = new AsyncEventingBasicConsumer(channel);
 
-        consumer.Received += async (_, ea) =>
+        consumer.ReceivedAsync += async (_, ea) =>
         {
             try
             {
@@ -40,21 +40,21 @@ public class RabbitMqConsumerService<TMessage, THandler>(
                 if (message is null)
                 {
                     logger.LogWarning("Mensagem nula recebida em {Queue}", queue);
-                    channel.BasicAck(ea.DeliveryTag, false);
+                    await channel.BasicAckAsync(ea.DeliveryTag, false, stoppingToken);
                     return;
                 }
 
                 await handler.HandleAsync(message, stoppingToken);
-                channel.BasicAck(ea.DeliveryTag, false);
+                await channel.BasicAckAsync(ea.DeliveryTag, false, stoppingToken);
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "Erro ao consumir mensagem da fila {Queue}", queue);
-                channel.BasicNack(ea.DeliveryTag, false, true);
+                await channel.BasicNackAsync(ea.DeliveryTag, false, true, stoppingToken);
             }
         };
 
-        channel.BasicConsume(queue, autoAck: false, consumer);
+        await channel.BasicConsumeAsync(queue, autoAck: false, consumer, stoppingToken);
 
         while (!stoppingToken.IsCancellationRequested)
         {
