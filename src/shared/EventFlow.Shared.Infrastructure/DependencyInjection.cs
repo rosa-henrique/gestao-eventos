@@ -1,9 +1,12 @@
 using EventFlow.Shared.Application.Contracts;
 using EventFlow.Shared.Application.Interfaces;
+using EventFlow.Shared.Infrastructure.CurrentUserProvider;
 using EventFlow.Shared.Infrastructure.HostedServices;
 using EventFlow.Shared.Infrastructure.Messaging.Consumers;
 using EventFlow.Shared.Infrastructure.Messaging.Publishers;
 using EventFlow.Shared.Infrastructure.Messaging.RabbitTopology;
+using EventFlow.Shared.Infrastructure.Security;
+using EventFlow.Shared.Infrastructure.Security.CurrentUserProvider;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,6 +24,10 @@ public static class DependencyInjection
 
         builder.Services.AddHostedService<RabbitTopologyInitializerHostedService>();
         builder.Services.AddSingleton<IMessagePublisher, RabbitMessagePublisher>();
+
+        builder.Services.AddHttpContextAccessor();
+        builder.Services.AddSingleton<ICurrentUserProvider, Security.CurrentUserProvider.CurrentUserProvider>();
+        builder.Services.AddSingleton<IAuthorizationService, AuthorizationService>();
 
         return builder;
     }
