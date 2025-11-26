@@ -13,7 +13,6 @@ public static class DependencyInjection
 {
     public static IHostApplicationBuilder AddInfrastructure(this IHostApplicationBuilder builder)
     {
-        // builder.Services.AddHttpContextAccessor();
         builder.AddPersistence()
             .AddMessaging("EventoService");
 
@@ -25,9 +24,9 @@ public static class DependencyInjection
 
     private static IHostApplicationBuilder AddPersistence(this IHostApplicationBuilder builder)
     {
-        builder.AddNpgsqlDbContext<EventosDbContext>(connectionName: "postgresdb-eventos");
+        builder.AddSqlServerDbContext<EventosDbContext>(connectionName: "sqlserver-eventos");
 
-        builder.EnrichNpgsqlDbContext<EventosDbContext>(
+        builder.EnrichSqlServerDbContext<EventosDbContext>(
             configureSettings: settings =>
             {
                 settings.DisableRetry = false;

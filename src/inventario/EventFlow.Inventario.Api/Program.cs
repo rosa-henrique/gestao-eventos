@@ -7,7 +7,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", false);
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire client integrations.
-builder.AddLogs().AddServiceDefaults();
+builder.AddServiceDefaults();
 
 // Add services to the container.
 builder.Services.AddProblemDetails();

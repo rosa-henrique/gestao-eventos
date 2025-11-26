@@ -3,16 +3,16 @@ using System;
 using EventFlow.Eventos.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace EventFlow.Eventos.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(EventosDbContext))]
-    [Migration("20251104031902_InitialMigration")]
+    [Migration("20251123163208_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -20,48 +20,48 @@ namespace EventFlow.Eventos.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("ProductVersion", "10.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("EventFlow.Eventos.Domain.Evento", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<int>("CapacidadeMaxima")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("capacidade_maxima");
 
                     b.Property<Guid>("CriadoPor")
-                        .HasColumnType("uuid")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("criado_por");
 
                     b.Property<DateTime>("DataHoraFim")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("datetime2")
                         .HasColumnName("data_hora_fim");
 
                     b.Property<DateTime>("DataHoraInicio")
-                        .HasColumnType("timestamp without time zone")
+                        .HasColumnType("datetime2")
                         .HasColumnName("data_hora_inico");
 
                     b.Property<string>("Localizacao")
                         .IsRequired()
                         .HasMaxLength(500)
-                        .HasColumnType("character varying(500)")
+                        .HasColumnType("nvarchar(500)")
                         .HasColumnName("localizacao");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("nvarchar(200)")
                         .HasColumnName("nome");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("status");
 
                     b.HasKey("Id");

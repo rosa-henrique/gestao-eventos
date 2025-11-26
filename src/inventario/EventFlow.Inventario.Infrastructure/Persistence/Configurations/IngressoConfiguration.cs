@@ -33,11 +33,19 @@ public class IngressoConfiguration : IEntityTypeConfiguration<Ingresso>
 
         builder.Property(i => i.QuantidadeTotal)
             .IsRequired()
-            .HasColumnName("quantidade");
+            .HasColumnName("quantidade_total");
+
+        builder.Property(i => i.QuantidadeReservada)
+            .IsRequired()
+            .HasColumnName("quantidade_reservada");
 
         builder.Property(i => i.EventoId)
             .IsRequired()
             .HasColumnName("evento_id");
+
+        builder.Property(i => i.Version)
+            .IsRowVersion()
+            .HasColumnName("version");
 
         builder.HasOne(i => i.Evento)
             .WithMany(i => i.Ingressos)

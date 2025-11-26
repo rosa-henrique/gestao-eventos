@@ -1,5 +1,10 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
+var seq = builder.AddSeq("seq")
+    .ExcludeFromManifest()
+    .WithLifetime(ContainerLifetime.Persistent)
+    .WithEnvironment("ACCEPT_EULA", "Y");
+
 var keycloakUsername = builder.AddParameter("keycloakUsername", value: "admin");
 var keycloakPassword = builder.AddParameter("keycloakPassword", secret: true, value: "admin");
 var keycloak = builder.AddKeycloak("keycloak", 8080, keycloakUsername, keycloakPassword)
@@ -9,9 +14,8 @@ var keycloak = builder.AddKeycloak("keycloak", 8080, keycloakUsername, keycloakP
     .WithEnvironment("KC_PROXY_HEADERS", "xforwarded")
     .WithEnvironment("KC_HOSTNAME_STRICT", "false");
 
-var postgres = builder.AddPostgres("postgres")
-    .WithDataVolume("postgres-eventos")
-    .WithPgAdmin(pgAdmin => pgAdmin.WithHostPort(5050))
+var sqlserver = builder.AddSqlServer("sqlserver")
+    .WithDataVolume("sqlserver-eventos")
     .WithLifetime(ContainerLifetime.Persistent);
 
 var rabbitmqUsername = builder.AddParameter("rabbitmqUsername", value: "admin");
@@ -21,22 +25,26 @@ var rabbitmq = builder.AddRabbitMQ("messaging", rabbitmqUsername, rabbitmqPasswo
     .WithDataVolume("rabbitmq-eventos")
     .WithManagementPlugin();
 
-var postgresdbEventos = postgres.AddDatabase("postgresdb-eventos", "eventos");
+var sqlserverEventos = sqlserver.AddDatabase("sqlserver-eventos", "eventos");
 var eventoApi = builder.AddProject<Projects.EventFlow_Eventos_Api>("eventosapi")
     .WithReference(keycloak)
-    .WithReference(postgresdbEventos)
+    .WithReference(sqlserverEventos)
     .WithReference(rabbitmq)
+    .WithReference(seq)
     .WaitFor(keycloak)
-    .WaitFor(postgresdbEventos)
-    .WaitFor(rabbitmq);
+    .WaitFor(sqlserverEventos)
+    .WaitFor(rabbitmq)
+    .WaitFor(seq);
 
-var postgresdbInventario = postgres.AddDatabase("postgresdb-inventario", "inventario");
+var sqlserverInventario = sqlserver.AddDatabase("sqlserver-inventario", "inventario");
 var inventarioApi = builder.AddProject<Projects.EventFlow_Inventario_Api>("inventarioapi")
     .WithReference(keycloak)
-    .WithReference(postgresdbInventario)
+    .WithReference(sqlserverInventario)
     .WithReference(rabbitmq)
+    .WithReference(seq)
     .WaitFor(keycloak)
-    .WaitFor(postgresdbInventario)
-    .WaitFor(rabbitmq);
+    .WaitFor(sqlserverInventario)
+    .WaitFor(rabbitmq)
+    .WaitFor(seq);
 
 builder.Build().Run();

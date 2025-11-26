@@ -29,14 +29,7 @@ public static class DependencyInjection
 
     private static IHostApplicationBuilder AddPersistence(this IHostApplicationBuilder builder)
     {
-        builder.AddNpgsqlDbContext<InventarioDbContext>(connectionName: "postgresdb-inventario");
-
-        builder.EnrichNpgsqlDbContext<InventarioDbContext>(
-            configureSettings: settings =>
-            {
-                settings.DisableRetry = false;
-                settings.CommandTimeout = 30;
-            });
+        builder.AddSqlServerDbContext<InventarioDbContext>(connectionName: "sqlserver-inventario");
 
         builder.Services.AddScoped<IEventoRepository, EventoRepository>();
         builder.Services.AddScoped<IIngressoRepository, IngressoRepository>();

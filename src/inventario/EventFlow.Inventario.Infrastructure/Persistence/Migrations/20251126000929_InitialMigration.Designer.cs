@@ -3,16 +3,16 @@ using System;
 using EventFlow.Inventario.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace EventFlow.Inventario.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(InventarioDbContext))]
-    [Migration("20251111001028_InitialMigration")]
+    [Migration("20251126000929_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -20,28 +20,28 @@ namespace EventFlow.Inventario.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.10")
-                .HasAnnotation("Relational:MaxIdentifierLength", 63);
+                .HasAnnotation("ProductVersion", "10.0.0")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("EventFlow.Inventario.Domain.Evento", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<int>("CapacidadeMaxima")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("capacidade_maxima");
 
                     b.Property<Guid>("CriadoPor")
-                        .HasColumnType("uuid")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("criado_por");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer")
+                        .HasColumnType("int")
                         .HasColumnName("status");
 
                     b.HasKey("Id");
@@ -53,33 +53,44 @@ namespace EventFlow.Inventario.Infrastructure.Persistence.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("id");
 
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasMaxLength(1000)
-                        .HasColumnType("character varying(1000)")
+                        .HasColumnType("nvarchar(1000)")
                         .HasColumnName("descricao");
 
                     b.Property<Guid>("EventoId")
-                        .HasColumnType("uuid")
+                        .HasColumnType("uniqueidentifier")
                         .HasColumnName("evento_id");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("character varying(200)")
+                        .HasColumnType("nvarchar(200)")
                         .HasColumnName("nome");
 
                     b.Property<decimal>("Preco")
                         .HasPrecision(8, 2)
-                        .HasColumnType("numeric(8,2)")
+                        .HasColumnType("decimal(8,2)")
                         .HasColumnName("preco");
 
+                    b.Property<int>("QuantidadeReservada")
+                        .HasColumnType("int")
+                        .HasColumnName("quantidade_reservada");
+
                     b.Property<int>("QuantidadeTotal")
-                        .HasColumnType("integer")
-                        .HasColumnName("quantidade");
+                        .HasColumnType("int")
+                        .HasColumnName("quantidade_total");
+
+                    b.Property<byte[]>("Version")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion")
+                        .HasColumnName("version");
 
                     b.HasKey("Id");
 

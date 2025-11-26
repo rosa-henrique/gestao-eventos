@@ -1,3 +1,5 @@
+using System.Security.Claims;
+
 using EventFlow.Shared.Infrastructure.CurrentUserProvider;
 
 using Microsoft.AspNetCore.Http;
@@ -9,9 +11,9 @@ public class CurrentUserProvider(IHttpContextAccessor _httpContextAccessor) : IC
 {
     public CurrentUser GetCurrentUser()
     {
-        var id = Guid.Parse(GetSingleClaimValue(JwtRegisteredClaimNames.Sub));
-        var nome = GetSingleClaimValue(JwtRegisteredClaimNames.Name);
-        var email = GetSingleClaimValue(JwtRegisteredClaimNames.Email);
+        var id = Guid.Parse(GetSingleClaimValue(ClaimTypes.NameIdentifier));
+        var nome = GetSingleClaimValue(JwtRegisteredClaimNames.PreferredUsername);
+        var email = GetSingleClaimValue(ClaimTypes.Email);
 
         return new CurrentUser(id, nome, email);
     }

@@ -9,8 +9,6 @@ using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
 
-using Serilog;
-
 namespace Microsoft.Extensions.Hosting;
 
 // Adds common Aspire services: service discovery, resilience, health checks, and OpenTelemetry.
@@ -24,6 +22,8 @@ public static class Extensions
     public static TBuilder AddServiceDefaults<TBuilder>(this TBuilder builder)
         where TBuilder : IHostApplicationBuilder
     {
+        builder.AddSeqEndpoint(connectionName: "seq");
+
         // Add services to the container.
         builder.Services.AddProblemDetails();
 
@@ -141,31 +141,6 @@ public static class Extensions
                 });
 
         builder.Services.AddAuthorization();
-
-        return builder;
-    }
-
-    public static TBuilder AddLogs<TBuilder>(this TBuilder builder)
-        where TBuilder : IHostApplicationBuilder
-    {
-        var useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
-        var logBuilder = new LoggerConfiguration()
-            .Enrich.FromLogContext()
-            .WriteTo.Console();
-
-        if (useOtlpExporter)
-        {
-            logBuilder
-                .WriteTo.OpenTelemetry(options =>
-                {
-                    options.Endpoint = builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"];
-                    options.ResourceAttributes.Add("service.name", "apiservice");
-                });
-        }
-
-        Log.Logger = logBuilder.CreateBootstrapLogger();
-
-        builder.Logging.AddSerilog();
 
         return builder;
     }

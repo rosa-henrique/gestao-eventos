@@ -15,14 +15,14 @@ namespace EventFlow.Eventos.Infrastructure.Persistence.Migrations
                 name: "eventos",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    nome = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    data_hora_inico = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    data_hora_fim = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
-                    localizacao = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    capacidade_maxima = table.Column<int>(type: "integer", nullable: false),
-                    status = table.Column<int>(type: "integer", nullable: false),
-                    criado_por = table.Column<Guid>(type: "uuid", nullable: false)
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    nome = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    data_hora_inico = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    data_hora_fim = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    localizacao = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    capacidade_maxima = table.Column<int>(type: "int", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
+                    criado_por = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {

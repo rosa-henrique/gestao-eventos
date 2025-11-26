@@ -4,8 +4,6 @@ using MediatR;
 
 using Microsoft.Extensions.Logging;
 
-using Serilog.Context;
-
 namespace EventFlow.Shared.Application.PipelineBehaviors;
 
 internal sealed class RequestLoggingPipelineBehavior<TRequest, TResponse>(ILogger<RequestLoggingPipelineBehavior<TRequest, TResponse>> logger)
@@ -29,7 +27,10 @@ internal sealed class RequestLoggingPipelineBehavior<TRequest, TResponse>(ILogge
         }
         else
         {
-            using (LogContext.PushProperty("Error", result.Errors, true))
+            using (logger.BeginScope(new Dictionary<string, object>
+                   {
+                       ["Error"] = true,
+                   }))
             {
                 logger.LogError(
                     "Request {RequestName} concluído com erro", requestName);

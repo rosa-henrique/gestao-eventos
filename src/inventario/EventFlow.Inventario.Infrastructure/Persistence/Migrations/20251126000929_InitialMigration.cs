@@ -15,10 +15,10 @@ namespace EventFlow.Inventario.Infrastructure.Persistence.Migrations
                 name: "eventos",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    capacidade_maxima = table.Column<int>(type: "integer", nullable: false),
-                    status = table.Column<int>(type: "integer", nullable: false),
-                    criado_por = table.Column<Guid>(type: "uuid", nullable: false)
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    capacidade_maxima = table.Column<int>(type: "int", nullable: false),
+                    status = table.Column<int>(type: "int", nullable: false),
+                    criado_por = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -29,12 +29,14 @@ namespace EventFlow.Inventario.Infrastructure.Persistence.Migrations
                 name: "ingressos",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    evento_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    nome = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    descricao = table.Column<string>(type: "character varying(1000)", maxLength: 1000, nullable: false),
-                    preco = table.Column<decimal>(type: "numeric(8,2)", precision: 8, scale: 2, nullable: false),
-                    quantidade = table.Column<int>(type: "integer", nullable: false)
+                    id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    evento_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    nome = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    descricao = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    preco = table.Column<decimal>(type: "decimal(8,2)", precision: 8, scale: 2, nullable: false),
+                    quantidade_total = table.Column<int>(type: "int", nullable: false),
+                    quantidade_reservada = table.Column<int>(type: "int", nullable: false),
+                    version = table.Column<byte[]>(type: "rowversion", rowVersion: true, nullable: false)
                 },
                 constraints: table =>
                 {

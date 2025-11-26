@@ -7,14 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\..\shared\EventFlow.Shared.Infrastructure\EventFlow.Shared.Infrastructure.csproj" />
         <ProjectReference Include="..\EventFlow.Eventos.Application\EventFlow.Eventos.Application.csproj" />
         <ProjectReference Include="..\EventFlow.Eventos.Domain\EventFlow.Eventos.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" />
     </ItemGroup>
 
 </Project>

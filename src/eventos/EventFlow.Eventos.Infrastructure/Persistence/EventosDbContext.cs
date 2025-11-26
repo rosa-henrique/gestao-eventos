@@ -35,7 +35,7 @@ public class EventosDbContext(DbContextOptions<EventosDbContext> options, IPubli
             foreach (var property in entityType.GetProperties()
                          .Where(p => p.ClrType == typeof(DateTime)))
             {
-                property.SetColumnType("timestamp without time zone");
+                // property.SetColumnType("timestamp without time zone");
             }
         }
 
