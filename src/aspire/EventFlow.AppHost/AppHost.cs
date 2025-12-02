@@ -1,3 +1,5 @@
+using Aspire.Hosting.Yarp.Transforms;
+
 var builder = DistributedApplication.CreateBuilder(args);
 
 var seq = builder.AddSeq("seq")
@@ -7,12 +9,13 @@ var seq = builder.AddSeq("seq")
 
 var keycloakUsername = builder.AddParameter("keycloakUsername", value: "admin");
 var keycloakPassword = builder.AddParameter("keycloakPassword", secret: true, value: "admin");
-var keycloak = builder.AddKeycloak("keycloak", 8080, keycloakUsername, keycloakPassword)
+var keycloak = builder.AddKeycloak("keycloak", 8081, keycloakUsername, keycloakPassword)
     .WithDataVolume("keycloak-eventos")
     .WithRealmImport("./Infra/Keycloak")
     .WithEnvironment("KC_HTTP_ENABLED", "true")
     .WithEnvironment("KC_PROXY_HEADERS", "xforwarded")
-    .WithEnvironment("KC_HOSTNAME_STRICT", "false");
+    .WithEnvironment("KC_HOSTNAME_STRICT", "false")
+    .WithEnvironment("KC_HOSTNAME", "http://localhost:8081");
 
 var sqlserver = builder.AddSqlServer("sqlserver")
     .WithDataVolume("sqlserver-eventos")
@@ -26,7 +29,7 @@ var rabbitmq = builder.AddRabbitMQ("messaging", rabbitmqUsername, rabbitmqPasswo
     .WithManagementPlugin();
 
 var sqlserverEventos = sqlserver.AddDatabase("sqlserver-eventos", "eventos");
-var eventoApi = builder.AddProject<Projects.EventFlow_Eventos_Api>("eventosapi")
+var eventosApi = builder.AddProject<Projects.EventFlow_Eventos_Api>("eventosapi")
     .WithReference(keycloak)
     .WithReference(sqlserverEventos)
     .WithReference(rabbitmq)
@@ -46,5 +49,33 @@ var inventarioApi = builder.AddProject<Projects.EventFlow_Inventario_Api>("inven
     .WaitFor(sqlserverInventario)
     .WaitFor(rabbitmq)
     .WaitFor(seq);
+
+var sqlserverCompras = sqlserver.AddDatabase("sqlserver-compras", "compras");
+var comprasApi = builder.AddProject<Projects.EventFlow_Compras_Api>("comprasapi")
+    .WithReference(keycloak)
+    .WithReference(sqlserverCompras)
+    .WithReference(rabbitmq)
+    .WithReference(seq)
+    .WaitFor(keycloak)
+    .WaitFor(sqlserverCompras)
+    .WaitFor(rabbitmq)
+    .WaitFor(seq);
+
+var gateway = builder.AddYarp("gateway")
+    .WithConfiguration(yarp =>
+    {
+        yarp.AddRoute("/auth/{**catch-all}", keycloak)
+            .WithTransformPathRemovePrefix("/auth");
+
+        yarp.AddRoute("/eventos/{**catch-all}", eventosApi)
+            .WithTransformPathRemovePrefix("/eventos");
+
+        yarp.AddRoute("/inventario/{**catch-all}", inventarioApi)
+            .WithTransformPathRemovePrefix("/inventario");
+
+        yarp.AddRoute("/compras/{**catch-all}", comprasApi)
+            .WithTransformPathRemovePrefix("/compras");
+    })
+    .WithHostPort(8080);
 
 builder.Build().Run();

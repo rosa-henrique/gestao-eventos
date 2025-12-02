@@ -16,9 +16,11 @@
         <PackageReference Include="Aspire.Hosting.RabbitMQ" />
         <PackageReference Include="Aspire.Hosting.Seq" />
         <PackageReference Include="Aspire.Hosting.SqlServer" />
+        <PackageReference Include="Aspire.Hosting.Yarp" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\compras\EventFlow.Compras.Api\EventFlow.Compras.Api.csproj" />
       <ProjectReference Include="..\..\eventos\EventFlow.Eventos.Api\EventFlow.Eventos.Api.csproj" />
       <ProjectReference Include="..\..\inventario\EventFlow.Inventario.Api\EventFlow.Inventario.Api.csproj" />
     </ItemGroup>

@@ -2,8 +2,6 @@ using EventFlow.Eventos.Api.Endpoints;
 using EventFlow.Eventos.Application;
 using EventFlow.Eventos.Infrastructure;
 
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", false);
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire client integrations.
@@ -35,7 +33,6 @@ app.UseAuthorization();
 
 app.MapGet("/", () => "Hello World!").RequireAuthorization();
 
-app.MapBuscar();
 app.MapBuscarPorId();
 app.MapCriar();
 app.MapAlterar();
