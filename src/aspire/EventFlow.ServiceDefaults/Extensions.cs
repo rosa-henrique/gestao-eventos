@@ -22,7 +22,7 @@ public static class Extensions
     public static TBuilder AddServiceDefaults<TBuilder>(this TBuilder builder)
         where TBuilder : IHostApplicationBuilder
     {
-        builder.AddSeqEndpoint(connectionName: "seq");
+        // builder.AddSeqEndpoint(connectionName: "seq");
 
         // Add services to the container.
         builder.Services.AddProblemDetails();
@@ -82,7 +82,8 @@ public static class Extensions
                             && !context.Request.Path.StartsWithSegments(AlivenessEndpointPath))
 
                     // Uncomment the following line to enable gRPC instrumentation (requires the OpenTelemetry.Instrumentation.GrpcNetClient package)
-                    // .AddGrpcClientInstrumentation()
+                    .AddGrpcClientInstrumentation()
+                    .AddEntityFrameworkCoreInstrumentation()
                     .AddHttpClientInstrumentation();
             });
 

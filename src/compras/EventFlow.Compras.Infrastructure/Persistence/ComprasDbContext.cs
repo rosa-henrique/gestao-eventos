@@ -28,15 +28,6 @@ public class ComprasDbContext(DbContextOptions<ComprasDbContext> options, IPubli
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ComprasDbContext).Assembly);
 
-        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
-        {
-            foreach (var property in entityType.GetProperties()
-                         .Where(p => p.ClrType == typeof(DateTime)))
-            {
-                property.SetColumnType("timestamp without time zone");
-            }
-        }
-
         base.OnModelCreating(modelBuilder);
     }
 

@@ -10,6 +10,7 @@ var seq = builder.AddSeq("seq")
 var keycloakUsername = builder.AddParameter("keycloakUsername", value: "admin");
 var keycloakPassword = builder.AddParameter("keycloakPassword", secret: true, value: "admin");
 var keycloak = builder.AddKeycloak("keycloak", 8081, keycloakUsername, keycloakPassword)
+    .WithLifetime(ContainerLifetime.Persistent)
     .WithDataVolume("keycloak-eventos")
     .WithRealmImport("./Infra/Keycloak")
     .WithEnvironment("KC_HTTP_ENABLED", "true")
@@ -56,6 +57,7 @@ var comprasApi = builder.AddProject<Projects.EventFlow_Compras_Api>("comprasapi"
     .WithReference(sqlserverCompras)
     .WithReference(rabbitmq)
     .WithReference(seq)
+    .WithReference(inventarioApi)
     .WaitFor(keycloak)
     .WaitFor(sqlserverCompras)
     .WaitFor(rabbitmq)

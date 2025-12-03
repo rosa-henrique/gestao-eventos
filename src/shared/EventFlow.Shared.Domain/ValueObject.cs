@@ -1,6 +1,6 @@
 namespace EventFlow.Shared.Domain;
 
-public abstract class ValueObject
+public abstract class ValueObject : IEquatable<ValueObject>
 {
     public static bool operator ==(ValueObject? a, ValueObject? b)
     {

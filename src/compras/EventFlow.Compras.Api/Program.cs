@@ -1,3 +1,4 @@
+using EventFlow.Compras.Api.Endpoints;
 using EventFlow.Compras.Application;
 using EventFlow.Compras.Infrastructure;
 
@@ -30,7 +31,7 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 app.UseAuthorization();
 
-app.MapGet("/", () => "Hello World!").RequireAuthorization();
+app.MapComprarIngressoEndpoint();
 
 app.MapDefaultEndpoints();
 

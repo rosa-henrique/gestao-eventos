@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option csharp_namespace = "EventFlow.Inventario.Grpc";
+
+package eventflow;
+
+service IngressoService {
+  rpc ProcessarItens (ProcessarItensRequest) returns (ProcessarItensReply);
+}
+
+message ItemInput {
+  string id = 1; // GUID como string
+  int32 quantidade = 2;
+}
+
+// Objeto retornado na reply
+message ItemOutput {
+  string id = 1;     // GUID como string
+  double valor = 2;  // valor unitário (double)
+}
+
+// Request com array de objetos
+message ProcessarItensRequest {
+  repeated ItemInput itens = 1;
+}
+
+// Reply com array de objetos
+message ProcessarItensReply {
+  repeated ItemOutput itens = 1;
+}

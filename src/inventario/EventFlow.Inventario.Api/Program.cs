@@ -1,4 +1,5 @@
 using EventFlow.Inventario.Api.Endpoints;
+using EventFlow.Inventario.Api.Services;
 using EventFlow.Inventario.Application;
 using EventFlow.Inventario.Infrastructure;
 
@@ -18,6 +19,8 @@ builder.AddKeycloakAuthentication()
 
 builder.Services.AddApplication();
 
+builder.Services.AddGrpc();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -28,10 +31,10 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseAuthorization();
-app.UseAuthorization();
+app.MapGrpcService<IngressoService>();
 
-app.MapGet("/", () => "Hello World!").RequireAuthorization();
+app.UseAuthorization();
+app.UseAuthorization();
 
 app.MapCriarIngressoEndpoint();
 
