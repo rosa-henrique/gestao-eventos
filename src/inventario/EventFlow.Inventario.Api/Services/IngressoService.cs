@@ -4,7 +4,7 @@ using Grpc.Core;
 
 namespace EventFlow.Inventario.Api.Services;
 
-public class IngressoService : Grpc.IngressoService.IngressoServiceBase
+public class IngressoService : Ingresso.IngressoBase
 {
     public override async Task<ProcessarItensReply> ProcessarItens(ProcessarItensRequest request, ServerCallContext context)
     {

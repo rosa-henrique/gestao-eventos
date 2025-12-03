@@ -6,22 +6,24 @@
   </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="Ardalis.SmartEnum" Version="8.2.0" />
-    <PackageVersion Include="Aspire.Hosting.AppHost" Version="13.0.0" />
+    <PackageVersion Include="Aspire.Hosting.AppHost" Version="13.0.1" />
     <PackageVersion Include="Aspire.Hosting.Keycloak" Version="13.0.0-preview.1.25560.3" />
-    <PackageVersion Include="Aspire.Hosting.RabbitMQ" Version="13.0.0" />
-    <PackageVersion Include="Aspire.Hosting.Seq" Version="13.0.0" />
-    <PackageVersion Include="Aspire.Hosting.SqlServer" Version="13.0.0" />
+    <PackageVersion Include="Aspire.Hosting.RabbitMQ" Version="13.0.1" />
+    <PackageVersion Include="Aspire.Hosting.Seq" Version="13.0.1" />
+    <PackageVersion Include="Aspire.Hosting.SqlServer" Version="13.0.1" />
     <PackageVersion Include="Aspire.Hosting.Yarp" Version="13.0.1" />
     <PackageVersion Include="Aspire.Keycloak.Authentication" Version="13.0.0-preview.1.25560.3" />
-    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="13.0.0" />
-    <PackageVersion Include="Aspire.RabbitMQ.Client" Version="13.0.0" />
-    <PackageVersion Include="Aspire.Seq" Version="13.0.0" />
+    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="13.0.1" />
+    <PackageVersion Include="Aspire.RabbitMQ.Client" Version="13.0.1" />
+    <PackageVersion Include="Aspire.Seq" Version="13.0.1" />
     <PackageVersion Include="AspNetCore.HealthChecks.Uris" Version="9.0.0" />
     <PackageVersion Include="ErrorOr" Version="2.0.1" />
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="12.1.0" />
+    <PackageVersion Include="Google.Protobuf" Version="3.33.1" />
     <PackageVersion Include="Grpc.AspNetCore" Version="2.71.0" />
     <PackageVersion Include="Grpc.HealthCheck" Version="2.71.0" />
     <PackageVersion Include="Grpc.Net.ClientFactory" Version="2.71.0" />
+    <PackageVersion Include="Grpc.Tools" Version="2.76.0" />
     <PackageVersion Include="MediatR" Version="13.1.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />

@@ -1,6 +1,10 @@
+using EventFlow.Compras.Api;
 using EventFlow.Compras.Api.Endpoints;
 using EventFlow.Compras.Application;
 using EventFlow.Compras.Infrastructure;
+using EventFlow.Inventario.Grpc;
+
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +22,11 @@ builder.AddKeycloakAuthentication()
 
 builder.Services.AddApplication();
 
+var isHttps = builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https";
+
+builder.Services.AddSingleton<IngressoClient>()
+    .AddGrpcServiceReference<Ingresso.IngressoClient>($"{(isHttps ? "https" : "http")}://_Grpc.inventarioapi", failureStatus: HealthStatus.Degraded);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -32,6 +41,9 @@ app.UseAuthorization();
 app.UseAuthorization();
 
 app.MapComprarIngressoEndpoint();
+
+var a = app.Services.GetRequiredService<IngressoClient>();
+await a.Test();
 
 app.MapDefaultEndpoints();
 

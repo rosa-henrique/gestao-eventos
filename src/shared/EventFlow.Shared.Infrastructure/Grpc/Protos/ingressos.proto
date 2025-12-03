@@ -4,7 +4,7 @@ option csharp_namespace = "EventFlow.Inventario.Grpc";
 
 package eventflow;
 
-service IngressoService {
+service Ingresso {
   rpc ProcessarItens (ProcessarItensRequest) returns (ProcessarItensReply);
 }
 
