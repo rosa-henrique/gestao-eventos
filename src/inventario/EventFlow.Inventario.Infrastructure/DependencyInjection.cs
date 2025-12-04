@@ -5,6 +5,7 @@ using EventFlow.Inventario.Infrastructure.Persistence.Repositories;
 using EventFlow.Shared.Application.Contracts;
 using EventFlow.Shared.Infrastructure;
 using EventFlow.Shared.Infrastructure.HostedServices;
+using EventFlow.Shared.UnitOfWork;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,8 +32,16 @@ public static class DependencyInjection
     {
         builder.AddSqlServerDbContext<InventarioDbContext>(connectionName: "sqlserver-inventario");
 
+        builder.EnrichSqlServerDbContext<InventarioDbContext>(
+            configureSettings: settings =>
+            {
+                settings.DisableRetry = false;
+                settings.CommandTimeout = 30;
+            });
+
         builder.Services.AddScoped<IEventoRepository, EventoRepository>();
         builder.Services.AddScoped<IIngressoRepository, IngressoRepository>();
+        builder.Services.AddTransient<IUnitOfWork, UnitOfWork<InventarioDbContext>>();
 
         return builder;
     }

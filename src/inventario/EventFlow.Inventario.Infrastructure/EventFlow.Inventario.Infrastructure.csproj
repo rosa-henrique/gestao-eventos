@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\shared\EventFlow.Shared.Domain\EventFlow.Shared.Domain.csproj" />
       <ProjectReference Include="..\..\shared\EventFlow.Shared.Infrastructure\EventFlow.Shared.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\shared\EventFlow.Shared.UnitOfWork\EventFlow.Shared.UnitOfWork.csproj" />
       <ProjectReference Include="..\EventFlow.Inventario.Application\EventFlow.Inventario.Application.csproj" />
       <ProjectReference Include="..\EventFlow.Inventario.Domain\EventFlow.Inventario.Domain.csproj" />
     </ItemGroup>

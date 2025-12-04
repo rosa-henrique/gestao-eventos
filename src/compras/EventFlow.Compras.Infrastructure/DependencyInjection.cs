@@ -1,3 +1,5 @@
+using EventFlow.Compras.Domain;
+using EventFlow.Compras.Infrastructure.Clients;
 using EventFlow.Compras.Infrastructure.Persistence;
 using EventFlow.Shared.Infrastructure;
 using EventFlow.Shared.Infrastructure.HostedServices;
@@ -16,6 +18,8 @@ public static class DependencyInjection
 
         builder.Services.AddHostedService<DatabaseMigrationHostedService<ComprasDbContext>>();
         builder.Services.AddHostedService<RabbitTopologyInitializerHostedService>();
+
+        builder.Services.AddSingleton<IIngressoClient, IngressoClient>();
 
         return builder;
     }

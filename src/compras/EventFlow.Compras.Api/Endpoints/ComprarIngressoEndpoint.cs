@@ -13,7 +13,7 @@ public static class ComprarIngressoEndpoint
     {
         endpoints.MapPost("/ingressos/comprar", async (ISender sender, [FromBody] IEnumerable<IngressoCompra> ingressoCompras, CancellationToken cancellationToken) =>
         {
-            var criarIngressoRequest = new ComprarIngressosRequest(ingressoCompras.Select(e => (e.IngressoId, e.Quantidade)));
+            var criarIngressoRequest = new ComprarIngressosRequest(ingressoCompras.ToDictionary(e => e.IngressoId, e => e.Quantidade));
             var resultado = await sender.Send(criarIngressoRequest, cancellationToken);
 
             return resultado.Match(

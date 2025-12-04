@@ -24,8 +24,7 @@ builder.Services.AddApplication();
 
 var isHttps = builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https";
 
-builder.Services.AddSingleton<IngressoClient>()
-    .AddGrpcServiceReference<Ingresso.IngressoClient>($"{(isHttps ? "https" : "http")}://_Grpc.inventarioapi", failureStatus: HealthStatus.Degraded);
+builder.Services.AddGrpcServiceReference<Ingresso.IngressoClient>($"{(isHttps ? "https" : "http")}://_Grpc.inventarioapi", failureStatus: HealthStatus.Degraded);
 
 var app = builder.Build();
 
@@ -41,9 +40,6 @@ app.UseAuthorization();
 app.UseAuthorization();
 
 app.MapComprarIngressoEndpoint();
-
-var a = app.Services.GetRequiredService<IngressoClient>();
-await a.Test();
 
 app.MapDefaultEndpoints();
 

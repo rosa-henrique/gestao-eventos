@@ -52,6 +52,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventFlow.Compras.Applicati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventFlow.Compras.Api", "src\compras\EventFlow.Compras.Api\EventFlow.Compras.Api.csproj", "{58D64BD5-0871-42FB-A0A9-1AD2626BCF9C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EventFlow.Shared.UnitOfWork", "src\shared\EventFlow.Shared.UnitOfWork\EventFlow.Shared.UnitOfWork.csproj", "{FEE23B17-C8B8-485E-A1D8-77D3226DC37C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -126,6 +128,10 @@ Global
 		{58D64BD5-0871-42FB-A0A9-1AD2626BCF9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58D64BD5-0871-42FB-A0A9-1AD2626BCF9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{58D64BD5-0871-42FB-A0A9-1AD2626BCF9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEE23B17-C8B8-485E-A1D8-77D3226DC37C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEE23B17-C8B8-485E-A1D8-77D3226DC37C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEE23B17-C8B8-485E-A1D8-77D3226DC37C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEE23B17-C8B8-485E-A1D8-77D3226DC37C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{81E06FC1-AC02-4071-84BC-D0D63A09CF02} = {BAA3C3B0-BDBA-427A-968B-D7C0CF5662DD}
@@ -145,5 +151,6 @@ Global
 		{C4536663-C012-4EB7-8FA0-BFCD641251EC} = {E18070BE-DE3E-43AA-96B2-CAF860048636}
 		{8780EDF2-ED70-41CC-96E9-6A47CF04825D} = {E18070BE-DE3E-43AA-96B2-CAF860048636}
 		{58D64BD5-0871-42FB-A0A9-1AD2626BCF9C} = {E18070BE-DE3E-43AA-96B2-CAF860048636}
+		{FEE23B17-C8B8-485E-A1D8-77D3226DC37C} = {BAA3C3B0-BDBA-427A-968B-D7C0CF5662DD}
 	EndGlobalSection
 EndGlobal

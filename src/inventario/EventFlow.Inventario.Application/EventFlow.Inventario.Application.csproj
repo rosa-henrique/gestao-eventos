@@ -8,11 +8,16 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\shared\EventFlow.Shared.Application\EventFlow.Shared.Application.csproj" />
+      <ProjectReference Include="..\..\shared\EventFlow.Shared.UnitOfWork\EventFlow.Shared.UnitOfWork.csproj" />
       <ProjectReference Include="..\EventFlow.Inventario.Domain\EventFlow.Inventario.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="Commands\.DS_Store" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" />
     </ItemGroup>
 
 </Project>

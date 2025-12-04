@@ -52,5 +52,16 @@ public class Ingresso : Entity, IAggregateRoot
         return Result.Success;
     }
 
+    public ErrorOr<Success> Reservar(int quantidade)
+    {
+        if (QuantidadeTotal - QuantidadeReservada < quantidade)
+        {
+            return ErrosIngresso.QuantidadeIngressoInsuficiente;
+        }
+
+        QuantidadeReservada += quantidade;
+        return Result.Success;
+    }
+
     private Ingresso() { }
 }

@@ -17,14 +17,15 @@ message ItemInput {
 message ItemOutput {
   string id = 1;     // GUID como string
   double valor = 2;  // valor unitário (double)
+  string eventoId = 3;
 }
 
 // Request com array de objetos
 message ProcessarItensRequest {
-  repeated ItemInput itens = 1;
+  map<string, int32> itens = 1;
 }
 
 // Reply com array de objetos
 message ProcessarItensReply {
-  repeated ItemOutput itens = 1;
+  repeated ItemOutput itens = 2;
 }
