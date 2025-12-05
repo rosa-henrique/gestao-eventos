@@ -2,7 +2,8 @@ namespace EventFlow.Compras.Domain;
 
 public record ItemCompra
 {
-    public Guid IngressoId { get; init; }
-    public decimal PrecoUnitario { get; init; }
-    public int Quantidade { get; init; }
+    public required Guid IngressoId { get; init; }
+    public required Guid EventoId { get; init; }
+    public required decimal PrecoUnitario { get; init; }
+    public required int Quantidade { get; init; }
 }

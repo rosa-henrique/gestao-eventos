@@ -1,6 +1,8 @@
+using EventFlow.Compras.Application.Interfaces;
 using EventFlow.Compras.Domain;
 using EventFlow.Compras.Infrastructure.Clients;
 using EventFlow.Compras.Infrastructure.Persistence;
+using EventFlow.Compras.Infrastructure.Persistence.Repositories;
 using EventFlow.Shared.Infrastructure;
 using EventFlow.Shared.Infrastructure.HostedServices;
 
@@ -34,6 +36,8 @@ public static class DependencyInjection
                 settings.DisableRetry = false;
                 settings.CommandTimeout = 30;
             });
+
+        builder.Services.AddScoped<ICompraIngressoRepository, CompraIngressoRepository>();
 
         return builder;
     }

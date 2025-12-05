@@ -9,6 +9,22 @@ public class CompraIngresso : Entity, IAggregateRoot
     public decimal ValorTotal { get; private set; }
     public StatusCompra Status { get; private set; } = null!;
 
-    private readonly List<ItemCompra> _itens = new();
-    public IReadOnlyList<ItemCompra> Itens => _itens.AsReadOnly();
+    private readonly IList<ItemCompra> _itens = [];
+    public IReadOnlyCollection<ItemCompra> Itens => [.. _itens];
+
+    private CompraIngresso(Guid usuarioId, IList<ItemCompra> items)
+    {
+        _itens = items;
+        UsuarioId = usuarioId;
+        DataHoraCompra = DateTime.UtcNow;
+        Status = StatusCompra.Pendente;
+        ValorTotal = _itens.Sum(i => i.Quantidade * i.PrecoUnitario);
+    }
+
+    public static CompraIngresso Criar(Guid usuarioId, IList<ItemCompra> items)
+    {
+        return new CompraIngresso(usuarioId, items);
+    }
+
+    protected CompraIngresso() { }
 }

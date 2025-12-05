@@ -1,3 +1,5 @@
+using ErrorOr;
+
 using EventFlow.Inventario.Grpc;
 
 using Grpc.Core;
@@ -23,11 +25,28 @@ public class IngressoService(IMediator mediator) : Ingresso.IngressoBase
             {
                 Id = v.Id.ToString(),
                 Valor = (double)v.ValorUnitario,
+                EventoId = v.EventoId.ToString(),
             }));
 
             return response;
         }
 
-        throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid request"));
+        var error = processarItensResponse.FirstError;
+
+        var status = error.Type switch
+        {
+            ErrorType.Conflict => StatusCode.AlreadyExists,
+            ErrorType.Validation => StatusCode.InvalidArgument,
+            ErrorType.NotFound => StatusCode.NotFound,
+            ErrorType.Failure => StatusCode.Aborted,
+            _ => StatusCode.Unknown,
+        };
+
+        var trailers = new Metadata
+        {
+            { "error-code", error.Code },
+        };
+
+        throw new RpcException(new Status(status, error.Description), trailers);
     }
 }

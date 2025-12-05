@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EventFlow.Compras.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ComprasDbContext))]
-    [Migration("20251203033906_InitialMigration")]
+    [Migration("20251205004647_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -61,6 +61,10 @@ namespace EventFlow.Compras.Infrastructure.Persistence.Migrations
                             b1.Property<Guid>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("EventoId")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("evento_id");
 
                             b1.Property<Guid>("IngressoId")
                                 .HasColumnType("uniqueidentifier")

@@ -12,6 +12,7 @@
     
     <ItemGroup>
       <ProjectReference Include="..\..\shared\EventFlow.Shared.Infrastructure\EventFlow.Shared.Infrastructure.csproj" />
+      <ProjectReference Include="..\EventFlow.Compras.Application\EventFlow.Compras.Application.csproj" />
       <ProjectReference Include="..\EventFlow.Compras.Domain\EventFlow.Compras.Domain.csproj" />
     </ItemGroup>
 

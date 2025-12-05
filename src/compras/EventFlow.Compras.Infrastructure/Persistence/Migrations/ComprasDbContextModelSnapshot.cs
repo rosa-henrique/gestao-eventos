@@ -59,6 +59,10 @@ namespace EventFlow.Compras.Infrastructure.Persistence.Migrations
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("uniqueidentifier");
 
+                            b1.Property<Guid>("EventoId")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("evento_id");
+
                             b1.Property<Guid>("IngressoId")
                                 .HasColumnType("uniqueidentifier")
                                 .HasColumnName("ingresso_id");

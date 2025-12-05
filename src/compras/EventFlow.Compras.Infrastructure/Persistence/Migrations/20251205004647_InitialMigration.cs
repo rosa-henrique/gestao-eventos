@@ -32,6 +32,7 @@ namespace EventFlow.Compras.Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ingresso_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    evento_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     preco_unitario = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     quantidade = table.Column<int>(type: "int", nullable: false),
                     compra_ingressos_id = table.Column<Guid>(type: "uniqueidentifier", nullable: false)

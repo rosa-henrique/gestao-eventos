@@ -1,3 +1,4 @@
+using EventFlow.Compras.Domain;
 using EventFlow.Shared.Domain;
 
 using MediatR;
@@ -9,6 +10,8 @@ namespace EventFlow.Compras.Infrastructure.Persistence;
 public class ComprasDbContext(DbContextOptions<ComprasDbContext> options, IPublisher publisher)
     : DbContext(options)
 {
+    public DbSet<CompraIngresso> CompraIngressos { get; set; } = null!;
+
     public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         NormalizeDateTimes();

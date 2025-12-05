@@ -52,6 +52,10 @@ public class CompraIngressoConfiguration : IEntityTypeConfiguration<CompraIngres
                 .IsRequired()
                 .HasColumnName("ingresso_id");
 
+            itemBuilder.Property(d => d.EventoId)
+                .IsRequired()
+                .HasColumnName("evento_id");
+
             itemBuilder.Property(d => d.PrecoUnitario)
                 .IsRequired()
                 .HasColumnName("preco_unitario");
@@ -60,5 +64,7 @@ public class CompraIngressoConfiguration : IEntityTypeConfiguration<CompraIngres
                 .IsRequired()
                 .HasColumnName("quantidade");
         });
+
+        builder.Navigation(x => x.Itens).Metadata.SetField("_itens");
     }
 }
